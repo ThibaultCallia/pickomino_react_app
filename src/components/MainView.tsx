@@ -1,7 +1,6 @@
+import "../customScss/mainView.scss"
 
-
-function MainView() {
-  
+function MainView() {  
     return (
         <div className="mainView">
             <h1 className="test">test</h1>

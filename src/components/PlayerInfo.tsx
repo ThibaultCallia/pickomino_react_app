@@ -1,6 +1,4 @@
 function PlayerInfo() {
-  
-
   return (
     <h1>test</h1>
   )

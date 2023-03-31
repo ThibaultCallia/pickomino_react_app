@@ -1,5 +1,6 @@
 import Navbar from './components/Navbar'
 import MainView from './components/MainView'
+import Footer from './components/Footer'
 import { useState } from 'react'
 import './App.css'
 
@@ -11,6 +12,7 @@ function App() {
     <>
     <Navbar/>
     <MainView/>
+    <Footer/>
     </>
     
     
