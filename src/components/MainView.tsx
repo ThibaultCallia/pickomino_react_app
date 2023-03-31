@@ -1,4 +1,4 @@
-import "./mainView.scss"
+
 
 function MainView() {
   
