@@ -1,4 +1,5 @@
-import Nav from './components/nav/Nav'
+import Navbar from './components/navBar/Navbar'
+import MainView from './components/mainView/MainView'
 import { useState } from 'react'
 import './App.css'
 
@@ -8,8 +9,8 @@ function App() {
 
   return (
     <>
-    <Nav/>
-    <h1>test</h1>
+    <Navbar/>
+    <MainView/>
     </>
     
     
