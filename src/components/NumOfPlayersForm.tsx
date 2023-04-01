@@ -1,19 +1,31 @@
 // Import necessary components and hooks
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useState, ChangeEvent } from 'react';
 import {
   Box,
   FormControl,
   FormLabel,
   Input,
+  NumberInputField,
+  NumberInput,
   Button,
+  Select,
   Flex
 } from '@chakra-ui/react';
 
-const NumOfPlayersForm: React.FC = () => {
+interface NumOfPlayersFormProps {
+    setNumOfPlayers: (num: number | null) => void;
+}
+
+const NumOfPlayersForm: React.FC<NumOfPlayersFormProps> = ({ setNumOfPlayers }) => {
+    const [num, setNum] = useState<string | undefined>(undefined);
+    const [isError, setIsError] = useState<boolean>(false);
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     
-    console.log('Form submitted');
+    if (num) {
+        setNumOfPlayers(parseInt(num));
+    }
   };
 
   return (
@@ -21,9 +33,36 @@ const NumOfPlayersForm: React.FC = () => {
       <form onSubmit={handleSubmit}>
         {/* Alternatively work with mr on input field? */}
         <Flex gap="10px">
-        <FormControl id="numOfPlayersForm" mt={4}>
+        <FormControl isRequired  id="numOfPlayersForm" mt={4}>
           {/* <FormLabel>How many players? </FormLabel> */}
-          <Input type="text" placeholder="How many players?" />
+          {/* Build in validation of n of players */}
+          {/* <NumberInput 
+            min={2} 
+            max={7}
+            keepWithinRange={false}
+            clampValueOnBlur={false}
+            value={num}
+            onChange={(e: string) => {
+                setNum(e);
+              }}
+            >
+          <NumberInputField type="text" placeholder="How many players?"  />
+          </NumberInput> */}
+          
+            <Select 
+                placeholder='How many players?'
+                value={num}
+                onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+                setNum(e.target.value);
+              }}
+            >
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+            </Select>
         </FormControl>
         <Button mt={4} colorScheme="yellow" type="submit">
           Play

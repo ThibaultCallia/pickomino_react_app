@@ -31,8 +31,9 @@ const Navbar = () => {
         alignItems="center"
       >
       <Box>
+        
         <Link href="/" fontWeight="bold" fontSize="xl">
-          Pickomino
+        Planetary Pirates
         </Link>
       </Box>
       <Spacer />

@@ -1,15 +1,16 @@
 import { nanoid } from "nanoid";
 import Player from "./Player";
+import { createUniqueNameArray } from "../helpers";
 
 class GameState{
     gameId: string = nanoid();
-    playerArray: Array<object>;
+    playerArray: Player[];
     tilesArray: Array<object> = [];
     currentRound: number = 0;
     gameStatus: string = "playing";
 
     constructor(numOfPlayers: number){
-        this.playerArray = Array(numOfPlayers).fill(new Player());
+        this.playerArray = Array.from({ length: numOfPlayers }, () => new Player());
         this.tilesArray = [
             { value: 21, points: 1 },
       { value: 22, points: 1 },
@@ -28,7 +29,17 @@ class GameState{
       { value: 35, points: 4 },
       { value: 36, points: 4 },
         ];
+        this.createPlayerNames(numOfPlayers);
     }
+    createPlayerNames(numOfPlayers: number){
+        let playerNames = createUniqueNameArray(numOfPlayers);
+        
+        this.playerArray.forEach((player, index) => {
+            player.setPlayerName(playerNames[index]);
+        });
+    }
+
+    
 }
 
 export default GameState;

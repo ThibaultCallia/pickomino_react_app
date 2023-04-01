@@ -1,12 +1,16 @@
+import { nanoid } from "nanoid";
 class Player{
     name : string;
-    id: number;
+    id: string;
     collectedTiles: Array<object> = [];
 
     constructor(){
-        this.name = "Player";
-        this.id = 0;
+        this.name = "";
+        this.id = nanoid();
         
+    }
+    setPlayerName(name: string){
+        this.name = name;
     }
 }
 
