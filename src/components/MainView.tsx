@@ -1,9 +1,10 @@
 import "../customScss/mainView.scss"
+import NumOfPlayersForm from "./NumOfPlayersForm"
 
 function MainView() {  
     return (
         <div className="mainView">
-            <h1 className="test">test</h1>
+            <NumOfPlayersForm/>
         </div>
       
     )
