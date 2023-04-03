@@ -52,3 +52,16 @@ while (uniqueNames.size < numOfNames) {
 }
 return Array.from(uniqueNames);
 };
+
+export const rollDice = (numOfDice: number) => {
+    let result = [];
+    let faces = ["rocket_mini_logo.png", "PP_mini_logo.png", "rocket_mini_logo.png", "PP_mini_logo.png", "rocket_mini_logo.png", "PP_mini_logo.png"];
+    for (let i = 0; i < numOfDice; i++) {
+        const randomNum = Math.floor(Math.random() * 6) + 1;
+        result.push({
+            value: randomNum,
+            face: faces[randomNum - 1]
+        });
+    }
+    return result;
+};

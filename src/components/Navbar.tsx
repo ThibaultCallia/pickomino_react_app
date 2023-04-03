@@ -8,6 +8,7 @@ import {
   IconButton,
   useColorMode,
   Collapse,
+  Image,
   
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
@@ -31,9 +32,19 @@ const Navbar = () => {
         alignItems="center"
       >
       <Box>
-        
         <Link href="/" fontWeight="bold" fontSize="xl">
+          <Flex alignItems="center">
+          <Image
+        src="./PP_mini_logo.png" 
+        alt="Logo"
+        width="30px" 
+        height="30px" 
+        marginRight="5px" 
+      />
+            <Box fontWeight="bold" fontSize="xl">
         Planetary Pirates
+            </Box>
+          </Flex>
         </Link>
       </Box>
       <Spacer />
