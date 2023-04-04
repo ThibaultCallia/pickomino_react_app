@@ -2,9 +2,11 @@
 import React from 'react';
 import { Box, Flex, Link, useColorMode } from '@chakra-ui/react';
 
+
 const Footer = () => {
   const { colorMode } = useColorMode();
 
+  // RENDER
   return (
     <Box
       as="footer"

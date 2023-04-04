@@ -1,20 +1,22 @@
 import { Box, Image } from "@chakra-ui/react"
 
+// INTERFACES
 interface DieProps {
     die: string;
     onClick?: (value:string) => void;
     selected: boolean;
 };
 
-function Die({die, onClick, selected}: DieProps) {
 
+function Die({die, onClick, selected}: DieProps) {
+    // FUNCTIONS
     const handleClick = () => {
         if (onClick) {
           onClick(die);
         }
       };
   
-
+    // RENDER
     return (
         <Box 
             onClick={handleClick} 

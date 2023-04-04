@@ -1,27 +1,39 @@
 import { StarIcon } from "@chakra-ui/icons"
-import { Badge, Box, Button, Container, Grid, GridItem, SimpleGrid, Stack, useToast } from "@chakra-ui/react"
-import { useState } from "react"
-import { rollDice, canSelect } from "../helpers"
+import { Badge, Box, Button, Container, Grid, GridItem, SimpleGrid, Stack, useDisclosure, useToast } from "@chakra-ui/react"
+import { useState, useEffect } from "react"
+import { rollDice, canSelect, hasSelectableDice  } from "../helpers"
 import Die from "./Die"
+import GameOverModal from "./GameOverModal"
 
 
-// typing for the dice
+// INTERFACES
 export interface DieInterface {
   value: number;
   face: string;
   selected: boolean;
 }
 
-function RollDice() {
+function RollDice( {currentPlayer, setCurrentPlayer, numOfPlayers, onEndTurn}: any) {
   // USE STATES
   const [selectedDice, setSelectedDice] = useState<DieInterface[]>([])
   const [currentDiceRoll, setCurrentDiceRoll] = useState<DieInterface[]>([])
   const [hasSelected, setHasSelected] = useState<boolean>(true);
-  const [selectError, setSelectError] = useState<string>("");
+  const [gameOver, setGameOver] = useState<boolean>(false);
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast();
   const id = "selectError";
 
+  // USE EFFECTS
+  useEffect(() => {
+    if(currentDiceRoll.length > 0 && !hasSelectableDice(selectedDice, currentDiceRoll)){
+      setGameOver(true);
+        onOpen();  
+
+    }
+  }, [currentDiceRoll])
+
   // FUNCTIONS
+  
   const onRollClick = () => {
     // if there are no selected dice, roll all dice
     // Roll dice should not be able to be clicked if there are no selected dice atm
@@ -42,12 +54,11 @@ function RollDice() {
   }
 
   const finalSelectClick = () => {
-    
     if(canSelect( selectedDice, currentDiceRoll)){
-    toast.close(id);
-    setHasSelected(true);
-    setSelectedDice(prev => [...prev, ...currentDiceRoll.filter(die => die.selected).map(die => ({...die, selected: false}))])
-    setCurrentDiceRoll([])
+      toast.close(id);
+      setHasSelected(true);
+      setSelectedDice(prev => [...prev, ...currentDiceRoll.filter(die => die.selected).map(die => ({...die, selected: false}))])
+      setCurrentDiceRoll([])
     } else{
       if(!toast.isActive(id)){
         toast({
@@ -63,9 +74,11 @@ function RollDice() {
     }
   }
 
+  
+
   // RENDER
     return (
-      
+      <>
     <Box maxW='sm' borderWidth='4px' borderRadius='lg'  minH="300px" minW="450px">
       <Box p='6' display="flex" gap="10px" justifyContent="space-between">
         <Box flex={1}  minWidth="175px" minHeight="250" >
@@ -82,7 +95,7 @@ function RollDice() {
             <Box flex={1}>
               <SimpleGrid columns={4} spacing={3}>
                 {currentDiceRoll.length>0 && currentDiceRoll.map((die: DieInterface, index: number) => {
-                  return <Die selected = {die.selected} onClick = {()=>onSelectDiceClick(die.face)} key={index} die={die.face}></Die>
+                  return <Die selected = {die.selected} onClick = {()=>onSelectDiceClick(die.face)} key={index} die={die.face}/>
                 })}
               </SimpleGrid>
             </Box>
@@ -91,9 +104,12 @@ function RollDice() {
         </Box>
       </Box>
     </Box>
-
+    <GameOverModal isOpen={isOpen} onClose={()=>{
+      onClose();
+      onEndTurn();
+    }} />
+    </>
     
-
     )
   }
   

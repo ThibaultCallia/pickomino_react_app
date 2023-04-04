@@ -14,6 +14,7 @@ import {
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 
 const Navbar = () => {
+  // HOOKS
   const { colorMode, toggleColorMode } = useColorMode();
   const [displayMenu, setDisplayMenu] = useState(false);
 
@@ -21,6 +22,7 @@ const Navbar = () => {
     setDisplayMenu(!displayMenu);
   };
 
+  // RENDER
   return (
     <Flex
         as="nav"

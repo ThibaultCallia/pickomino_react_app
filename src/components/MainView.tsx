@@ -11,10 +11,12 @@ import PlayTurn from "./PlayTurn"
 
 const MainView = () =>{ 
 
+    // USE STATES
     const [numOfPlayers, setNumOfPlayers] = useState<number | null>(null)
     const [gameState, setGameState] = useState<GameState | null>(null)
     const [currentPlayer, setCurrentPlayer] = useState<number>(0)
-
+    
+    // USE EFFECTS
     useEffect(() => {
         if(numOfPlayers){
             setGameState(new GameState(numOfPlayers))
@@ -22,11 +24,12 @@ const MainView = () =>{
         }
     }, [numOfPlayers])
 
+    // FUNCTIONS
     const onEndTurn = () => {
          setCurrentPlayer(prev => prev === numOfPlayers ? 1 : prev + 1);
     }
     
-    
+    // RENDER
     if(!numOfPlayers){
     return (
         <div className="mainView">
@@ -40,10 +43,15 @@ const MainView = () =>{
             <PlayerInfo gameState = {gameState}/>
             <Button onClick={onEndTurn}>End turn</Button>
             
-            <RollDice/>
+            <RollDice 
+                currentPlayer = {currentPlayer} 
+                setCurrentPlayer = {setCurrentPlayer} 
+                numOfPlayers={numOfPlayers} 
+                onEndTurn={onEndTurn}
+                key={currentPlayer}
+            />
 
            <p>Player {currentPlayer} plays</p>
-
 
         </div>
     )

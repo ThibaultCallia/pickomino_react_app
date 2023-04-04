@@ -78,3 +78,8 @@ export const canSelect = (selectedDice : DieInterface[], currentDiceRoll: DieInt
     }
     return false;
 }
+
+export const hasSelectableDice = (selectedDice: DieInterface[], currentRoll: DieInterface[]): boolean => {
+    const facesInArr1 = new Set(selectedDice.map(die => die.face));
+    return currentRoll.some(die => !facesInArr1.has(die.face));
+  }

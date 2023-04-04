@@ -13,14 +13,18 @@ import {
   FormErrorMessage
 } from '@chakra-ui/react';
 
+// INTERFACES
 interface NumOfPlayersFormProps {
     setNumOfPlayers: (num: number | null) => void;
 }
 
-const NumOfPlayersForm: React.FC<NumOfPlayersFormProps> = ({ setNumOfPlayers }) => {
-    const [num, setNum] = useState<string | undefined>(undefined);
-    const [isError, setIsError] = useState<boolean>(false);
 
+const NumOfPlayersForm: React.FC<NumOfPlayersFormProps> = ({ setNumOfPlayers }) => {
+  // USE STATES
+  const [num, setNum] = useState<string | undefined>(undefined);
+  const [isError, setIsError] = useState<boolean>(false);
+
+  // FUNCTIONS
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     
@@ -29,6 +33,7 @@ const NumOfPlayersForm: React.FC<NumOfPlayersFormProps> = ({ setNumOfPlayers }) 
     }
   };
 
+  // RENDER
   return (
     <Box>
       <form onSubmit={handleSubmit}>
