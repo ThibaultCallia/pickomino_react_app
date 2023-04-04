@@ -55,7 +55,7 @@ return Array.from(uniqueNames);
 
 export const rollDice = (numOfDice: number) => {
     let result = [];
-    let faces = ["rocket_mini_logo.png", "PP_mini_logo.png", "rocket_mini_logo.png", "PP_mini_logo.png", "rocket_mini_logo.png", "PP_mini_logo.png"];
+    let faces = ["1", "2", "3", "4", "5", "R"];
     for (let i = 0; i < numOfDice; i++) {
         const randomNum = Math.floor(Math.random() * 6) + 1;
         result.push({

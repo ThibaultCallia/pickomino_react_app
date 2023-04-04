@@ -9,7 +9,8 @@ import {
   NumberInput,
   Button,
   Select,
-  Flex
+  Flex,
+  FormErrorMessage
 } from '@chakra-ui/react';
 
 interface NumOfPlayersFormProps {
@@ -35,20 +36,6 @@ const NumOfPlayersForm: React.FC<NumOfPlayersFormProps> = ({ setNumOfPlayers }) 
         <Flex gap="10px">
         <FormControl isRequired  id="numOfPlayersForm" mt={4}>
           {/* <FormLabel>How many players? </FormLabel> */}
-          {/* Build in validation of n of players */}
-          {/* <NumberInput 
-            min={2} 
-            max={7}
-            keepWithinRange={false}
-            clampValueOnBlur={false}
-            value={num}
-            onChange={(e: string) => {
-                setNum(e);
-              }}
-            >
-          <NumberInputField type="text" placeholder="How many players?"  />
-          </NumberInput> */}
-          
             <Select 
                 placeholder='How many players?'
                 value={num}

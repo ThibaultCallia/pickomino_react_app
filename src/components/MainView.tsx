@@ -5,6 +5,7 @@ import GameState  from "../classes/GameState"
 import { Grid, GridItem, Button } from "@chakra-ui/react"
 import RollDice from "./RollDice"
 import PlayerInfo from "./PlayerInfo"
+import PlayTurn from "./PlayTurn"
 
 
 
