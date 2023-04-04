@@ -20,6 +20,7 @@ function Die({die, onClick, selected}: DieProps) {
             onClick={handleClick} 
             borderWidth={selected ? "2px" : "1px"} 
             borderColor={selected ? "red" : "black"} 
+            // boxShadow={selected ? "dark-lg" : "none"}
             borderRadius="lg" 
             overflow="hidden" 
             width="40px" 

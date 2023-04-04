@@ -1,3 +1,4 @@
+import { DieInterface } from "./components/RollDice";
 export const createUniqueNameArray = (numOfNames: number) => {
     const adjectives = ['Celestial',
     'Galactic',
@@ -66,3 +67,14 @@ export const rollDice = (numOfDice: number) => {
     }
     return result;
 };
+
+export const canSelect = (selectedDice : DieInterface[], currentDiceRoll: DieInterface[]) =>{
+    if(selectedDice.length === 0){
+        return true;
+    }
+    const selectedDie = currentDiceRoll.find(die => die.selected)?.face;
+    if(selectedDice.every(die => die.face !== selectedDie)){
+        return true;
+    }
+    return false;
+}

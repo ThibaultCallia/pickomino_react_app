@@ -16,7 +16,7 @@ const Footer = () => {
       <Flex alignItems="center" justifyContent="space-between">
         <Box>
           <Link href="/privacy" mx={2}>
-            Privacy Policy
+            Based on "Regenwormen" by 999 Games
           </Link>
           
         </Box>
