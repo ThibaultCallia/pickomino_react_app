@@ -2,19 +2,34 @@ import { Box, Image } from "@chakra-ui/react"
 
 interface DieProps {
     die: string;
-    onClick?: () => void;
+    onClick?: (value:string) => void;
+    selected: boolean;
 };
 
-function Die({die}: DieProps) {
+function Die({die, onClick, selected}: DieProps) {
+
+    const handleClick = () => {
+        if (onClick) {
+          onClick(die);
+        }
+      };
   
 
     return (
-        <Box borderWidth="1px" borderColor="black" borderRadius="lg" overflow="hidden" width="40px" height="40px">
-            <Image 
-                objectFit='cover' 
-                src={`/diceFaces/die${die}.svg`}
-            />
-       </Box>
+        <Box 
+            onClick={handleClick} 
+            borderWidth={selected ? "2px" : "1px"} 
+            borderColor={selected ? "red" : "black"} 
+            borderRadius="lg" 
+            overflow="hidden" 
+            width="40px" 
+            height="40px"
+            >
+                <Image 
+                    objectFit='cover' 
+                    src={`/diceFaces/die${die}.svg`}
+                />
+        </Box>
     )
   }
   

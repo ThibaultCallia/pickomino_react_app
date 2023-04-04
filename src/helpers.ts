@@ -60,7 +60,8 @@ export const rollDice = (numOfDice: number) => {
         const randomNum = Math.floor(Math.random() * 6) + 1;
         result.push({
             value: randomNum,
-            face: faces[randomNum - 1]
+            face: faces[randomNum - 1],
+            selected: false
         });
     }
     return result;

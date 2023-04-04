@@ -8,6 +8,7 @@ import Die from "./Die"
 interface DieInterface {
   value: number;
   face: string;
+  selected: boolean;
 }
 
 function RollDice() {
@@ -19,6 +20,16 @@ function RollDice() {
   const onRollClick = () => {
     setCurrentDiceRoll(rollDice(8 - selectedDice.length))
   }
+  const onSelectDiceClick = (value: string) => {
+    
+    setCurrentDiceRoll(prev => prev.map(die => {
+      if(die.face === value){
+        return {...die, selected: true}
+      } 
+      return {...die, selected: false}
+    }))
+  }
+
     return (
       
     <Box maxW='sm' borderWidth='4px' borderRadius='lg'  minH="300px" minW="450px">
@@ -31,8 +42,9 @@ function RollDice() {
             <Button onClick = {onRollClick} colorScheme="yellow">Roll</Button>
             <Box flex={1}>
               <SimpleGrid columns={4} spacing={3}>
-                {currentDiceRoll.map((die: DieInterface, index: number) => {
-                  return <Die key={index} die={die.face}></Die>
+                
+                {currentDiceRoll.length>0 && currentDiceRoll.map((die: DieInterface, index: number) => {
+                  return <Die selected = {die.selected} onClick = {()=>onSelectDiceClick(die.face)} key={index} die={die.face}></Die>
                 })}
                 
                 
