@@ -2,11 +2,9 @@ import "../customScss/mainView.scss"
 import NumOfPlayersForm from "./NumOfPlayersForm"
 import { useEffect, useState } from "react"
 import GameState  from "../classes/GameState"
-import { Grid, GridItem, Button } from "@chakra-ui/react"
+import {  Button } from "@chakra-ui/react"
 import RollDice from "./RollDice"
 import PlayerInfo from "./PlayerInfo"
-import PlayTurn from "./PlayTurn"
-
 
 
 const MainView = () =>{ 
@@ -40,7 +38,7 @@ const MainView = () =>{
 
     return (
         <div className="mainView">
-            <PlayerInfo gameState = {gameState}/>
+            <PlayerInfo  gameState = {gameState}/>
             <Button onClick={onEndTurn}>End turn</Button>
             
             <RollDice 

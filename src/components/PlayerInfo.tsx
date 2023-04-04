@@ -1,14 +1,22 @@
-import { Grid, GridItem } from "@chakra-ui/react"
-import { ReactElement, JSXElementConstructor, ReactFragment, ReactPortal, Key } from "react"
+import { SimpleGrid, GridItem } from "@chakra-ui/react"
+import PlayerCard from "./PlayerCard"
+
+interface PlayerInfoProps {
+  gameState: {
+    playerArray: Array<{ name: string }>;
+  } | null;
+}
+
 
 function PlayerInfo({gameState}: any) {
   // RENDER
   return (
-    <Grid>
+    <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(150px, 1fr))'>
       {gameState?.playerArray.map((player: { name: string }, index: number ) => {
-        return <GridItem key={index}>player {index +1}: {player.name}</GridItem>
+        return <PlayerCard key = {index} playerName = {player.name}/>
       })}
-    </Grid>
+      
+    </SimpleGrid>
   )
 }
 

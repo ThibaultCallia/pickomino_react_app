@@ -1,5 +1,5 @@
 // Footer.js
-import React from 'react';
+
 import { Box, Flex, Link, useColorMode } from '@chakra-ui/react';
 
 

@@ -36,15 +36,15 @@ const Navbar = () => {
       <Box>
         <Link href="/" fontWeight="bold" fontSize="xl">
           <Flex alignItems="center">
-          <Image
-        src="./PP_mini_logo.png" 
-        alt="Logo"
-        width="30px" 
-        height="30px" 
-        marginRight="5px" 
-      />
+            <Image
+              src="./PP_mini_logo.png" 
+              alt="Planetary Pirates Logo"
+              width="30px" 
+              height="30px" 
+              marginRight="5px" 
+            />
             <Box fontWeight="bold" fontSize="xl">
-        Planetary Pirates
+              Planetary Pirates
             </Box>
           </Flex>
         </Link>
@@ -64,17 +64,17 @@ const Navbar = () => {
           icon={displayMenu ? <CloseIcon /> : <HamburgerIcon />}
           aria-label={displayMenu ? 'Close menu' : 'Open menu'}
         />
-        <Collapse in={displayMenu} animateOpacity>
-          <Box
-            position="absolute"
-            top="100%"
-            left={0}
-            right={0}
-            zIndex={10}
-            p={4}
-            display={{ base: 'block', md: 'none' }}
-            bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
-            rounded="md"
+      <Collapse in={displayMenu} animateOpacity>
+        <Box
+          position="absolute"
+          top="100%"
+          left={0}
+          right={0}
+          zIndex={10}
+          p={4}
+          display={{ base: 'block', md: 'none' }}
+          bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
+          rounded="md"
           >
             <Link href="/about" display="block" my={2} onClick={toggleMenu}>
               About
@@ -82,7 +82,7 @@ const Navbar = () => {
             <Link href="/gameRules" display="block" my={2} onClick={toggleMenu}>
               Game Rules
             </Link>
-          </Box>
+        </Box>
         </Collapse>
       <Button
         onClick={toggleColorMode}

@@ -3,14 +3,9 @@ import React, { FormEvent, useState, ChangeEvent } from 'react';
 import {
   Box,
   FormControl,
-  FormLabel,
-  Input,
-  NumberInputField,
-  NumberInput,
   Button,
   Select,
   Flex,
-  FormErrorMessage
 } from '@chakra-ui/react';
 
 // INTERFACES
@@ -19,10 +14,10 @@ interface NumOfPlayersFormProps {
 }
 
 
-const NumOfPlayersForm: React.FC<NumOfPlayersFormProps> = ({ setNumOfPlayers }) => {
+const NumOfPlayersForm = ({ setNumOfPlayers }:NumOfPlayersFormProps) => {
   // USE STATES
   const [num, setNum] = useState<string | undefined>(undefined);
-  const [isError, setIsError] = useState<boolean>(false);
+  
 
   // FUNCTIONS
   const handleSubmit = (e: FormEvent) => {

@@ -1,5 +1,4 @@
-import { StarIcon } from "@chakra-ui/icons"
-import { Badge, Box, Button, Container, Grid, GridItem, SimpleGrid, Stack, useDisclosure, useToast } from "@chakra-ui/react"
+import {  Box, Button, SimpleGrid, Stack, useDisclosure, useToast } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
 import { rollDice, canSelect, hasSelectableDice  } from "../helpers"
 import Die from "./Die"
