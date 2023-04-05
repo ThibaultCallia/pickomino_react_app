@@ -1,15 +1,18 @@
 import Navbar from './components/Navbar'
 import MainView from './components/MainView'
 import Footer from './components/Footer'
-import { useState, useReducer } from 'react'
-import './App.css'
 
+
+// Routing here? 
 function App() {
   
   return (
     <>
     <Navbar/>
     <MainView/>
+    {/* Intro page */}
+    {/* MainView */}
+    {/* Game over page */}
     <Footer/>
     </>
   )

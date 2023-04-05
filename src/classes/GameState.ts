@@ -2,10 +2,15 @@ import { nanoid } from "nanoid";
 import Player from "./Player";
 import { createUniqueNameArray } from "../helpers";
 
+interface Tile{
+    value: number;
+    points: number;
+}
+
 class GameState{
     gameId: string = nanoid();
     playerArray: Player[];
-    tilesArray: Array<object> = [];
+    tilesArray: Tile[];
     currentRound: number = 0;
     gameStatus: string = "playing";
 
