@@ -7,11 +7,8 @@ import {
   Select,
   Flex,
 } from '@chakra-ui/react';
+import { NumOfPlayersFormProps } from './NumOfPlayersForm.types';
 
-// INTERFACES
-interface NumOfPlayersFormProps {
-    setNumOfPlayers: (num: number | null) => void;
-}
 
 
 const NumOfPlayersForm = ({ setNumOfPlayers }:NumOfPlayersFormProps) => {

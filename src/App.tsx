@@ -1,6 +1,6 @@
-import Navbar from './components/Navbar'
-import MainView from './components/MainView'
-import Footer from './components/Footer'
+import { NavBar } from './components'
+import {MainView} from './components'
+import {Footer} from './components'
 
 
 // Routing here? 
@@ -8,7 +8,7 @@ function App() {
   
   return (
     <>
-    <Navbar/>
+    <NavBar/>
     <MainView/>
     {/* Intro page */}
     {/* MainView */}

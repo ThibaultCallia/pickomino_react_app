@@ -1,16 +1,10 @@
 import {  Box, Button, SimpleGrid, Stack, useDisclosure, useToast } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
-import { rollDice, canSelect, hasSelectableDice  } from "../helpers"
-import Die from "./Die"
-import GameOverModal from "./GameOverModal"
+import { rollDice, canSelect, hasSelectableDice  } from "../../helpers"
+import Die from "../Die/Die"
+import {GameOverModal} from "../GameOverModal"
+import { DieInterface } from "../Die"
 
-
-// INTERFACES
-export interface DieInterface {
-  value: number;
-  face: string;
-  selected: boolean;
-}
 
 function RollDice( {currentPlayer, setCurrentPlayer, numOfPlayers, onEndTurn}: any) {
   // USE STATES

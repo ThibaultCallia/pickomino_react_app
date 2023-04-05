@@ -1,10 +1,10 @@
-import "../customScss/mainView.scss"
-import NumOfPlayersForm from "./NumOfPlayersForm"
+import "../../styles/components/mainView.scss"
+import {NumOfPlayersForm} from "../NumOfPlayersForm"
 import { useEffect, useState } from "react"
-import GameState  from "../classes/GameState"
+import GameState from "../../classes/GameState"
 import {  Button } from "@chakra-ui/react"
-import RollDice from "./RollDice"
-import PlayerInfo from "./PlayerInfo"
+import {RollDice} from "../RollDice"
+import {PlayerInfo} from "../PlayerInfo"
 
 
 const MainView = () =>{ 

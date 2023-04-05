@@ -1,12 +1,12 @@
 import { Box, Collapse , Text, Image } from "@chakra-ui/react"
 import { useState } from "react";
+import { PlayerCardProps } from "./PlayerCard.types";
 
-interface PlayerCardProps {
-    playerName: string;
-}
 
 function PlayerCard({playerName}: PlayerCardProps) {
+  // USE STATES
     const [isHovered, setIsHovered] = useState<boolean>(false);
+
   // RENDER
   return (
     

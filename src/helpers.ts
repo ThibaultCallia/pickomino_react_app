@@ -1,4 +1,4 @@
-import { DieInterface } from "./components/RollDice";
+import { DieInterface } from "./components/RollDice/RollDice";
 export const createUniqueNameArray = (numOfNames: number) => {
     const adjectives = ['Celestial',
     'Galactic',

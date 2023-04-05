@@ -1,11 +1,6 @@
 import { SimpleGrid, GridItem } from "@chakra-ui/react"
-import PlayerCard from "./PlayerCard"
+import {PlayerCard} from "../PlayerCard"
 
-interface PlayerInfoProps {
-  gameState: {
-    playerArray: Array<{ name: string }>;
-  } | null;
-}
 
 
 function PlayerInfo({gameState}: any) {
