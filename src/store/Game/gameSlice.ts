@@ -3,6 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import {PlainGameState} from './Game.types'
 import {createInitialGameState} from './GameStateTest'
 import {createPlayerArray} from '../Players/playerState'
+import {createUniqueNameArray} from '../../helpers'
 
 
 const initialState: PlainGameState  = createInitialGameState();
@@ -13,17 +14,18 @@ a single GameState slice with player reducers is chosen
 to make it easier to manage state updates in a consistent manner.
 */
 
-export const gameSlice = createSlice({
+const gameSlice = createSlice({
     name: 'game',
     initialState,
     reducers: {
-        startGame: (state, action: PayloadAction<number>) => {
-            const { payload: numOfPlayers } = action;
+        startGame: (state, { payload: numOfPlayers }: PayloadAction<number>) => {
             state.playerArray = createPlayerArray(numOfPlayers);
+            const playerNames = createUniqueNameArray(numOfPlayers);
+            state.playerArray.forEach((player, index) => {
+                player.name = playerNames[index];
+            });
           },
     },
 })
 
-
-
-
+export const { actions: gameActions, reducer: gameReducer } = gameSlice;

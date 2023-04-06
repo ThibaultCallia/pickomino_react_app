@@ -2,9 +2,13 @@ import "../../styles/components/mainView.scss"
 import {NumOfPlayersForm} from "../NumOfPlayersForm"
 import { useEffect, useState } from "react"
 import GameState from "../../classes/GameState"
-import {  Button } from "@chakra-ui/react"
+import { Button } from "@chakra-ui/react"
 import {RollDice} from "../RollDice"
 import {PlayerInfo} from "../PlayerInfo"
+
+import { useDispatch } from "react-redux"
+import { gameActions } from "../../store/Game/gameSlice"
+import { Board } from "../Board" 
 
 
 const MainView = () =>{ 
@@ -13,11 +17,12 @@ const MainView = () =>{
     const [numOfPlayers, setNumOfPlayers] = useState<number | null>(null)
     const [gameState, setGameState] = useState<GameState | null>(null)
     const [currentPlayer, setCurrentPlayer] = useState<number>(0)
+    const dispatch = useDispatch()
     
     // USE EFFECTS
     useEffect(() => {
         if(numOfPlayers){
-            setGameState(new GameState(numOfPlayers))
+            dispatch(gameActions.startGame(numOfPlayers));
             setCurrentPlayer(1);
         }
     }, [numOfPlayers])
@@ -26,6 +31,7 @@ const MainView = () =>{
     const onEndTurn = () => {
          setCurrentPlayer(prev => prev === numOfPlayers ? 1 : prev + 1);
     }
+
     
     // RENDER
     if(!numOfPlayers){
@@ -38,7 +44,8 @@ const MainView = () =>{
 
     return (
         <div className="mainView">
-            <PlayerInfo  gameState = {gameState}/>
+            <PlayerInfo/>
+            <Board/>
             <Button onClick={onEndTurn}>End turn</Button>
             
             <RollDice 

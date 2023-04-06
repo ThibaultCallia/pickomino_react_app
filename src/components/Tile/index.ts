@@ -1,2 +1,2 @@
-export {default as TileFace} from './Tile';
+export {default as Tile} from './Tile';
 export * from './Tile.types';
