@@ -2,16 +2,13 @@ import { nanoid } from "nanoid";
 import Player from "./Player";
 import { createUniqueNameArray } from "../helpers";
 import  defaultTilesSet  from "./tiles.const";
+import { PlainTile } from "../components";
 
-interface Tile{
-    value: number;
-    points: number;
-}
 
 class GameState{
     gameId: string = nanoid();
     playerArray: Player[];
-    tilesArray: Tile[];
+    tilesArray: PlainTile[];
     currentRound: number = 0;
     gameStatus: string = "playing";
 
@@ -21,7 +18,7 @@ class GameState{
         this.createPlayerNames(numOfPlayers);
     }
     createPlayerNames(numOfPlayers: number){
-        let playerNames = createUniqueNameArray(numOfPlayers);
+        const playerNames = createUniqueNameArray(numOfPlayers);
         
         this.playerArray.forEach((player, index) => {
             player.setPlayerName(playerNames[index]);
