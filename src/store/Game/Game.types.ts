@@ -7,6 +7,7 @@ export interface PlainGameState {
   playerArray: PlainPlayer[];
   tilesArray: PlainTile[];
   currentRound: number;
+  currentPlayersTurn: number;
   gameStatus: string;
   }
 

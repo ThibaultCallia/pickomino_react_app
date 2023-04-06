@@ -27,6 +27,7 @@ function Die({die, onClick, selected}: DieProps) {
             overflow="hidden" 
             width="40px" 
             height="40px"
+            cursor = {onClick ? 'pointer' : 'default'}
             >
                 <Image 
                     objectFit='cover' 

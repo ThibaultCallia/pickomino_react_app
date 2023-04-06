@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import {PlainGameState} from './Game.types'
-import {createInitialGameState} from './GameStateTest'
+import {createInitialGameState} from './GameStateObject'
 import {createPlayerArray} from '../Players/playerState'
 import {createUniqueNameArray} from '../../helpers'
 
@@ -25,7 +25,17 @@ const gameSlice = createSlice({
                 player.name = playerNames[index];
             });
           },
+        nextPlayerTurn: (state) => {
+            state.currentPlayersTurn = (state.currentPlayersTurn + 1) % state.playerArray.length;
+          },
+        takeTile: (state, { payload : tileValue}: PayloadAction<number>) => {
+            const tileIndex = state.tilesArray.findIndex(tile => tile.value === tileValue);
+            const tile = state.tilesArray[tileIndex];
+            state.tilesArray.splice(tileIndex, 1);
+            state.playerArray[state.currentPlayersTurn].collectedTiles.push(tile);
+          },
     },
 })
 
-export const { actions: gameActions, reducer: gameReducer } = gameSlice;
+export const { startGame, nextPlayerTurn, takeTile } = gameSlice.actions
+export default gameSlice.reducer

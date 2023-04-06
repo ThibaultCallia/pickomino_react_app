@@ -1,35 +1,34 @@
 import "../../styles/components/mainView.scss"
 import {NumOfPlayersForm} from "../NumOfPlayersForm"
 import { useEffect, useState } from "react"
-import GameState from "../../classes/GameState"
 import { Button } from "@chakra-ui/react"
 import {RollDice} from "../RollDice"
 import {PlayerInfo} from "../PlayerInfo"
-
-import { useDispatch } from "react-redux"
-import { gameActions } from "../../store/Game/gameSlice"
+import { useDispatch, useSelector } from "react-redux"
+import { startGame } from "../../store/Game/gameSlice"
 import { Board } from "../Board" 
+import { nextPlayerTurn } from "../../store/Game/gameSlice"
+import { RootState } from "../../store"
 
 
 const MainView = () =>{ 
 
     // USE STATES
     const [numOfPlayers, setNumOfPlayers] = useState<number | null>(null)
-    const [gameState, setGameState] = useState<GameState | null>(null)
-    const [currentPlayer, setCurrentPlayer] = useState<number>(0)
     const dispatch = useDispatch()
+    const currentPlayer = useSelector((state: RootState) => state.game.currentPlayersTurn)
     
     // USE EFFECTS
     useEffect(() => {
         if(numOfPlayers){
-            dispatch(gameActions.startGame(numOfPlayers));
-            setCurrentPlayer(1);
+            dispatch(startGame(numOfPlayers));
+            
         }
     }, [numOfPlayers])
 
     // FUNCTIONS
     const onEndTurn = () => {
-         setCurrentPlayer(prev => prev === numOfPlayers ? 1 : prev + 1);
+         dispatch(nextPlayerTurn());
     }
 
     
@@ -48,13 +47,7 @@ const MainView = () =>{
             <Board/>
             <Button onClick={onEndTurn}>End turn</Button>
             
-            <RollDice 
-                currentPlayer = {currentPlayer} 
-                setCurrentPlayer = {setCurrentPlayer} 
-                numOfPlayers={numOfPlayers} 
-                onEndTurn={onEndTurn}
-                key={currentPlayer}
-            />
+            <RollDice key = {currentPlayer} onEndTurn={onEndTurn}/>
 
            <p>Player {currentPlayer} plays</p>
 

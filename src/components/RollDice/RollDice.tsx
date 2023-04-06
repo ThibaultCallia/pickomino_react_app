@@ -6,12 +6,11 @@ import {GameOverModal} from "../GameOverModal"
 import { DieInterface } from "../Die"
 
 
-function RollDice( {currentPlayer, setCurrentPlayer, numOfPlayers, onEndTurn}: any) {
+function RollDice( { onEndTurn}: any) {
   // USE STATES
   const [selectedDice, setSelectedDice] = useState<DieInterface[]>([])
   const [currentDiceRoll, setCurrentDiceRoll] = useState<DieInterface[]>([])
   const [hasSelected, setHasSelected] = useState<boolean>(true);
-  const [gameOver, setGameOver] = useState<boolean>(false);
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast();
   const id = "selectError";
@@ -19,9 +18,7 @@ function RollDice( {currentPlayer, setCurrentPlayer, numOfPlayers, onEndTurn}: a
   // USE EFFECTS
   useEffect(() => {
     if(currentDiceRoll.length > 0 && !hasSelectableDice(selectedDice, currentDiceRoll)){
-      setGameOver(true);
         onOpen();  
-
     }
   }, [currentDiceRoll])
 
