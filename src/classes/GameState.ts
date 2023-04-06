@@ -2,11 +2,8 @@ import { nanoid } from "nanoid";
 import Player from "./Player";
 import { createUniqueNameArray } from "../helpers";
 import  defaultTilesSet  from "./tiles.const";
+import { Tile } from "../components";
 
-interface Tile{
-    value: number;
-    points: number;
-}
 
 class GameState{
     gameId: string = nanoid();
