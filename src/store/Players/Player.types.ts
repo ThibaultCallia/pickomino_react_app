@@ -6,4 +6,5 @@ export interface PlainPlayer {
     collectedTiles: PlainTile[];
     isPlaying: boolean;
     currentlySelectedDice: DieInterface[];
+    currentDiceRoll: DieInterface[];
 }

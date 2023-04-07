@@ -12,6 +12,7 @@ const createPlayer = (): PlainPlayer => {
         collectedTiles: [],
         isPlaying: false,
         currentlySelectedDice: [],
+        currentDiceRoll: [],
       };
 };
 

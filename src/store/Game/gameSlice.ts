@@ -53,9 +53,16 @@ const gameSlice = createSlice({
         },
         resetSelectedDice: (state) => {
           state.playerArray.map(player => player.currentlySelectedDice = [])
+        },
+        setCurrentDiceRoll: (state, {payload: dice}: PayloadAction<DieInterface[]>) => {
+          state.playerArray[state.currentPlayersTurn].currentDiceRoll = dice;
+        },
+        resetCurrentDiceRoll: (state) => {
+          state.playerArray.map(player => player.currentDiceRoll = [])
         }
+
     },
 })
 
-export const { startGame, nextPlayerTurn, takeTile, toggleDiceTotal, stealTile, addSelectedDice, resetSelectedDice } = gameSlice.actions
+export const { startGame, nextPlayerTurn, takeTile, toggleDiceTotal, stealTile, addSelectedDice, resetSelectedDice, setCurrentDiceRoll, resetCurrentDiceRoll } = gameSlice.actions
 export default gameSlice.reducer

@@ -8,11 +8,12 @@ import { totalDiceValue, includesRocket } from "../../helpers"
 import { EndTurnModal } from "../EndTurnModal"
 
 
-const  Board:React.FC<BoardProps> = ({selectedDice, setValidation}) => {
+const  Board:React.FC<BoardProps> = ({ setValidation}) => {
       // HOOKS
       const gameState = useSelector((state: RootState) => state.game)
       const dispatch = useDispatch();
       const { isOpen, onOpen, onClose } = useDisclosure()
+      const selectedDice = useSelector((state: RootState) => state.game.playerArray[state.game.currentPlayersTurn]?.currentlySelectedDice) || [];
 
     //   FUNCTIONS  
         const onTileClick = (tileValue: number) => {

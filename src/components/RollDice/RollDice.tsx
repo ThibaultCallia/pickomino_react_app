@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import { rollDice, canSelect, hasSelectableDice  } from "../../helpers"
 import Die from "../Die/Die"
 import { RollDiceProps } from "./"
-import { nextPlayerTurn, addSelectedDice, resetSelectedDice } from "../../store/Game/gameSlice"
+import { nextPlayerTurn, addSelectedDice, resetSelectedDice, setCurrentDiceRoll, resetCurrentDiceRoll } from "../../store/Game/gameSlice"
 import { useDispatch, useSelector } from "react-redux"
 import { DieInterface } from "../Die"
 import { RootState } from "../../store"
@@ -12,9 +12,9 @@ import EndTurnModal from "../EndTurnModal/EndTurnModal"
 
 
 
-const RollDice:React.FC<RollDiceProps> = ({ setSelectedDice, setValidation}) => {
+const RollDice:React.FC<RollDiceProps> = ({ setValidation}) => {
   // HOOKS
-  const [currentDiceRoll, setCurrentDiceRoll] = useState<DieInterface[]>([])
+  // const [currentDiceRoll, setCurrentDiceRoll] = useState<DieInterface[]>([])
   const [hasSelected, setHasSelected] = useState<boolean>(true)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast()
@@ -24,9 +24,9 @@ const RollDice:React.FC<RollDiceProps> = ({ setSelectedDice, setValidation}) => 
   const lowestTileOnBoard = useSelector((state: RootState) => state.game.tilesArray[0].value)
   const showDiceTotal = useSelector((state: RootState) => state.game.settings.selectedDiceTotal)
   const selectedDice = useSelector((state: RootState) => state.game.playerArray[currentPlayer]?.currentlySelectedDice) || [];
+  const currentDiceRoll = useSelector((state: RootState) => state.game.playerArray[currentPlayer]?.currentDiceRoll) || [];
+
   
- 
- 
   // USE EFFECTS
   useEffect(() => {
     if(currentDiceRoll.length > 0 && !hasSelectableDice(selectedDice, currentDiceRoll)){
@@ -40,7 +40,7 @@ const RollDice:React.FC<RollDiceProps> = ({ setSelectedDice, setValidation}) => 
   }, [currentDiceRoll])
 
   useEffect(() => {
-    setCurrentDiceRoll([]);
+    dispatch(resetCurrentDiceRoll());
     dispatch(resetSelectedDice());
     // setSelectedDice([]);
     setHasSelected(true);
@@ -58,22 +58,23 @@ const RollDice:React.FC<RollDiceProps> = ({ setSelectedDice, setValidation}) => 
 
   // FUNCTIONS
   const onRollClick = () => {
+    
     // if there are no selected dice, roll all dice
     // Roll dice should not be able to be clicked if there are no selected dice atm
     if(hasSelected){
-    setCurrentDiceRoll(rollDice(8 - selectedDice.length));
+    dispatch(setCurrentDiceRoll(rollDice(8 - selectedDice.length)));
     setHasSelected(false);
     setValidation("");
     }
   }
 
   const onSelectDiceClick = (value: string) => {
-      setCurrentDiceRoll(prev => prev.map(die => {
+      dispatch(setCurrentDiceRoll(currentDiceRoll.map(die => {
         if(die.face === value){
           return {...die, selected: true}
         } 
         return {...die, selected: false}
-      }))
+      })))
   }
 
   const finalSelectClick = () => {
@@ -82,7 +83,7 @@ const RollDice:React.FC<RollDiceProps> = ({ setSelectedDice, setValidation}) => 
       setHasSelected(true);
       dispatch(addSelectedDice(currentDiceRoll.filter(die => die.selected).map(die => ({...die, selected: false}))));
       // setSelectedDice(prev => [...prev, ...currentDiceRoll.filter(die => die.selected).map(die => ({...die, selected: false}))])
-      setCurrentDiceRoll([])
+      dispatch(setCurrentDiceRoll([]));
     } else{
       if(!toast.isActive(id)){
         toast({

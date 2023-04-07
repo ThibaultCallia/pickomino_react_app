@@ -16,7 +16,6 @@ const MainView = () =>{
     const [numOfPlayers, setNumOfPlayers] = useState<number | null>(null)
     const dispatch = useDispatch()
     const currentPlayer = useSelector((state: RootState) => state.game.currentPlayersTurn)
-    const [selectedDice, setSelectedDice] = useState<DieInterface[]>([])
     const [validation, setValidation] = useState<string>("");
 
     // USE EFFECTS
@@ -40,10 +39,10 @@ const MainView = () =>{
     return (
         <div className="mainView">
             <PlayerInfo/>
-            <Board selectedDice = {selectedDice} setValidation={setValidation}/>
+            <Board  setValidation={setValidation}/>
             <Badge colorScheme="red">{validation}</Badge>
-            <RollDice  selectedDice={selectedDice} setSelectedDice={setSelectedDice} setValidation={setValidation}/>
-           <p>Player {currentPlayer} plays</p>
+            <RollDice setValidation={setValidation}/>
+           <p>Player {currentPlayer+1} plays</p>
 
         </div>
     )
