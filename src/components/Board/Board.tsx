@@ -4,7 +4,7 @@ import { RootState } from "../../store"
 import { SimpleGrid, useDisclosure } from "@chakra-ui/react"
 import { takeTile, nextPlayerTurn } from "../../store/Game/gameSlice"
 import { BoardProps } from "./Board.types"
-import { totalSelectedDice, includesRocket } from "../../helpers"
+import { totalDiceValue, includesRocket } from "../../helpers"
 import { EndTurnModal } from "../EndTurnModal"
 
 
@@ -18,7 +18,7 @@ const  Board:React.FC<BoardProps> = ({selectedDice, setValidation}) => {
         const onTileClick = (tileValue: number) => {
             if(!includesRocket(selectedDice)){
               setValidation("You need to select a rocket to take a tile");
-            } else if(totalSelectedDice(selectedDice) < tileValue){
+            } else if(totalDiceValue(selectedDice) < tileValue){
               setValidation("your selected dice are not enough to take this tile");
             } else{
               dispatch(takeTile(tileValue));

@@ -5,15 +5,15 @@ import { EndTurnModalProps } from "./"
 const EndTurnModal: React.FC<EndTurnModalProps> = ({isOpen, onClose, title, children}) =>{
     return (
         <Modal 
-            isCentered 
+            isCentered = {false}
             closeOnOverlayClick={false} 
             isOpen={isOpen} 
             onClose={onClose}
+            scrollBehavior="inside"
             >
                 
         <ModalOverlay 
-        bg='blackAlpha.300'
-        backdropFilter='blur(10px) hue-rotate(90deg)'
+        bg='blackAlpha.500'
         />
         <ModalContent>
           <ModalHeader>{title}</ModalHeader>

@@ -1,5 +1,5 @@
 import { DieInterface } from "./components";
-export const createUniqueNameArray = (numOfNames: number) => {
+const createUniqueNameArray = (numOfNames: number) => {
     const adjectives = ['Celestial',
     'Galactic',
     'Nebulous',
@@ -54,7 +54,7 @@ while (uniqueNames.size < numOfNames) {
 return Array.from(uniqueNames);
 };
 
-export const rollDice = (numOfDice: number) => {
+const rollDice = (numOfDice: number) => {
     let result = [];
     let faces = ["1", "2", "3", "4", "5", "R"];
     for (let i = 0; i < numOfDice; i++) {
@@ -68,7 +68,7 @@ export const rollDice = (numOfDice: number) => {
     return result;
 };
 
-export const canSelect = (selectedDice : DieInterface[], currentDiceRoll: DieInterface[]) =>{
+const canSelect = (selectedDice : DieInterface[], currentDiceRoll: DieInterface[]) =>{
     if(selectedDice.length === 0){
         return true;
     }
@@ -79,15 +79,33 @@ export const canSelect = (selectedDice : DieInterface[], currentDiceRoll: DieInt
     return false;
 }
 
-export const hasSelectableDice = (selectedDice: DieInterface[], currentRoll: DieInterface[]): boolean => {
+const hasSelectableDice = (selectedDice: DieInterface[], currentRoll: DieInterface[]): boolean => {
     const facesInArr1 = new Set(selectedDice.map(die => die.face));
     return currentRoll.some(die => !facesInArr1.has(die.face));
   }
 
-  export const totalSelectedDice = (selectedDice: DieInterface[]) => {
+const totalDiceValue = (selectedDice: DieInterface[]) => {
     return selectedDice.reduce((acc, die) => acc + (die.value === 6 ? 5 : die.value), 0);
   }
 
-  export const includesRocket = (selectedDice: DieInterface[]) => {
+const includesRocket = (selectedDice: DieInterface[]) => {
     return selectedDice.some(die => die.face === "R");
   }
+
+const finalRollFailed = (selectedDice: DieInterface[], currentRoll: DieInterface[], lowestTileOnBoard:number) => {
+    if(!currentRoll.every(die => die.value === currentRoll[0].value)){
+        return false;
+    }
+    // ALL ROLLED DICE ARE SAME VALUE AT THIS POINT
+    if(!includesRocket(selectedDice) && !includesRocket(currentRoll)){
+        return true;
+    }
+    // Now check whether selecting the rocket // or the next die would have made a difference (vs least value tile )
+    // OR OTHER PLAYERS' TILE)
+    const toBeTotal = totalDiceValue(selectedDice) + totalDiceValue(currentRoll);
+    if(toBeTotal < lowestTileOnBoard){
+        return true;
+    }
+}
+
+  export{createUniqueNameArray, rollDice, canSelect, hasSelectableDice, totalDiceValue, includesRocket, finalRollFailed}

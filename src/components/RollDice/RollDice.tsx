@@ -2,13 +2,12 @@ import {  Box, Button, SimpleGrid, Stack, useDisclosure, useToast } from "@chakr
 import { useState, useEffect } from "react"
 import { rollDice, canSelect, hasSelectableDice  } from "../../helpers"
 import Die from "../Die/Die"
-import {GameOverModal} from "../EndTurnModal"
 import { RollDiceProps } from "./"
 import { nextPlayerTurn } from "../../store/Game/gameSlice"
 import { useDispatch, useSelector } from "react-redux"
 import { DieInterface } from "../Die"
 import { RootState } from "../../store"
-import { totalSelectedDice } from "../../helpers"
+import { totalDiceValue, finalRollFailed } from "../../helpers"
 import EndTurnModal from "../EndTurnModal/EndTurnModal"
 
 
@@ -22,11 +21,19 @@ const RollDice:React.FC<RollDiceProps> = ({selectedDice, setSelectedDice, setVal
   const id = "selectError";
   const dispatch = useDispatch()
   const currentPlayer = useSelector((state: RootState) => state.game.currentPlayersTurn)
+  const lowestTileOnBoard = useSelector((state: RootState) => state.game.tilesArray[0].value)
+
+  
 
   // USE EFFECTS
   useEffect(() => {
     if(currentDiceRoll.length > 0 && !hasSelectableDice(selectedDice, currentDiceRoll)){
-        onOpen();  
+      onOpen();
+      return;  
+    }
+    if(currentDiceRoll.length > 0 && finalRollFailed(selectedDice, currentDiceRoll, lowestTileOnBoard)){
+      onOpen();
+      return;
     }
   }, [currentDiceRoll])
 
@@ -37,6 +44,15 @@ const RollDice:React.FC<RollDiceProps> = ({selectedDice, setSelectedDice, setVal
     setValidation("");
     
   }, [currentPlayer])
+
+  useEffect(() => {
+    if(hasSelected && selectedDice.length === 8){
+      if(totalDiceValue(selectedDice) < lowestTileOnBoard){
+        onOpen();
+        return;
+      }
+    }
+  }, [selectedDice])
 
   // FUNCTIONS
   const onRollClick = () => {
@@ -86,7 +102,7 @@ const RollDice:React.FC<RollDiceProps> = ({selectedDice, setSelectedDice, setVal
     <Box maxW='sm' borderWidth='4px' borderRadius='lg'  minH="300px" minW="450px">
       <Box p='6' display="flex" gap="10px" justifyContent="space-between">
         <Box flex={1}  minWidth="175px" minHeight="250" >
-          <p>total dice: {totalSelectedDice(selectedDice)}</p>
+          <p>total dice: {totalDiceValue(selectedDice)}</p>
           <SimpleGrid columns={2} spacing={3}>
                 {selectedDice.length>0 && selectedDice.map((die: DieInterface, index: number) => {
                   return <Die selected = {die.selected} key={index} die={die.face}></Die>

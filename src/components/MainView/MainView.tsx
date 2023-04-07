@@ -42,7 +42,6 @@ const MainView = () =>{
         <div className="mainView">
             <PlayerInfo/>
             <Board selectedDice = {selectedDice} setValidation={setValidation}/>
-            <Button onClick={()=>dispatch(nextPlayerTurn())}>End turn</Button>
             <Badge colorScheme="red">{validation}</Badge>
             <RollDice  selectedDice={selectedDice} setSelectedDice={setSelectedDice} setValidation={setValidation}/>
            <p>Player {currentPlayer} plays</p>
