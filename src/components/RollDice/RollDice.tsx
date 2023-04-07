@@ -3,17 +3,24 @@ import { useState, useEffect } from "react"
 import { rollDice, canSelect, hasSelectableDice  } from "../../helpers"
 import Die from "../Die/Die"
 import {GameOverModal} from "../GameOverModal"
+import { RollDiceProps } from "./"
+import { nextPlayerTurn } from "../../store/Game/gameSlice"
+import { useDispatch, useSelector } from "react-redux"
 import { DieInterface } from "../Die"
+import { RootState } from "../../store"
+import { totalSelectedDice } from "../../helpers"
 
 
-function RollDice( { onEndTurn}: any) {
-  // USE STATES
-  const [selectedDice, setSelectedDice] = useState<DieInterface[]>([])
+
+const RollDice:React.FC<RollDiceProps> = ({selectedDice, setSelectedDice}) => {
+  // HOOKS
   const [currentDiceRoll, setCurrentDiceRoll] = useState<DieInterface[]>([])
   const [hasSelected, setHasSelected] = useState<boolean>(true);
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast();
   const id = "selectError";
+  const dispatch = useDispatch()
+  const currentPlayer = useSelector((state: RootState) => state.game.currentPlayersTurn)
 
   // USE EFFECTS
   useEffect(() => {
@@ -22,8 +29,14 @@ function RollDice( { onEndTurn}: any) {
     }
   }, [currentDiceRoll])
 
+  useEffect(() => {
+    setCurrentDiceRoll([]);
+    setSelectedDice([]);
+    setHasSelected(true);
+    
+  }, [currentPlayer])
+
   // FUNCTIONS
-  
   const onRollClick = () => {
     // if there are no selected dice, roll all dice
     // Roll dice should not be able to be clicked if there are no selected dice atm
@@ -64,19 +77,18 @@ function RollDice( { onEndTurn}: any) {
     }
   }
 
-  
-
   // RENDER
     return (
       <>
     <Box maxW='sm' borderWidth='4px' borderRadius='lg'  minH="300px" minW="450px">
       <Box p='6' display="flex" gap="10px" justifyContent="space-between">
         <Box flex={1}  minWidth="175px" minHeight="250" >
+          <p>total dice: {totalSelectedDice(selectedDice)}</p>
           <SimpleGrid columns={2} spacing={3}>
                 {selectedDice.length>0 && selectedDice.map((die: DieInterface, index: number) => {
                   return <Die selected = {die.selected} key={index} die={die.face}></Die>
                 })}
-              </SimpleGrid>
+          </SimpleGrid>
         </Box>
 
         <Box display='flex' flexDirection="column" alignItems='center' minWidth="175px"  minHeight="250" >
@@ -96,7 +108,7 @@ function RollDice( { onEndTurn}: any) {
     </Box>
     <GameOverModal isOpen={isOpen} onClose={()=>{
       onClose();
-      onEndTurn();
+      dispatch(nextPlayerTurn());
     }} />
     </>
     

@@ -1,11 +1,13 @@
 import { Box, Collapse , Text, Image } from "@chakra-ui/react"
 import { useState } from "react";
 import { PlayerCardProps } from "./PlayerCard.types";
+import { PlainPlayer } from "../../store/Players/Player.types";
 
 
-function PlayerCard({playerName}: PlayerCardProps) {
+function PlayerCard({name, collectedTiles}: PlainPlayer) {
   // USE STATES
     const [isHovered, setIsHovered] = useState<boolean>(false);
+    
 
   // RENDER
   return (
@@ -18,9 +20,10 @@ function PlayerCard({playerName}: PlayerCardProps) {
       onMouseLeave={() => setIsHovered(false)}
       textAlign="center"
     >
-      <Text fontWeight="bold">{playerName}</Text>
+      <Text fontWeight="bold">{name}</Text>
       <Collapse in={isHovered}>
-        <Image  mx = "auto" boxSize="50px" mt={4} src="/PP_mini_logo.png" borderRadius="lg" />
+        {/* <Image  mx = "auto" boxSize="50px" mt={4} src="/PP_mini_logo.png" borderRadius="lg" /> */}
+        <Text>latest tile value: {collectedTiles[collectedTiles.length-1]?.value}</Text>
       </Collapse>
     </Box>
   )

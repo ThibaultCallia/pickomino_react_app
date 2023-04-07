@@ -12,8 +12,8 @@ function PlayerInfo() {
   return (
     
     <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(150px, 1fr))'>
-      {gameState.playerArray.map((player: { name: string }, index: number ) => {
-        return <PlayerCard key = {index} playerName = {player.name}/>
+      {gameState.playerArray.map((player, index ) => {
+        return <PlayerCard key = {index} {...player}/>
       })}
       
     </SimpleGrid>

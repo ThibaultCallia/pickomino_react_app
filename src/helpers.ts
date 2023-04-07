@@ -1,4 +1,4 @@
-import { DieInterface } from "./components/RollDice/RollDice";
+import { DieInterface } from "./components";
 export const createUniqueNameArray = (numOfNames: number) => {
     const adjectives = ['Celestial',
     'Galactic',
@@ -82,4 +82,12 @@ export const canSelect = (selectedDice : DieInterface[], currentDiceRoll: DieInt
 export const hasSelectableDice = (selectedDice: DieInterface[], currentRoll: DieInterface[]): boolean => {
     const facesInArr1 = new Set(selectedDice.map(die => die.face));
     return currentRoll.some(die => !facesInArr1.has(die.face));
+  }
+
+  export const totalSelectedDice = (selectedDice: DieInterface[]) => {
+    return selectedDice.reduce((acc, die) => acc + (die.value === 6 ? 5 : die.value), 0);
+  }
+
+  export const includesRocket = (selectedDice: DieInterface[]) => {
+    return selectedDice.some(die => die.face === "R");
   }

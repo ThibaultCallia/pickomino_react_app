@@ -9,5 +9,8 @@ export interface PlainGameState {
   currentRound: number;
   currentPlayersTurn: number;
   gameStatus: string;
+  settings: {
+    selectedDiceTotal: boolean;
+  };
   }
 

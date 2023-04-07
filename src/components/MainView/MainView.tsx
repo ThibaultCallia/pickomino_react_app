@@ -9,7 +9,7 @@ import { startGame } from "../../store/Game/gameSlice"
 import { Board } from "../Board" 
 import { nextPlayerTurn } from "../../store/Game/gameSlice"
 import { RootState } from "../../store"
-
+import { DieInterface } from "../Die"
 
 const MainView = () =>{ 
 
@@ -17,7 +17,9 @@ const MainView = () =>{
     const [numOfPlayers, setNumOfPlayers] = useState<number | null>(null)
     const dispatch = useDispatch()
     const currentPlayer = useSelector((state: RootState) => state.game.currentPlayersTurn)
-    
+    const [selectedDice, setSelectedDice] = useState<DieInterface[]>([])
+    const [validation, setValidation] = useState<string>("");
+
     // USE EFFECTS
     useEffect(() => {
         if(numOfPlayers){
@@ -25,11 +27,6 @@ const MainView = () =>{
             
         }
     }, [numOfPlayers])
-
-    // FUNCTIONS
-    const onEndTurn = () => {
-         dispatch(nextPlayerTurn());
-    }
 
     
     // RENDER
@@ -44,11 +41,9 @@ const MainView = () =>{
     return (
         <div className="mainView">
             <PlayerInfo/>
-            <Board/>
-            <Button onClick={onEndTurn}>End turn</Button>
-            
-            <RollDice key = {currentPlayer} onEndTurn={onEndTurn}/>
-
+            <Board selectedDice = {selectedDice} setValidation={setValidation}/>
+            <Button onClick={()=>dispatch(nextPlayerTurn())}>End turn</Button>
+            <RollDice  selectedDice={selectedDice} setSelectedDice={setSelectedDice}/>
            <p>Player {currentPlayer} plays</p>
 
         </div>

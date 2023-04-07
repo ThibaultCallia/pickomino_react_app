@@ -10,6 +10,9 @@ export const createInitialGameState = (): PlainGameState => {
         currentRound: 0,
         currentPlayersTurn: 0,
         gameStatus: "playing",
+        settings: {
+          selectedDiceTotal: true
+        },
       };
 };
 
