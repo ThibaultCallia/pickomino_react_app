@@ -1,6 +1,6 @@
 export * from './Die';
 export * from './Footer';
-export * from './GameOverModal';
+export * from './EndTurnModal';
 export * from './MainView';
 export * from './NavBar';
 export * from './NumOfPlayersForm';

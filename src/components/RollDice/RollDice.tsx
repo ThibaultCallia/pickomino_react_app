@@ -2,17 +2,18 @@ import {  Box, Button, SimpleGrid, Stack, useDisclosure, useToast } from "@chakr
 import { useState, useEffect } from "react"
 import { rollDice, canSelect, hasSelectableDice  } from "../../helpers"
 import Die from "../Die/Die"
-import {GameOverModal} from "../GameOverModal"
+import {GameOverModal} from "../EndTurnModal"
 import { RollDiceProps } from "./"
 import { nextPlayerTurn } from "../../store/Game/gameSlice"
 import { useDispatch, useSelector } from "react-redux"
 import { DieInterface } from "../Die"
 import { RootState } from "../../store"
 import { totalSelectedDice } from "../../helpers"
+import EndTurnModal from "../EndTurnModal/EndTurnModal"
 
 
 
-const RollDice:React.FC<RollDiceProps> = ({selectedDice, setSelectedDice}) => {
+const RollDice:React.FC<RollDiceProps> = ({selectedDice, setSelectedDice, setValidation}) => {
   // HOOKS
   const [currentDiceRoll, setCurrentDiceRoll] = useState<DieInterface[]>([])
   const [hasSelected, setHasSelected] = useState<boolean>(true);
@@ -33,6 +34,7 @@ const RollDice:React.FC<RollDiceProps> = ({selectedDice, setSelectedDice}) => {
     setCurrentDiceRoll([]);
     setSelectedDice([]);
     setHasSelected(true);
+    setValidation("");
     
   }, [currentPlayer])
 
@@ -43,6 +45,7 @@ const RollDice:React.FC<RollDiceProps> = ({selectedDice, setSelectedDice}) => {
     if(hasSelected){
     setCurrentDiceRoll(rollDice(8 - selectedDice.length));
     setHasSelected(false);
+    setValidation("");
     }
   }
 
@@ -106,10 +109,16 @@ const RollDice:React.FC<RollDiceProps> = ({selectedDice, setSelectedDice}) => {
         </Box>
       </Box>
     </Box>
-    <GameOverModal isOpen={isOpen} onClose={()=>{
-      onClose();
-      dispatch(nextPlayerTurn());
-    }} />
+    <EndTurnModal 
+      isOpen={isOpen} 
+      onClose={()=>{
+        onClose();
+        dispatch(nextPlayerTurn());}
+        }
+      title="Your turn is over"
+        >
+      One gamble too far. You have no selectable dice left. Your turn is over.
+    </EndTurnModal>
     </>
     
     )

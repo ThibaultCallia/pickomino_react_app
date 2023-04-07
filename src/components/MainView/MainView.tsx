@@ -1,7 +1,7 @@
 import "../../styles/components/mainView.scss"
 import {NumOfPlayersForm} from "../NumOfPlayersForm"
 import { useEffect, useState } from "react"
-import { Button } from "@chakra-ui/react"
+import { Badge, Button } from "@chakra-ui/react"
 import {RollDice} from "../RollDice"
 import {PlayerInfo} from "../PlayerInfo"
 import { useDispatch, useSelector } from "react-redux"
@@ -43,7 +43,8 @@ const MainView = () =>{
             <PlayerInfo/>
             <Board selectedDice = {selectedDice} setValidation={setValidation}/>
             <Button onClick={()=>dispatch(nextPlayerTurn())}>End turn</Button>
-            <RollDice  selectedDice={selectedDice} setSelectedDice={setSelectedDice}/>
+            <Badge colorScheme="red">{validation}</Badge>
+            <RollDice  selectedDice={selectedDice} setSelectedDice={setSelectedDice} setValidation={setValidation}/>
            <p>Player {currentPlayer} plays</p>
 
         </div>

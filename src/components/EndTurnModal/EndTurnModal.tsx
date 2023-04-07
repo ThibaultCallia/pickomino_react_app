@@ -1,12 +1,8 @@
 import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, } from "@chakra-ui/react"
+import { EndTurnModalProps } from "./"
 
-interface GameOverModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    
-  }
 
-function GameOverModal({isOpen, onClose}: GameOverModalProps) {
+const EndTurnModal: React.FC<EndTurnModalProps> = ({isOpen, onClose, title, children}) =>{
     return (
         <Modal 
             isCentered 
@@ -20,10 +16,10 @@ function GameOverModal({isOpen, onClose}: GameOverModalProps) {
         backdropFilter='blur(10px) hue-rotate(90deg)'
         />
         <ModalContent>
-          <ModalHeader>Your turn is over</ModalHeader>
+          <ModalHeader>{title}</ModalHeader>
           
           <ModalBody>
-            One gamble too far. You have no selectable dice left. Your turn is over.
+            {children}
           </ModalBody>
           
 
@@ -37,5 +33,5 @@ function GameOverModal({isOpen, onClose}: GameOverModalProps) {
     )
   }
   
-  export default GameOverModal
+  export default EndTurnModal
   
