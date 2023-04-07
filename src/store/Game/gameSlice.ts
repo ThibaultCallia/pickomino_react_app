@@ -32,7 +32,7 @@ const gameSlice = createSlice({
             const tileIndex = state.tilesArray.findIndex(tile => tile.value === tileValue);
             const tile = state.tilesArray[tileIndex];
             state.tilesArray.splice(tileIndex, 1);
-            state.playerArray[state.currentPlayersTurn].collectedTiles.push(tile);
+            state.playerArray[state.currentPlayersTurn].collectedTiles.push({...tile, selected: true});
           },
     },
 })
