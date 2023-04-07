@@ -67,13 +67,13 @@ const Navbar = () => {
           icon={displayMenu ? <CloseIcon /> : <HamburgerIcon />}
           aria-label={displayMenu ? 'Close menu' : 'Open menu'}
         />
-        <Button
+        {/* <Button
           onClick={toggleColorMode}
           ml={2}
           colorScheme={colorMode === 'dark' ? 'yellow' : 'gray'}
         >
           {colorMode === 'dark' ? 'Light Mode' : 'Dark Mode'}
-        </Button>
+        </Button> */}
       
       <Collapse in={displayMenu} animateOpacity>
         <Box

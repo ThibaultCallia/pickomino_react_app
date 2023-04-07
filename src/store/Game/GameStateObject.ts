@@ -11,7 +11,7 @@ export const createInitialGameState = (): PlainGameState => {
         currentPlayersTurn: 0,
         gameStatus: "playing",
         settings: {
-          selectedDiceTotal: true
+          selectedDiceTotal: false
         },
       };
 };

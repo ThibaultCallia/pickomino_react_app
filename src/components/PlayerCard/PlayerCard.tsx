@@ -13,6 +13,8 @@ function PlayerCard({name, collectedTiles}: PlainPlayer) {
   // FUNCTIONS
   const stealTile = () => {
     console.log("steal tile")
+    // small error message next to tile if no
+    
   }
   // RENDER
   return (

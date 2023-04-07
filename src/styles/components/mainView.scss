@@ -1,6 +1,7 @@
 .mainView {
-  height: 80vh;
+  min-height: 80vh;
   display: grid;
   place-content: center;
   gap: 2rem;
+  margin-top: 2rem;
 }
