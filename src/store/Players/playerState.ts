@@ -1,6 +1,7 @@
 import { nanoid } from "nanoid";
 import {PlainPlayer} from "./Player.types";
-import { PlainTile } from "../../components";
+
+
 
 
 
@@ -9,6 +10,8 @@ const createPlayer = (): PlainPlayer => {
         name: "",
         id: nanoid(),
         collectedTiles: [],
+        isPlaying: false,
+        currentlySelectedDice: [],
       };
 };
 

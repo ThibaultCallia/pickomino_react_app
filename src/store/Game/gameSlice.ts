@@ -4,6 +4,7 @@ import {PlainGameState} from './Game.types'
 import {createInitialGameState} from './GameStateObject'
 import {createPlayerArray} from '../Players/playerState'
 import {createUniqueNameArray} from '../../helpers'
+import { DieInterface } from '../../components'
 
 
 const initialState: PlainGameState  = createInitialGameState();
@@ -24,9 +25,13 @@ const gameSlice = createSlice({
             state.playerArray.forEach((player, index) => {
                 player.name = playerNames[index];
             });
+            state.playerArray[0].isPlaying = true;
           },
         nextPlayerTurn: (state) => {
             state.currentPlayersTurn = (state.currentPlayersTurn + 1) % state.playerArray.length;
+            const currentPlayerIndex = state.playerArray.findIndex((player) => player.isPlaying);
+            state.playerArray[currentPlayerIndex].isPlaying = false;
+            state.playerArray[state.currentPlayersTurn].isPlaying = true;
           },
         takeTile: (state, { payload : tileValue}: PayloadAction<number>) => {
             const tileIndex = state.tilesArray.findIndex(tile => tile.value === tileValue);
@@ -42,10 +47,15 @@ const gameSlice = createSlice({
           if(stolenTile){
             state.playerArray[state.currentPlayersTurn].collectedTiles.push(stolenTile);
           }
-          
         },
+        addSelectedDice: (state, {payload: dice}: PayloadAction<DieInterface[]>) => {
+          state.playerArray[state.currentPlayersTurn].currentlySelectedDice.push(...dice);
+        },
+        resetSelectedDice: (state) => {
+          state.playerArray.map(player => player.currentlySelectedDice = [])
+        }
     },
 })
 
-export const { startGame, nextPlayerTurn, takeTile, toggleDiceTotal } = gameSlice.actions
+export const { startGame, nextPlayerTurn, takeTile, toggleDiceTotal, stealTile, addSelectedDice, resetSelectedDice } = gameSlice.actions
 export default gameSlice.reducer
