@@ -5,16 +5,16 @@ import { PlainPlayer } from "../../store/Players/Player.types";
 import { Tile } from "../Tile";
 
 
-function PlayerCard({name, collectedTiles}: PlainPlayer) {
+function PlayerCard({name, collectedTiles, id}: PlainPlayer) {
   // USE STATES
     const [isHovered, setIsHovered] = useState<boolean>(false);
     
     
   // FUNCTIONS
-  const stealTile = () => {
-    console.log("steal tile")
+  const stealTile = (playerId:string) => {
+    console.log(playerId)
     // small error message next to tile if no
-    
+
   }
   // RENDER
   return (
@@ -32,7 +32,7 @@ function PlayerCard({name, collectedTiles}: PlainPlayer) {
         {/* <Image  mx = "auto" boxSize="50px" mt={4} src="/PP_mini_logo.png" borderRadius="lg" /> */}
         {/* <Text>latest tile value: {collectedTiles[collectedTiles.length-1]?.value}</Text> */}
 
-      {collectedTiles.length > 0 && <Tile {...collectedTiles[collectedTiles.length-1]} onTileClick={stealTile}></Tile>}
+      {collectedTiles.length > 0 && <Tile {...collectedTiles[collectedTiles.length-1]} onTileClick={()=>stealTile(id)}></Tile>}
       </Collapse>
     </Box>
   )

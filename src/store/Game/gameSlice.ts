@@ -36,7 +36,14 @@ const gameSlice = createSlice({
           },
         toggleDiceTotal: (state) => {
             state.settings.selectedDiceTotal = !state.settings.selectedDiceTotal;
+          },
+        stealTile: (state, {payload: playerId}: PayloadAction<string>) => {
+          const stolenTile = state.playerArray.find(player => player.id === playerId)?.collectedTiles.pop();
+          if(stolenTile){
+            state.playerArray[state.currentPlayersTurn].collectedTiles.push(stolenTile);
           }
+          
+        },
     },
 })
 
