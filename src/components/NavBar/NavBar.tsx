@@ -12,6 +12,7 @@ import {
   
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
+import { SettingsMenu } from '../SettingsMenu';
 
 const Navbar = () => {
   // HOOKS
@@ -25,23 +26,23 @@ const Navbar = () => {
   // RENDER
   return (
     <Flex
-        as="nav"
-        position="relative"
-        bg={colorMode === 'dark' ? 'gray.800' : 'white'}
-        boxShadow="md"
-        px={4}
-        py={2}
-        alignItems="center"
-      >
+      as="nav"
+      position="relative"
+      bg={colorMode === 'dark' ? 'gray.800' : 'white'}
+      boxShadow="md"
+      px={4}
+      py={2}
+      alignItems="center"
+    >
       <Box>
         <Link href="/" fontWeight="bold" fontSize="xl">
           <Flex alignItems="center">
             <Image
-              src="./PP_mini_logo.png" 
+              src="./PP_mini_logo.png"
               alt="Planetary Pirates Logo"
-              width="30px" 
-              height="30px" 
-              marginRight="5px" 
+              width="30px"
+              height="30px"
+              marginRight="5px"
             />
             <Box fontWeight="bold" fontSize="xl">
               Planetary Pirates
@@ -50,20 +51,30 @@ const Navbar = () => {
         </Link>
       </Box>
       <Spacer />
-      <Box display={{ base: 'none', md: 'flex' }}>
-        <Link href="/about" mx={2}>
-          About
-        </Link>
-        <Link href="/gameRules" mx={2}>
-          Game Rules
-        </Link>
-      </Box>
-      <IconButton
+      
+        <Box alignItems="center" display={{ base: 'none', md: 'flex' }}>
+          <SettingsMenu />
+          <Link href="/about" mx={2}>
+            About
+          </Link>
+          <Link href="/gameRules" mx={2}>
+            Game Rules
+          </Link>
+        </Box>
+        <IconButton
           display={{ base: 'flex', md: 'none' }}
           onClick={toggleMenu}
           icon={displayMenu ? <CloseIcon /> : <HamburgerIcon />}
           aria-label={displayMenu ? 'Close menu' : 'Open menu'}
         />
+        <Button
+          onClick={toggleColorMode}
+          ml={2}
+          colorScheme={colorMode === 'dark' ? 'yellow' : 'gray'}
+        >
+          {colorMode === 'dark' ? 'Light Mode' : 'Dark Mode'}
+        </Button>
+      
       <Collapse in={displayMenu} animateOpacity>
         <Box
           position="absolute"
@@ -75,22 +86,15 @@ const Navbar = () => {
           display={{ base: 'block', md: 'none' }}
           bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
           rounded="md"
-          >
-            <Link href="/about" display="block" my={2} onClick={toggleMenu}>
-              About
-            </Link>
-            <Link href="/gameRules" display="block" my={2} onClick={toggleMenu}>
-              Game Rules
-            </Link>
+        >
+          <Link href="/about" display="block" my={2} onClick={toggleMenu}>
+            About
+          </Link>
+          <Link href="/gameRules" display="block" my={2} onClick={toggleMenu}>
+            Game Rules
+          </Link>
         </Box>
-        </Collapse>
-      <Button
-        onClick={toggleColorMode}
-        ml={2}
-        colorScheme={colorMode === 'dark' ? 'yellow' : 'gray'}
-      >
-        {colorMode === 'dark' ? 'Light Mode' : 'Dark Mode'}
-      </Button>
+      </Collapse>
     </Flex>
   );
 };

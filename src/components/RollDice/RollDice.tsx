@@ -22,7 +22,7 @@ const RollDice:React.FC<RollDiceProps> = ({selectedDice, setSelectedDice, setVal
   const dispatch = useDispatch()
   const currentPlayer = useSelector((state: RootState) => state.game.currentPlayersTurn)
   const lowestTileOnBoard = useSelector((state: RootState) => state.game.tilesArray[0].value)
-
+  const showDiceTotal = useSelector((state: RootState) => state.game.settings.selectedDiceTotal);
   
 
   // USE EFFECTS
@@ -102,7 +102,8 @@ const RollDice:React.FC<RollDiceProps> = ({selectedDice, setSelectedDice, setVal
     <Box maxW='sm' borderWidth='4px' borderRadius='lg'  minH="300px" minW="450px">
       <Box p='6' display="flex" gap="10px" justifyContent="space-between">
         <Box flex={1}  minWidth="175px" minHeight="250" >
-          <p>total dice: {totalDiceValue(selectedDice)}</p>
+          {showDiceTotal && <p>total dice: {totalDiceValue(selectedDice)}</p>}
+          
           <SimpleGrid columns={2} spacing={3}>
                 {selectedDice.length>0 && selectedDice.map((die: DieInterface, index: number) => {
                   return <Die selected = {die.selected} key={index} die={die.face}></Die>

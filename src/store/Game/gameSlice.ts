@@ -34,8 +34,11 @@ const gameSlice = createSlice({
             state.tilesArray.splice(tileIndex, 1);
             state.playerArray[state.currentPlayersTurn].collectedTiles.push({...tile, selected: true});
           },
+        toggleDiceTotal: (state) => {
+            state.settings.selectedDiceTotal = !state.settings.selectedDiceTotal;
+          }
     },
 })
 
-export const { startGame, nextPlayerTurn, takeTile } = gameSlice.actions
+export const { startGame, nextPlayerTurn, takeTile, toggleDiceTotal } = gameSlice.actions
 export default gameSlice.reducer
