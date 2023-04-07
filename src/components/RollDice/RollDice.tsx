@@ -99,7 +99,7 @@ const RollDice:React.FC<RollDiceProps> = ({selectedDice, setSelectedDice, setVal
   // RENDER
     return (
       <>
-    <Box maxW='sm' borderWidth='4px' borderRadius='lg'  minH="300px" minW="450px">
+    <Box maxW='sm' borderWidth='4px' borderRadius='lg'  minH="300px" minW="650px">
       <Box p='6' display="flex" gap="10px" justifyContent="space-between">
         <Box flex={1}  minWidth="175px" minHeight="250" >
           {showDiceTotal && <p>total dice: {totalDiceValue(selectedDice)}</p>}
@@ -111,7 +111,7 @@ const RollDice:React.FC<RollDiceProps> = ({selectedDice, setSelectedDice, setVal
           </SimpleGrid>
         </Box>
 
-        <Box display='flex' flexDirection="column" alignItems='center' minWidth="175px"  minHeight="250" >
+        <Box display='flex' flexDirection="column" alignItems='center' minWidth="200px"  minHeight="250" >
           <Stack justify="center"  width="100%" height="100%" direction="column">
             <Button disabled = {hasSelected} onClick = {onRollClick} colorScheme={hasSelected? "yellow" : "gray"}>Roll</Button>
             <Box flex={1}>
