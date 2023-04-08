@@ -16,6 +16,7 @@ const MainView = () =>{
     const [numOfPlayers, setNumOfPlayers] = useState<number | null>(null)
     const dispatch = useDispatch()
     const currentPlayer = useSelector((state: RootState) => state.game.currentPlayersTurn)
+    const board = useSelector((state: RootState) => state.game.tilesArray)
     const [validation, setValidation] = useState<string>("");
 
     // USE EFFECTS
@@ -26,6 +27,11 @@ const MainView = () =>{
         }
     }, [numOfPlayers])
 
+    useEffect(() => {
+        if(board.filter(tile => !tile.disabled).length === 0){
+            setValidation("Game Over")
+        }
+    }, [board])
     
     // RENDER
     if(!numOfPlayers){
