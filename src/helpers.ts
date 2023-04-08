@@ -106,6 +106,7 @@ const finalRollFailed = (selectedDice: DieInterface[], currentRoll: DieInterface
     if(toBeTotal < lowestTileOnBoard){
         return true;
     }
+    return false;
 }
 
   export{createUniqueNameArray, rollDice, canSelect, hasSelectableDice, totalDiceValue, includesRocket, finalRollFailed}

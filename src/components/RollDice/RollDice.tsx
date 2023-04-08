@@ -21,11 +21,12 @@ const RollDice:React.FC<RollDiceProps> = ({ setValidation}) => {
   const toastId = "selectError"
   const dispatch = useDispatch()
   const currentPlayer = useSelector((state: RootState) => state.game.currentPlayersTurn)
+  // NOT SURE IF LOWEST TILE IS AVAILABLE
   const lowestTileOnBoard = useSelector((state: RootState) => state.game.tilesArray[0].value)
   const showDiceTotal = useSelector((state: RootState) => state.game.settings.selectedDiceTotal)
   const selectedDice = useSelector((state: RootState) => state.game.playerArray[currentPlayer]?.currentlySelectedDice) || [];
   const currentDiceRoll = useSelector((state: RootState) => state.game.playerArray[currentPlayer]?.currentDiceRoll) || [];
-
+  const playerArray = useSelector((state: RootState) => state.game.playerArray)
   
   // USE EFFECTS
   useEffect(() => {
@@ -33,6 +34,7 @@ const RollDice:React.FC<RollDiceProps> = ({ setValidation}) => {
       onOpen();
       return;  
     }
+    // ADD CHECK WHETHER OTHER PLAYERS TILES ARE AVAILABLE TO STEAL
     if(currentDiceRoll.length > 0 && finalRollFailed(selectedDice, currentDiceRoll, lowestTileOnBoard)){
       onOpen();
       return;
