@@ -1,4 +1,4 @@
-import { Box, Collapse , Text, Image } from "@chakra-ui/react"
+import { Box, Collapse , Text, Image, Tooltip, useToast } from "@chakra-ui/react"
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store";
@@ -12,25 +12,42 @@ function PlayerCard({name, collectedTiles, id}: PlainPlayer) {
   // USE STATES
     const [isHovered, setIsHovered] = useState<boolean>(false);
     const selectedDice = useSelector((state: RootState) => state.game.playerArray[state.game.currentPlayersTurn]?.currentlySelectedDice) || [];
+    const currentPlayerId = useSelector((state: RootState) => state.game.playerArray[state.game.currentPlayersTurn]?.id);
+    const [failedStealAttempt, setFailedStealAttempt] = useState<boolean>(false);
+
     const dispatch = useDispatch();
+    const toast = useToast()
+    const toastId = "stealError"
     
   // FUNCTIONS
-  const stealPlayerTile = (playerId:string, tileValue:number) => {
-    // ONLY STEAL OTHERS PLAYERS TILES
-    if(totalDiceValue(selectedDice) === tileValue){
-      dispatch(stealTile(playerId));
-      dispatch(nextPlayerTurn());
-      
-    }else{
-      console.log('NO');
-    }
-    
+  const stealPlayerTile = (toStealPlayerId:string, tileValue:number) => {
+    // ONLY STEAL OTHERS PLAYERS TILES - This will be no issue in final product as you'll only see other players
+    if(toStealPlayerId !== currentPlayerId){
+      if(totalDiceValue(selectedDice) === tileValue){
+        toast.close(toastId);
+        dispatch(stealTile(toStealPlayerId));
+        dispatch(nextPlayerTurn());
+        
+      }else{
+        if(!toast.isActive(toastId)){
+          toast({
+            title: "You can't steal that tile",
+            description: "You need to roll the exact same value to steal that tile",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+            id: toastId,
+          })
+        }
+      }
+  }
     
     // small error message next to tile if no
 
   }
   // RENDER
   return (
+    
     
     <Box
       borderWidth="1px"
@@ -48,6 +65,9 @@ function PlayerCard({name, collectedTiles, id}: PlainPlayer) {
       {collectedTiles.length > 0 && <Tile {...collectedTiles[collectedTiles.length-1]} onTileClick={()=>stealPlayerTile(id,collectedTiles[collectedTiles.length-1].value )}></Tile>}
       </Collapse>
     </Box>
+    
+    
+    
   )
 }
 

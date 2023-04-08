@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import Player from "./Player";
+import Player from "./PlayerToDelete";
 import { createUniqueNameArray } from "../helpers";
 import  defaultTilesSet  from "../store/Game/tiles.const";
 import { PlainTile } from "../components";

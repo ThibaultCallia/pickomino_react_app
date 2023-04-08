@@ -18,7 +18,7 @@ const RollDice:React.FC<RollDiceProps> = ({ setValidation}) => {
   const [hasSelected, setHasSelected] = useState<boolean>(true)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast()
-  const id = "selectError"
+  const toastId = "selectError"
   const dispatch = useDispatch()
   const currentPlayer = useSelector((state: RootState) => state.game.currentPlayersTurn)
   const lowestTileOnBoard = useSelector((state: RootState) => state.game.tilesArray[0].value)
@@ -79,15 +79,15 @@ const RollDice:React.FC<RollDiceProps> = ({ setValidation}) => {
 
   const finalSelectClick = () => {
     if(canSelect( selectedDice, currentDiceRoll)){
-      toast.close(id);
+      toast.close(toastId);
       setHasSelected(true);
       dispatch(addSelectedDice(currentDiceRoll.filter(die => die.selected).map(die => ({...die, selected: false}))));
       // setSelectedDice(prev => [...prev, ...currentDiceRoll.filter(die => die.selected).map(die => ({...die, selected: false}))])
       dispatch(setCurrentDiceRoll([]));
     } else{
-      if(!toast.isActive(id)){
+      if(!toast.isActive(toastId)){
         toast({
-          id,
+          id : toastId,
           title: "You can't select that die",
           description: "You already have a die with that value",
           status: "error",
