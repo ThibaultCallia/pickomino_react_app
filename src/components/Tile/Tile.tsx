@@ -1,7 +1,7 @@
 import { PlainTile } from './Tile.types'
 import { Box, Center, Text, Image, VStack, HStack } from '@chakra-ui/react'
 
-function Tile({ value, points, onTileClick, selected}: PlainTile) {
+function Tile({ value, points, onTileClick, selected, disabled}: PlainTile) {
   // Assuming you have images named image1, image2, image3, and image4 in your src/assets folder
   const imageSrc = `./tiles/planet_tile_${points}.jpg`;
   const tileContent = (
@@ -30,9 +30,10 @@ function Tile({ value, points, onTileClick, selected}: PlainTile) {
       textAlign="center"
       bg="white"
       boxShadow="lg"
-      onClick={onTileClick}
-      cursor={onTileClick ? 'pointer' : 'default'}
+      onClick={disabled ? undefined : onTileClick}
+      cursor={disabled ? 'default' : onTileClick ? 'pointer' : 'default'}
       overflow="hidden"
+      position="relative"
     >
       {selected ? (
         <HStack width="100%" spacing={0}>
@@ -42,6 +43,18 @@ function Tile({ value, points, onTileClick, selected}: PlainTile) {
         <VStack height="100%" spacing={0}>
           {tileContent}
         </VStack>
+      )}
+      {disabled && !selected && (
+        <Box
+          position="absolute"
+          top={0}
+          right={0}
+          bottom={0}
+          left={0}
+          bg="gray.500"
+          opacity={0.6}
+          zIndex={1}
+        />
       )}
     </Box>
   );

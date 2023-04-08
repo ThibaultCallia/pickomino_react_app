@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import { rollDice, canSelect, hasSelectableDice  } from "../../helpers"
 import Die from "../Die/Die"
 import { RollDiceProps } from "./"
-import { nextPlayerTurn, addSelectedDice, resetSelectedDice, setCurrentDiceRoll, resetCurrentDiceRoll } from "../../store/Game/gameSlice"
+import { nextPlayerTurn, addSelectedDice, resetSelectedDice, setCurrentDiceRoll, resetCurrentDiceRoll, returnTile } from "../../store/Game/gameSlice"
 import { useDispatch, useSelector } from "react-redux"
 import { DieInterface } from "../Die"
 import { RootState } from "../../store"
@@ -31,11 +31,13 @@ const RollDice:React.FC<RollDiceProps> = ({ setValidation}) => {
   // USE EFFECTS
   useEffect(() => {
     if(currentDiceRoll.length > 0 && !hasSelectableDice(selectedDice, currentDiceRoll)){
+      dispatch(returnTile());
       onOpen();
       return;  
     }
     // ADD CHECK WHETHER OTHER PLAYERS TILES ARE AVAILABLE TO STEAL
     if(currentDiceRoll.length > 0 && finalRollFailed(selectedDice, currentDiceRoll, lowestTileOnBoard)){
+      dispatch(returnTile());
       onOpen();
       return;
     }
@@ -49,6 +51,7 @@ const RollDice:React.FC<RollDiceProps> = ({ setValidation}) => {
     setValidation("");
   }, [currentPlayer])
 
+  /* THIS IS REDUNDANT IN CURRENT LOGIC
   useEffect(() => {
     if(hasSelected && selectedDice.length === 8){
       if(totalDiceValue(selectedDice) < lowestTileOnBoard){
@@ -57,6 +60,7 @@ const RollDice:React.FC<RollDiceProps> = ({ setValidation}) => {
       }
     }
   }, [selectedDice])
+  */
 
   // FUNCTIONS
   const onRollClick = () => {
@@ -70,7 +74,7 @@ const RollDice:React.FC<RollDiceProps> = ({ setValidation}) => {
     }
   }
 
-  const onSelectDiceClick = (value: string) => {
+  const highlightDice = (value: string) => {
       dispatch(setCurrentDiceRoll(currentDiceRoll.map(die => {
         if(die.face === value){
           return {...die, selected: true}
@@ -79,7 +83,7 @@ const RollDice:React.FC<RollDiceProps> = ({ setValidation}) => {
       })))
   }
 
-  const finalSelectClick = () => {
+  const selectDice = () => {
     if(canSelect( selectedDice, currentDiceRoll)){
       toast.close(toastId);
       setHasSelected(true);
@@ -122,11 +126,11 @@ const RollDice:React.FC<RollDiceProps> = ({ setValidation}) => {
             <Box flex={1}>
               <SimpleGrid columns={4} spacing={3}>
                 {currentDiceRoll.length>0 && currentDiceRoll.map((die: DieInterface, index: number) => {
-                  return <Die selected = {die.selected} onClick = {()=>onSelectDiceClick(die.face)} key={index} die={die.face}/>
+                  return <Die selected = {die.selected} onClick = {()=>highlightDice(die.face)} key={index} die={die.face}/>
                 })}
               </SimpleGrid>
             </Box>
-            <Button onClick = {finalSelectClick} colorScheme="yellow">Select</Button>
+            <Button onClick = {selectDice} colorScheme="yellow">Select</Button>
           </Stack>
         </Box>
       </Box>

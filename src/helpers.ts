@@ -93,6 +93,7 @@ const includesRocket = (selectedDice: DieInterface[]) => {
   }
 
 const finalRollFailed = (selectedDice: DieInterface[], currentRoll: DieInterface[], lowestTileOnBoard:number) => {
+    // Is it a final roll?
     if(!currentRoll.every(die => die.value === currentRoll[0].value)){
         return false;
     }

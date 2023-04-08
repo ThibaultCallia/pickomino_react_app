@@ -34,7 +34,7 @@ const  Board:React.FC<BoardProps> = ({ setValidation}) => {
         <SimpleGrid columns={{ base: 2, md: 4, lg: 6 }} spacing={6}>
           {gameState.tilesArray.map((tile, index) => {
             return (
-              <Tile onTileClick={()=>onTileClick(tile.value)} key={index} value={tile.value} points={tile.points} />
+              <Tile onTileClick={()=>onTileClick(tile.value)} key={index} {...tile} />
             );
           })}
         </SimpleGrid>
