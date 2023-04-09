@@ -1,13 +1,15 @@
 import "../../styles/components/mainView.scss"
 import {NumOfPlayersForm} from "../NumOfPlayersForm"
 import { useEffect, useState } from "react"
-import { Badge } from "@chakra-ui/react"
+import { Badge, useDisclosure } from "@chakra-ui/react"
 import {RollDice} from "../RollDice"
 import {PlayerInfo} from "../PlayerInfo"
 import { useDispatch, useSelector } from "react-redux"
 import { startGame } from "../../store/Game/gameSlice"
 import { Board } from "../Board" 
 import { RootState } from "../../store"
+import { GameOverModal } from "../GameOverModal"
+
 
 
 const MainView = () =>{ 
@@ -17,7 +19,7 @@ const MainView = () =>{
     const dispatch = useDispatch()
     const currentPlayer = useSelector((state: RootState) => state.game.currentPlayersTurn)
     const board = useSelector((state: RootState) => state.game.tilesArray)
-    
+    const { isOpen, onOpen, onClose } = useDisclosure()
 
     // USE EFFECTS
     useEffect(() => {
@@ -48,7 +50,8 @@ const MainView = () =>{
             <Board/>
             <RollDice/>
            <p>Player {currentPlayer+1} plays</p>
-
+           <button onClick={onOpen}>test</button>
+              <GameOverModal isOpen={isOpen} onClose={onClose}/>
         </div>
     )
   }

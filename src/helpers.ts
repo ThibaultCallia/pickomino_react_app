@@ -1,4 +1,4 @@
-import { DieInterface } from "./components";
+import { DieInterface, PlainTile } from "./components";
 const createUniqueNameArray = (numOfNames: number) => {
     const adjectives = ['Celestial',
     'Galactic',
@@ -110,4 +110,8 @@ const finalRollFailed = (selectedDice: DieInterface[], currentRoll: DieInterface
     return false;
 }
 
-  export{createUniqueNameArray, rollDice, canSelect, hasSelectableDice, totalDiceValue, includesRocket, finalRollFailed}
+const totalPlanetsCollected = (collectedTiles: PlainTile[]) => {
+    return collectedTiles.reduce((acc, tile) => acc + tile.points, 0);
+}
+
+  export{createUniqueNameArray, rollDice, canSelect, hasSelectableDice, totalDiceValue, includesRocket, finalRollFailed, totalPlanetsCollected}
