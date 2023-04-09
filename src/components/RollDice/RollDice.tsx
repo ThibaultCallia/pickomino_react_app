@@ -1,21 +1,21 @@
-import {  Box, Button, SimpleGrid, Stack, useDisclosure, useToast } from "@chakra-ui/react"
+import {  Box, SimpleGrid, Stack, useDisclosure, useToast } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
-import { rollDice, canSelect, hasSelectableDice  } from "../../helpers"
-import Die from "../Die/Die"
+import { rollDice, canSelect, hasSelectableDice, totalDiceValue, finalRollFailed  } from "../../helpers"
+import { Die } from "../Die"
+import { CustomButton } from "../CustomButton"
 import { RollDiceProps } from "./"
 import { nextPlayerTurn, addSelectedDice, resetSelectedDice, setCurrentDiceRoll, resetCurrentDiceRoll, returnTile } from "../../store/Game/gameSlice"
 import { useDispatch, useSelector } from "react-redux"
 import { DieInterface } from "../Die"
 import { RootState } from "../../store"
-import { totalDiceValue, finalRollFailed } from "../../helpers"
 import EndTurnModal from "../EndTurnModal/EndTurnModal"
 
 
 
 const RollDice:React.FC<RollDiceProps> = ({ setValidation}) => {
   // HOOKS
-  // const [currentDiceRoll, setCurrentDiceRoll] = useState<DieInterface[]>([])
-  const [hasSelected, setHasSelected] = useState<boolean>(true)
+  const [rollDisabled, setRollDisabled] = useState<boolean>(false)
+  const [selectDisabled, setSelectDisabled] = useState<boolean>(true)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast()
   const toastId = "selectError"
@@ -46,9 +46,9 @@ const RollDice:React.FC<RollDiceProps> = ({ setValidation}) => {
   useEffect(() => {
     dispatch(resetCurrentDiceRoll());
     dispatch(resetSelectedDice());
-    // setSelectedDice([]);
-    setHasSelected(true);
     setValidation("");
+    setRollDisabled(false);
+    setSelectDisabled(true);
   }, [currentPlayer])
 
   /* THIS IS REDUNDANT IN CURRENT LOGIC
@@ -64,17 +64,15 @@ const RollDice:React.FC<RollDiceProps> = ({ setValidation}) => {
 
   // FUNCTIONS
   const onRollClick = () => {
-    
+    setRollDisabled(true);
     // if there are no selected dice, roll all dice
     // Roll dice should not be able to be clicked if there are no selected dice atm
-    if(hasSelected){
     dispatch(setCurrentDiceRoll(rollDice(8 - selectedDice.length)));
-    setHasSelected(false);
     setValidation("");
-    }
   }
 
   const highlightDice = (value: string) => {
+    setSelectDisabled(false);
       dispatch(setCurrentDiceRoll(currentDiceRoll.map(die => {
         if(die.face === value){
           return {...die, selected: true}
@@ -86,9 +84,9 @@ const RollDice:React.FC<RollDiceProps> = ({ setValidation}) => {
   const selectDice = () => {
     if(canSelect( selectedDice, currentDiceRoll)){
       toast.close(toastId);
-      setHasSelected(true);
+      setRollDisabled(false);
+      setSelectDisabled(true);
       dispatch(addSelectedDice(currentDiceRoll.filter(die => die.selected).map(die => ({...die, selected: false}))));
-      // setSelectedDice(prev => [...prev, ...currentDiceRoll.filter(die => die.selected).map(die => ({...die, selected: false}))])
       dispatch(setCurrentDiceRoll([]));
     } else{
       if(!toast.isActive(toastId)){
@@ -122,7 +120,7 @@ const RollDice:React.FC<RollDiceProps> = ({ setValidation}) => {
 
         <Box display='flex' flexDirection="column" alignItems='center' minWidth="200px"  minHeight="250" >
           <Stack justify="center"  width="100%" height="100%" direction="column">
-            <Button disabled = {hasSelected} onClick = {onRollClick} colorScheme={hasSelected? "yellow" : "gray"}>Roll</Button>
+            <CustomButton isDisabled = {rollDisabled} onClick = {onRollClick}>Roll</CustomButton>
             <Box flex={1}>
               <SimpleGrid columns={4} spacing={3}>
                 {currentDiceRoll.length>0 && currentDiceRoll.map((die: DieInterface, index: number) => {
@@ -130,7 +128,7 @@ const RollDice:React.FC<RollDiceProps> = ({ setValidation}) => {
                 })}
               </SimpleGrid>
             </Box>
-            <Button onClick = {selectDice} colorScheme="yellow">Select</Button>
+            <CustomButton isDisabled = {selectDisabled} onClick = {selectDice}>Select</CustomButton>
           </Stack>
         </Box>
       </Box>

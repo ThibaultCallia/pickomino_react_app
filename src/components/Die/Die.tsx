@@ -1,5 +1,5 @@
 import { Box, Image } from "@chakra-ui/react"
-import { DieProps } from "./Die.types";
+import { DieProps } from "./";
 
 function Die({die, onClick, selected}: DieProps) {
     // FUNCTIONS
