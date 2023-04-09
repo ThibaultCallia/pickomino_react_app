@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { startGame } from "../../store/Game/gameSlice"
 import { Board } from "../Board" 
 import { RootState } from "../../store"
-import { DieInterface } from "../Die"
+
 
 const MainView = () =>{ 
 
@@ -17,7 +17,7 @@ const MainView = () =>{
     const dispatch = useDispatch()
     const currentPlayer = useSelector((state: RootState) => state.game.currentPlayersTurn)
     const board = useSelector((state: RootState) => state.game.tilesArray)
-    const [validation, setValidation] = useState<string>("");
+    
 
     // USE EFFECTS
     useEffect(() => {
@@ -29,7 +29,7 @@ const MainView = () =>{
 
     useEffect(() => {
         if(board.filter(tile => !tile.disabled).length === 0){
-            setValidation("Game Over")
+            console.log("GAME OVER")
         }
     }, [board])
     
@@ -45,9 +45,8 @@ const MainView = () =>{
     return (
         <div className="mainView">
             <PlayerInfo/>
-            <Board  setValidation={setValidation}/>
-            <Badge colorScheme="red">{validation}</Badge>
-            <RollDice setValidation={setValidation}/>
+            <Board/>
+            <RollDice/>
            <p>Player {currentPlayer+1} plays</p>
 
         </div>

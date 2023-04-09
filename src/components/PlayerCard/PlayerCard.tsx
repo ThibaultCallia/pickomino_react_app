@@ -37,6 +37,7 @@ function PlayerCard({name, collectedTiles, id}: PlainPlayer) {
             duration: 5000,
             isClosable: true,
             id: toastId,
+            variant: "subtle"
           })
         }
       }

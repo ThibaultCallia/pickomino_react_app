@@ -1,9 +1,9 @@
-import {  Box, SimpleGrid, Stack, useDisclosure, useToast } from "@chakra-ui/react"
+import {  Box, Button, SimpleGrid, Stack, useDisclosure, useToast } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
 import { rollDice, canSelect, hasSelectableDice, totalDiceValue, finalRollFailed  } from "../../helpers"
 import { Die } from "../Die"
 import { CustomButton } from "../CustomButton"
-import { RollDiceProps } from "./"
+
 import { nextPlayerTurn, addSelectedDice, resetSelectedDice, setCurrentDiceRoll, resetCurrentDiceRoll, returnTile } from "../../store/Game/gameSlice"
 import { useDispatch, useSelector } from "react-redux"
 import { DieInterface } from "../Die"
@@ -12,7 +12,7 @@ import EndTurnModal from "../EndTurnModal/EndTurnModal"
 
 
 
-const RollDice:React.FC<RollDiceProps> = ({ setValidation}) => {
+const RollDice= () => {
   // HOOKS
   const [rollDisabled, setRollDisabled] = useState<boolean>(false)
   const [selectDisabled, setSelectDisabled] = useState<boolean>(true)
@@ -46,7 +46,6 @@ const RollDice:React.FC<RollDiceProps> = ({ setValidation}) => {
   useEffect(() => {
     dispatch(resetCurrentDiceRoll());
     dispatch(resetSelectedDice());
-    setValidation("");
     setRollDisabled(false);
     setSelectDisabled(true);
   }, [currentPlayer])
@@ -68,7 +67,7 @@ const RollDice:React.FC<RollDiceProps> = ({ setValidation}) => {
     // if there are no selected dice, roll all dice
     // Roll dice should not be able to be clicked if there are no selected dice atm
     dispatch(setCurrentDiceRoll(rollDice(8 - selectedDice.length)));
-    setValidation("");
+    
   }
 
   const highlightDice = (value: string) => {
@@ -87,6 +86,7 @@ const RollDice:React.FC<RollDiceProps> = ({ setValidation}) => {
       setRollDisabled(false);
       setSelectDisabled(true);
       dispatch(addSelectedDice(currentDiceRoll.filter(die => die.selected).map(die => ({...die, selected: false}))));
+      
       dispatch(setCurrentDiceRoll([]));
     } else{
       if(!toast.isActive(toastId)){

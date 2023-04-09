@@ -1,29 +1,52 @@
 import {Tile} from "../Tile"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store"
-import { SimpleGrid, useDisclosure } from "@chakra-ui/react"
+import { SimpleGrid, useDisclosure, useToast } from "@chakra-ui/react"
 import { takeTile, nextPlayerTurn } from "../../store/Game/gameSlice"
-import { BoardProps } from "./Board.types"
 import { totalDiceValue, includesRocket } from "../../helpers"
 import { EndTurnModal } from "../EndTurnModal"
 
 
-const  Board:React.FC<BoardProps> = ({ setValidation}) => {
+const  Board = () => {
       // HOOKS
       const gameState = useSelector((state: RootState) => state.game)
       const dispatch = useDispatch();
       const { isOpen, onOpen, onClose } = useDisclosure()
       const selectedDice = useSelector((state: RootState) => state.game.playerArray[state.game.currentPlayersTurn]?.currentlySelectedDice) || [];
+      const toast = useToast();
+      const rocketToastId = "rocketToast";
+      const diceToastId = "diceToast";
 
     //   FUNCTIONS  
         const onTileClick = (tileValue: number) => {
             if(!includesRocket(selectedDice)){
-              setValidation("You need to select a rocket to take a tile");
+              if(!toast.isActive(rocketToastId)){
+                toast({
+                  title: "You must select a rocket to take a tile",
+                  status: "error",
+                  duration: 5000,
+                  isClosable: true,
+                  id: rocketToastId,
+                  variant: "subtle"
+                })
+              }
             } else if(totalDiceValue(selectedDice) < tileValue){
-              setValidation("your selected dice are not enough to take this tile");
+              if(!toast.isActive(diceToastId)){
+                toast({
+                  title: "Not enough dice ",
+                  description:"You must roll at least the same value as the tile you want to take",
+                  status: "error",
+                  duration: 5000,
+                  isClosable: true,
+                  id: diceToastId,
+                  variant: "subtle"
+                })
+              }
             } else{
               dispatch(takeTile(tileValue));
-              setValidation("");
+              toast.close(rocketToastId);
+              toast.close(diceToastId);
+              // timeout?
               onOpen();
             }
         };
