@@ -19,7 +19,7 @@ const GameOverModal = ({isOpen, onClose}: GameOverModalProps) => {
                 <Box key={player.id} textAlign="center" mb={3}>
                   {index === 0 && (
                     <>
-                      <Text fontSize="3xl" fontWeight="bold" color="yellow.400">{player.name} (Winner)</Text>
+                      <Text fontSize="3xl" fontWeight="bold" color="yellow.400">{player.name}</Text>
                       <Image src="./game_art/planetary_pirates_art.jpg" alt="Winner" height="100px" mx="auto" mb={2} />
                     </>
                   )}

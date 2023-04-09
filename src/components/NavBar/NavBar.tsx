@@ -9,15 +9,19 @@ import {
   useColorMode,
   Collapse,
   Image,
+  useDisclosure,
   
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { SettingsMenu } from '../SettingsMenu';
+import { GameRulesDrawer } from '../GameRulesDrawer';
+
 
 const Navbar = () => {
   // HOOKS
   const { colorMode, toggleColorMode } = useColorMode();
   const [displayMenu, setDisplayMenu] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const toggleMenu = () => {
     setDisplayMenu(!displayMenu);
@@ -57,9 +61,8 @@ const Navbar = () => {
           <Link href="/about" mx={2}>
             About
           </Link>
-          <Link href="/gameRules" mx={2}>
-            Game Rules
-          </Link>
+          <Button bg="transparent" onClick={onOpen}>Game Rules</Button>
+          <GameRulesDrawer onOpen = {onOpen} isOpen={isOpen} onClose={onClose} />
         </Box>
         <IconButton
           display={{ base: 'flex', md: 'none' }}

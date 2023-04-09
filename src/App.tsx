@@ -11,9 +11,6 @@ function App() {
     <>
     <NavBar/>
     <MainView/>
-    {/* Intro page */}
-    {/* MainView */}
-    {/* Game over page */}
     <Footer/>
     </>
   )
