@@ -1,4 +1,4 @@
-import {  Box, Button, SimpleGrid, Stack, useDisclosure, useToast } from "@chakra-ui/react"
+import {  Box, Button, SimpleGrid, Stack, Tag, useDisclosure, useToast } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
 import { rollDice, canSelect, hasSelectableDice, totalDiceValue, finalRollFailed  } from "../../helpers"
 import { Die } from "../Die"
@@ -102,7 +102,7 @@ const RollDice= () => {
     <Box maxW='sm' borderWidth='4px' borderRadius='lg'  minH="300px" minW="650px">
       <Box p='6' display="flex" gap="10px" justifyContent="space-between">
         <Box flex={1}  minWidth="175px" minHeight="250" >
-          {showDiceTotal && <p>total dice: {totalDiceValue(selectedDice)}</p>}
+          {showDiceTotal && <Tag size = "md" variant='solid' color = "black" bgColor="yellow.400" mb="1rem" >total dice: {totalDiceValue(selectedDice)}</Tag>}
           
           <SimpleGrid columns={2} spacing={3}>
                 {selectedDice.length>0 && selectedDice.map((die: DieInterface, index: number) => {
