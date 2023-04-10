@@ -9,6 +9,7 @@ import { startGame } from "../../store/Game/gameSlice"
 import { Board } from "../Board" 
 import { RootState } from "../../store"
 import { GameOverModal } from "../GameOverModal"
+import { motion, useIsPresent } from "framer-motion"
 
 
 
@@ -20,7 +21,8 @@ const MainView = () =>{
     const currentPlayer = useSelector((state: RootState) => state.game.currentPlayersTurn)
     const board = useSelector((state: RootState) => state.game.tilesArray)
     const { isOpen, onOpen, onClose } = useDisclosure()
-
+    const isPresent = useIsPresent();
+    
     // USE EFFECTS
     useEffect(() => {
         if(numOfPlayers){
@@ -40,6 +42,13 @@ const MainView = () =>{
     return (
         <div className="mainView">
             <NumOfPlayersForm setNumOfPlayers={setNumOfPlayers}/>
+            <motion.div
+                initial={{ scaleX: 1 }}
+                animate={{ scaleX: 0, transition: { duration: 0.5, ease: "circOut" } }}
+                exit={{ scaleX: 1, transition: { duration: 0.5, ease: "circIn" } }}
+                style={{ originX: isPresent ? 0 : 1 }}
+                className="privacy-screen"
+            />
         </div>
     )
     }
@@ -52,6 +61,7 @@ const MainView = () =>{
            <p>Player {currentPlayer+1} plays</p>
            <button onClick={onOpen}>test</button>
               <GameOverModal isOpen={isOpen} onClose={onClose}/>
+            
         </div>
     )
   }

@@ -19,7 +19,7 @@ import { GameRulesDrawer } from '../GameRulesDrawer';
 
 const Navbar = () => {
   // HOOKS
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { colorMode } = useColorMode();
   const [displayMenu, setDisplayMenu] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -32,7 +32,7 @@ const Navbar = () => {
     <Flex
       as="nav"
       position="relative"
-      bg={colorMode === 'dark' ? 'gray.800' : 'white'}
+      // bg={colorMode === 'dark' ? 'gray.800' : 'white'}
       boxShadow="md"
       px={4}
       py={2}
