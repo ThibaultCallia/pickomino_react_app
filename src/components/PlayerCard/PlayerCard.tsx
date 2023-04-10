@@ -14,7 +14,7 @@ function PlayerCard({name, collectedTiles, id}: PlainPlayer) {
     const [isHovered, setIsHovered] = useState<boolean>(false);
     const selectedDice = useSelector((state: RootState) => state.game.playerArray[state.game.currentPlayersTurn]?.currentlySelectedDice) || [];
     const currentPlayerId = useSelector((state: RootState) => state.game.playerArray[state.game.currentPlayersTurn]?.id);
-    const [failedStealAttempt, setFailedStealAttempt] = useState<boolean>(false);
+    const currentDiceRoll = useSelector((state: RootState) => state.game.playerArray[state.game.currentPlayersTurn]?.currentDiceRoll) || [];
     const { isOpen, onOpen, onClose } = useDisclosure()
     const dispatch = useDispatch();
     const toast = useToast()
@@ -22,8 +22,18 @@ function PlayerCard({name, collectedTiles, id}: PlainPlayer) {
     
   // FUNCTIONS
   const stealPlayerTile = (toStealPlayerId:string, tileValue:number) => {
-    // ONLY STEAL OTHERS PLAYERS TILES - This will be no issue in final product as you'll only see other players
-    if(toStealPlayerId !== currentPlayerId){
+    if(currentDiceRoll.length !== 0){
+      if(!toast.isActive(toastId)){
+        toast({
+          title: "You must choose a die ",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          id: toastId,
+          variant: "subtle"
+        })
+      }
+    } else if(toStealPlayerId !== currentPlayerId){
       if(totalDiceValue(selectedDice) === tileValue){
         toast.close(toastId);
         dispatch(stealTile(toStealPlayerId));

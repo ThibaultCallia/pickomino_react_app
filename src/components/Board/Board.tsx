@@ -16,10 +16,23 @@ const  Board = () => {
       const toast = useToast();
       const rocketToastId = "rocketToast";
       const diceToastId = "diceToast";
+      const currentDiceRoll = useSelector((state: RootState) => state.game.playerArray[state.game.currentPlayersTurn]?.currentDiceRoll) || [];
 
     //   FUNCTIONS  
         const onTileClick = (tileValue: number) => {
-            if(!includesRocket(selectedDice)){
+          
+          if(currentDiceRoll.length !== 0){
+            if(!toast.isActive(rocketToastId)){
+                toast({
+                  title: "You must choose a die ",
+                  status: "error",
+                  duration: 5000,
+                  isClosable: true,
+                  id: rocketToastId,
+                  variant: "subtle"
+                })
+              }
+          } else if(!includesRocket(selectedDice)){
               if(!toast.isActive(rocketToastId)){
                 toast({
                   title: "You must select a rocket to take a tile",
