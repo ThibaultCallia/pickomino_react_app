@@ -23,7 +23,7 @@ const HomePage = () => {
             position="absolute"
             bottom={0}
             left={1}
-            zIndex={1}
+            zIndex={0}
             width={{ base: '100%', lg: '30%' }}
             height="auto"
           />
@@ -34,7 +34,7 @@ const HomePage = () => {
               borderRadius="md"
               boxShadow="lg"
               p={4}
-              height="200px"
+              height="100px"
               justifyContent="center"
               alignItems="center"
             >
@@ -45,7 +45,7 @@ const HomePage = () => {
               borderRadius="md"
               boxShadow="lg"
               p={4}
-              height="200px"
+              height="100px"
               justifyContent="center"
               alignItems="center"
             >
@@ -56,14 +56,12 @@ const HomePage = () => {
               borderRadius="md"
               boxShadow="lg"
               p={4}
-              height="200px"
+              height="100px"
               justifyContent="center"
               alignItems="center"
             >
                 <Link to ="/game">
-              <Button colorScheme="blue" onClick={() => console.log('Play the game')}>
-                PLAY THE GAME
-              </Button>
+              PLAY THE GAME
               </Link>
             </VStack>
           </SimpleGrid>

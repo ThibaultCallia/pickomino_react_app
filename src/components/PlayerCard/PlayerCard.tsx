@@ -1,9 +1,10 @@
-import { Box, Collapse , Text, Image, Tooltip, useToast } from "@chakra-ui/react"
+import { Box, Collapse , Text, Image, Tooltip, useToast, useDisclosure } from "@chakra-ui/react"
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store";
 import { PlainPlayer } from "../../store/Players/Player.types";
 import { Tile } from "../Tile";
+import { EndTurnModal } from "../EndTurnModal";
 import { totalDiceValue } from "../../helpers";
 import { stealTile, nextPlayerTurn } from "../../store/Game/gameSlice";
 
@@ -14,7 +15,7 @@ function PlayerCard({name, collectedTiles, id}: PlainPlayer) {
     const selectedDice = useSelector((state: RootState) => state.game.playerArray[state.game.currentPlayersTurn]?.currentlySelectedDice) || [];
     const currentPlayerId = useSelector((state: RootState) => state.game.playerArray[state.game.currentPlayersTurn]?.id);
     const [failedStealAttempt, setFailedStealAttempt] = useState<boolean>(false);
-
+    const { isOpen, onOpen, onClose } = useDisclosure()
     const dispatch = useDispatch();
     const toast = useToast()
     const toastId = "stealError"
@@ -26,7 +27,7 @@ function PlayerCard({name, collectedTiles, id}: PlainPlayer) {
       if(totalDiceValue(selectedDice) === tileValue){
         toast.close(toastId);
         dispatch(stealTile(toStealPlayerId));
-        dispatch(nextPlayerTurn());
+        onOpen();
         
       }else{
         if(!toast.isActive(toastId)){
@@ -49,7 +50,7 @@ function PlayerCard({name, collectedTiles, id}: PlainPlayer) {
   // RENDER
   return (
     
-    
+    <>
     <Box
       borderWidth="1px"
       borderRadius="lg"
@@ -66,7 +67,17 @@ function PlayerCard({name, collectedTiles, id}: PlainPlayer) {
       {collectedTiles.length > 0 && <Tile {...collectedTiles[collectedTiles.length-1]} onTileClick={()=>stealPlayerTile(id,collectedTiles[collectedTiles.length-1].value )}></Tile>}
       </Collapse>
     </Box>
-    
+    <EndTurnModal 
+      isOpen={isOpen} 
+      onClose={()=>{
+        onClose();
+        dispatch(nextPlayerTurn());}
+        }
+      title="End of turn"
+        >
+      Well done. Next player plays.
+    </EndTurnModal>
+    </>
     
     
   )
