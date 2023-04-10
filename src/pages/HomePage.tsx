@@ -29,41 +29,9 @@ const HomePage = () => {
           />
           <Heading mb={8} color="yellow.400" >Planetary Pirates</Heading>
           <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
-            <VStack
-              bg="gray.100"
-              borderRadius="md"
-              boxShadow="lg"
-              p={4}
-              height="100px"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Link to="/about">ABOUT</Link>
-            </VStack>
-            <VStack
-              bg="gray.100"
-              borderRadius="md"
-              boxShadow="lg"
-              p={4}
-              height="100px"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Link to="/how-to-play">GAME RULES</Link>
-            </VStack>
-            <VStack
-              bg="gray.100"
-              borderRadius="md"
-              boxShadow="lg"
-              p={4}
-              height="100px"
-              justifyContent="center"
-              alignItems="center"
-            >
-                <Link to ="/game">
-              PLAY THE GAME
-              </Link>
-            </VStack>
+              <Button as={Link} colorScheme="yellow" to="/about">ABOUT</Button>
+              <Button as={Link} colorScheme="yellow" to="/how-to-play">GAME RULES</Button>
+              <Button as={Link} colorScheme="yellow" to ="/game">PLAY THE GAME</Button>
           </SimpleGrid>
           <motion.div
             initial={{ scaleX: 1 }}
