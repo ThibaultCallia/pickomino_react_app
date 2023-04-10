@@ -1,1 +1,1 @@
-export {default as PlayerInfo} from './PlayerInfo';
+export { default as PlayerInfo } from "./PlayerInfo"

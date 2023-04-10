@@ -1,6 +1,6 @@
-import { nanoid } from "nanoid";
-import  defaultTilesSet  from "./tiles.const";
-import { PlainGameState } from "./Game.types";
+import { nanoid } from "nanoid"
+import defaultTilesSet from "./tiles.const"
+import { PlainGameState } from "./Game.types"
 
 export const createInitialGameState = (): PlainGameState => {
     return {
@@ -11,8 +11,7 @@ export const createInitialGameState = (): PlainGameState => {
         currentPlayersTurn: 0,
         gameStatus: "not playing",
         settings: {
-          selectedDiceTotal: false
+            selectedDiceTotal: false,
         },
-      };
-};
-
+    }
+}

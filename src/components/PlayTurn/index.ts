@@ -1,1 +1,1 @@
-export {default as PlayTurn} from './PlayTurn';
+export { default as PlayTurn } from "./PlayTurn"

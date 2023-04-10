@@ -1,3 +1,3 @@
 export interface PlayerCardProps {
-    playerName: string;
+    playerName: string
 }

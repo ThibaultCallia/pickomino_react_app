@@ -1,3 +1,3 @@
 export interface NumOfPlayersFormProps {
-    setNumOfPlayers: (num: number | null) => void;
+    setNumOfPlayers: (num: number | null) => void
 }

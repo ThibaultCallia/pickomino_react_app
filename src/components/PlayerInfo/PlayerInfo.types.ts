@@ -1,5 +1,5 @@
 export interface PlayerInfoProps {
     gameState: {
-      playerArray: Array<{ name: string }>;
-    } | null;
-  }
+        playerArray: Array<{ name: string }>
+    } | null
+}

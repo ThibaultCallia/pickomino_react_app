@@ -1,4 +1,4 @@
 export interface GameOverModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-  }
+    isOpen: boolean
+    onClose: () => void
+}
