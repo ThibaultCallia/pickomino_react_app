@@ -1,7 +1,7 @@
 import "../../styles/components/mainView.scss"
 import { NumOfPlayersForm } from "../NumOfPlayersForm"
 import { useEffect, useState } from "react"
-import { Badge, useDisclosure } from "@chakra-ui/react"
+import { Text, Box, Stack, useDisclosure } from "@chakra-ui/react"
 import { RollDice } from "../RollDice"
 import { PlayerInfo } from "../PlayerInfo"
 import { useDispatch, useSelector } from "react-redux"
@@ -36,36 +36,50 @@ const MainView = () => {
     }, [board])
 
     // RENDER
-    if (!numOfPlayers) {
-        return (
-            <div className="mainView">
-                <NumOfPlayersForm setNumOfPlayers={setNumOfPlayers} />
-                <motion.div
-                    initial={{ scaleX: 1 }}
-                    animate={{
-                        scaleX: 0,
-                        transition: { duration: 0.5, ease: "circOut" },
-                    }}
-                    exit={{
-                        scaleX: 1,
-                        transition: { duration: 0.5, ease: "circIn" },
-                    }}
-                    style={{ originX: isPresent ? 0 : 1 }}
-                    className="privacy-screen"
-                />
-            </div>
-        )
-    }
 
     return (
-        <div className="mainView">
-            <PlayerInfo />
-            <Board />
-            <RollDice />
-            <p>Player {currentPlayer + 1} plays</p>
-            <button onClick={onOpen}>test</button>
-            <GameOverModal isOpen={isOpen} onClose={onClose} />
-        </div>
+        <Box
+            py={2}
+            minHeight="calc(100vh - 56px - 40px)"
+            display="grid"
+            alignItems="center"
+            gap="2rem"
+            width="90%"
+            mx="auto"
+            maxW={650}
+        >
+            {!numOfPlayers ? (
+                <>
+                    <NumOfPlayersForm setNumOfPlayers={setNumOfPlayers} />
+                    <motion.div
+                        initial={{ scaleX: 1 }}
+                        animate={{
+                            scaleX: 0,
+                            transition: { duration: 0.5, ease: "circOut" },
+                        }}
+                        exit={{
+                            scaleX: 1,
+                            transition: { duration: 0.5, ease: "circIn" },
+                        }}
+                        style={{ originX: isPresent ? 0 : 1 }}
+                        className="privacy-screen"
+                    />
+                </>
+            ) : (
+                <>
+                    <PlayerInfo />
+                    <Board />
+                    <Stack spacing={2}>
+                        <Text fontWeight={"bold"}>
+                            Player {currentPlayer + 1}'s turn
+                        </Text>
+                        <RollDice />
+                    </Stack>
+                    <button onClick={onOpen}>test</button>
+                    <GameOverModal isOpen={isOpen} onClose={onClose} />
+                </>
+            )}
+        </Box>
     )
 }
 

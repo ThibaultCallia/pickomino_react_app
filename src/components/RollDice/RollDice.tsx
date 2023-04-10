@@ -148,13 +148,7 @@ const RollDice = () => {
     // RENDER
     return (
         <>
-            <Box
-                maxW="sm"
-                borderWidth="4px"
-                borderRadius="lg"
-                minH="300px"
-                minW="650px"
-            >
+            <Box borderWidth="4px" borderRadius="lg" maxW={"100%"}>
                 <Box
                     p="6"
                     display="flex"
@@ -170,7 +164,7 @@ const RollDice = () => {
                                 bgColor="yellow.400"
                                 mb="1rem"
                             >
-                                total dice: {totalDiceValue(selectedDice)}
+                                Dice total: {totalDiceValue(selectedDice)}
                             </Tag>
                         )}
 

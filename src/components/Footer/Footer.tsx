@@ -1,6 +1,6 @@
 // Footer.js
 
-import { Box, Flex, Link, useColorMode } from "@chakra-ui/react"
+import { Box, Flex, Text, Link, useColorMode } from "@chakra-ui/react"
 
 const Footer = () => {
     const { colorMode } = useColorMode()
@@ -15,11 +15,11 @@ const Footer = () => {
             py={2}
         >
             <Flex alignItems="center" justifyContent="space-between">
-                <Box>
+                <Text noOfLines={1}>
                     <Link href="/privacy" mx={2}>
-                        Based on "Regenwormen" by 999 Games
+                        Based on" Regenwormen" by 999 Games
                     </Link>
-                </Box>
+                </Text>
                 <Box>
                     <Link
                         href="https://github.com/ThibaultCallia/pickomino_react_app"

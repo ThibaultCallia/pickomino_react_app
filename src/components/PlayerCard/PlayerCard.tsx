@@ -6,6 +6,7 @@ import {
     Tooltip,
     useToast,
     useDisclosure,
+    Center,
 } from "@chakra-ui/react"
 import { useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
@@ -79,18 +80,36 @@ function PlayerCard({ name, collectedTiles, id }: PlainPlayer) {
     // RENDER
     return (
         <>
-            <Box
+            <Center
+                flexDir={"column"}
                 borderWidth="1px"
                 borderRadius="lg"
                 p={4}
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
+                onMouseOver={() => setIsHovered(true)}
+                onMouseOut={() => setIsHovered(false)}
                 textAlign="center"
+                position="relative"
             >
+                <Box
+                    boxSize={5}
+                    bgColor="red.500"
+                    position="absolute"
+                    top={-2}
+                    right={-2}
+                    borderRadius="100%"
+                >
+                    <Text fontSize="xs" color="white">
+                        {collectedTiles.length}
+                    </Text>
+                </Box>
+
                 <Text fontWeight="bold">{name}</Text>
                 <Collapse in={isHovered}>
                     {/* <Image  mx = "auto" boxSize="50px" mt={4} src="/PP_mini_logo.png" borderRadius="lg" /> */}
-                    {/* <Text>latest tile value: {collectedTiles[collectedTiles.length-1]?.value}</Text> */}
+                    {/* <Text> */}
+                    {/*     latest tile value:{" "} */}
+                    {/*     {collectedTiles[collectedTiles.length - 1]?.value} */}
+                    {/* </Text> */}
 
                     {collectedTiles.length > 0 && (
                         <Tile
@@ -105,7 +124,7 @@ function PlayerCard({ name, collectedTiles, id }: PlainPlayer) {
                         ></Tile>
                     )}
                 </Collapse>
-            </Box>
+            </Center>
             <EndTurnModal
                 isOpen={isOpen}
                 onClose={() => {

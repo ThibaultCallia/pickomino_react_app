@@ -1,10 +1,18 @@
 import { PlainTile } from "./Tile.types"
-import { Box, Center, Text, Image, VStack, HStack } from "@chakra-ui/react"
+import {
+    Box,
+    Center,
+    Text,
+    Image,
+    VStack,
+    HStack,
+    Button,
+} from "@chakra-ui/react"
 
-function Tile({ value, points, onTileClick, selected, disabled }: PlainTile) {
+const TileContent = ({ points, value }: { points: number; value: number }) => {
     // Assuming you have images named image1, image2, image3, and image4 in your src/assets folder
-    const imageSrc = `./tiles/planet_tile_${points}.jpg`
-    const tileContent = (
+    const imageSrc = `./tiles/planet_tile_${points}.svg`
+    return (
         <>
             <Center flex="1">
                 <Text fontSize="xl" fontWeight="bold">
@@ -22,41 +30,35 @@ function Tile({ value, points, onTileClick, selected, disabled }: PlainTile) {
             </Center>
         </>
     )
+}
 
+function Tile({ value, points, onTileClick, selected, disabled }: PlainTile) {
     return (
-        <Box
-            borderRadius="md"
-            borderWidth="1px"
-            textAlign="center"
-            bg="white"
-            boxShadow="lg"
+        <Button
+            variant="outline"
+            height="auto"
+            boxShadow={"lg"}
             onClick={disabled ? undefined : onTileClick}
             cursor={disabled ? "default" : onTileClick ? "pointer" : "default"}
             overflow="hidden"
             position="relative"
+            isDisabled={disabled && !selected}
+            _disabled={{
+                opacity: 0.3,
+                cursor: "default",
+                boxShadow: "none",
+            }}
         >
             {selected ? (
                 <HStack width="100%" spacing={0}>
-                    {tileContent}
+                    <TileContent points={points} value={value} />
                 </HStack>
             ) : (
                 <VStack height="100%" spacing={0}>
-                    {tileContent}
+                    <TileContent points={points} value={value} />
                 </VStack>
             )}
-            {disabled && !selected && (
-                <Box
-                    position="absolute"
-                    top={0}
-                    right={0}
-                    bottom={0}
-                    left={0}
-                    bg="gray.500"
-                    opacity={0.6}
-                    zIndex={1}
-                />
-            )}
-        </Box>
+        </Button>
     )
 }
 

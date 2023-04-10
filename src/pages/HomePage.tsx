@@ -5,6 +5,7 @@ import {
     Button,
     Box,
     Image,
+    Flex,
 } from "@chakra-ui/react"
 import { motion, useIsPresent } from "framer-motion"
 
@@ -14,39 +15,51 @@ const HomePage = () => {
     const isPresent = useIsPresent()
     return (
         <>
-            <Box
-                height="100vh"
+            <Flex
+                height="calc(100vh - 56px - 40px)"
                 position="relative"
-                display="flex"
                 flexDirection="column"
                 alignItems="center"
                 justifyContent="center"
                 bg="hsl(224, 49%, 21%)"
-                //   className="home-page"
+                gap={10}
             >
+                <Box pos={"relative"} zIndex={1}>
+                    <Heading mb={8} color="white" textAlign={"center"}>
+                        Planetary Pirates
+                    </Heading>
+                    <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
+                        <Button
+                            as={Link}
+                            variant="outline"
+                            colorScheme="yellow"
+                            to="/about"
+                        >
+                            ABOUT
+                        </Button>
+                        <Button
+                            as={Link}
+                            variant="outline"
+                            colorScheme="yellow"
+                            to="/how-to-play"
+                        >
+                            GAME RULES
+                        </Button>
+                        <Button as={Link} colorScheme="yellow" to="/game">
+                            PLAY THE GAME
+                        </Button>
+                    </SimpleGrid>
+                </Box>
                 <Image
                     src="./game_art/PP_transparent.png"
-                    position="absolute"
+                    position={{ base: "relative", md: "absolute" }}
+                    zIndex={0}
                     bottom={0}
                     left={1}
-                    zIndex={0}
                     width={{ base: "100%", lg: "30%" }}
+                    maxW={320}
                     height="auto"
                 />
-                <Heading mb={8} color="yellow.400">
-                    Planetary Pirates
-                </Heading>
-                <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
-                    <Button as={Link} colorScheme="yellow" to="/about">
-                        ABOUT
-                    </Button>
-                    <Button as={Link} colorScheme="yellow" to="/how-to-play">
-                        GAME RULES
-                    </Button>
-                    <Button as={Link} colorScheme="yellow" to="/game">
-                        PLAY THE GAME
-                    </Button>
-                </SimpleGrid>
                 <motion.div
                     initial={{ scaleX: 1 }}
                     animate={{
@@ -60,7 +73,7 @@ const HomePage = () => {
                     style={{ originX: isPresent ? 0 : 1 }}
                     className="privacy-screen"
                 />
-            </Box>
+            </Flex>
         </>
     )
 }
