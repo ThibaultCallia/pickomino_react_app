@@ -48,16 +48,12 @@ const RollDice= () => {
     setSelectDisabled(true);
   }, [currentPlayer])
 
-  /* THIS IS REDUNDANT IN CURRENT LOGIC
   useEffect(() => {
-    if(hasSelected && selectedDice.length === 8){
-      if(totalDiceValue(selectedDice) < lowestTileOnBoard){
-        onOpen();
-        return;
-      }
+    if(selectedDice.length > 0 && selectedDice.length < 8){
+      
+      setRollDisabled(false);
     }
   }, [selectedDice])
-  */
 
   // FUNCTIONS
   const onRollClick = () => {
@@ -81,11 +77,10 @@ const RollDice= () => {
   const selectDice = () => {
     if(canSelect( selectedDice, currentDiceRoll)){
       toast.close(toastId);
-      setRollDisabled(false);
       setSelectDisabled(true);
       dispatch(addSelectedDice(currentDiceRoll.filter(die => die.selected).map(die => ({...die, selected: false}))));
-      
       dispatch(setCurrentDiceRoll([]));
+      
     } else{
       if(!toast.isActive(toastId)){
         toast({
