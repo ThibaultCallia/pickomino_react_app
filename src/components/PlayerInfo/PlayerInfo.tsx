@@ -13,6 +13,7 @@ function PlayerInfo() {
         <SimpleGrid
             spacing={4}
             templateColumns="repeat(auto-fill, minmax(150px, 1fr))"
+            mt={4}
         >
             {gameState.playerArray.map((player, index) => {
                 return <PlayerCard key={index} {...player} />

@@ -56,9 +56,7 @@ const Navbar = () => {
 
             <Box alignItems="center" display={{ base: "none", md: "flex" }}>
                 <SettingsMenu />
-                <Link href="/about" mx={2}>
-                    About
-                </Link>
+                
                 <Button bg="transparent" onClick={onOpen}>
                     Game Rules
                 </Button>
@@ -94,14 +92,7 @@ const Navbar = () => {
                     bg={colorMode === "dark" ? "gray.700" : "gray.100"}
                     rounded="md"
                 >
-                    <Link
-                        href="/about"
-                        display="block"
-                        my={2}
-                        onClick={toggleMenu}
-                    >
-                        About
-                    </Link>
+                    
                     <Link
                         href="/gameRules"
                         display="block"

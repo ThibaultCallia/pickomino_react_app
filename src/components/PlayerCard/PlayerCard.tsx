@@ -92,13 +92,15 @@ function PlayerCard({ name, collectedTiles, id }: PlainPlayer) {
             >
                 <Box
                     boxSize={5}
-                    bgColor="red.500"
+                    bgColor="yellow.500"
                     position="absolute"
                     top={-2}
                     right={-2}
                     borderRadius="100%"
+                    display={"grid"}
+                    placeItems="center"
                 >
-                    <Text fontSize="xs" color="white">
+                    <Text fontSize="xs" color="white" fontWeight={"bold"}>
                         {collectedTiles.length}
                     </Text>
                 </Box>

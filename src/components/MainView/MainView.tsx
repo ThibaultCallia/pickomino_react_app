@@ -31,7 +31,7 @@ const MainView = () => {
 
     useEffect(() => {
         if (board.filter((tile) => !tile.disabled).length === 0) {
-            console.log("GAME OVER")
+            onOpen();
         }
     }, [board])
 
@@ -75,7 +75,7 @@ const MainView = () => {
                         </Text>
                         <RollDice />
                     </Stack>
-                    <button onClick={onOpen}>test</button>
+                    <button onClick={onOpen}>winner modal test</button>
                     <GameOverModal isOpen={isOpen} onClose={onClose} />
                 </>
             )}

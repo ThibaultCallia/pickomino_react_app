@@ -82,11 +82,10 @@ const GameRulesDrawer: React.FC<GameRulesDrawerProps> = ({
                                         <strong>Successful:</strong> <br />
                                         The player may only claim a planet tile
                                         once there are one or more space ships
-                                        set aside (even pirates need space ships
-                                        to fly), and the point total of the
+                                        set aside and the point total of the
                                         set-aside dice is either at least equal
                                         to the lowest number of the open planet
-                                        tiles in the row on the table or exactly
+                                        tiles on the board or exactly
                                         equal to the number on the top tile of
                                         another player. Remember, a space ship
                                         counts as five points. <br />
@@ -110,33 +109,29 @@ const GameRulesDrawer: React.FC<GameRulesDrawerProps> = ({
                                     </li>
                                     <li>
                                         <strong>Unsuccessful:</strong> <br />
-                                        If the player cannot set aside any dice
+                                        If the player cannot select any dice
                                         after a roll (all symbols in the roll
                                         have already been set aside once), or as
-                                        soon as all dice have been set aside but
+                                        soon as all dice have been selected but
                                         do not meet the conditions to claim a
-                                        planet tile, they must return a planet
-                                        tile (if they have any): This tile will
+                                        planet tile, a planet tile will be returned
+                                        (if they have any). This tile will
                                         be placed in the correct position on the
                                         board. Furthermore, the planet tile with
                                         the highest value on the board will be
-                                        turned over. This tile will never return
+                                        disabled. This tile will never return
                                         to the game. However, when the planet
                                         being returned is the one with the
-                                        highest value, it is not turned over.
+                                        highest value, it is disabled.
                                     </li>
                                 </ul>
                             </TabPanel>
                             <TabPanel>
                                 <p>
                                     The game ends when all planet tiles have
-                                    been claimed or turned around. The player
+                                    been claimed or disabled. The player
                                     with the highest number of collected planets
-                                    wins the game. Now that you're familiar with
-                                    the rules of Planetary Pirates, you're ready
-                                    to embark on your exciting journey through
-                                    the stars! Good luck, and may the best
-                                    planetary pirate win!
+                                    wins the game. 
                                 </p>
                             </TabPanel>
                         </TabPanels>
