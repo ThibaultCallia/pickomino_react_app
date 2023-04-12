@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit"
 import gameReducer from "./Game/gameSlice"
+import roomReducer from "./Room/roomSlice"
 import socket from "../socket"
 
 export const store = configureStore({
     reducer: {
         game: gameReducer,
+        room: roomReducer,
     },
 })
 

@@ -18,6 +18,9 @@ const gameSlice = createSlice({
     name: "game",
     initialState,
     reducers: {
+        setInitialState: (state, { payload: initialState }: PayloadAction<PlainGameState>) => {
+            return initialState
+        },
         startGame: (
             state,
             { payload: numOfPlayers }: PayloadAction<number>
@@ -144,6 +147,7 @@ const gameSlice = createSlice({
 })
 
 export const {
+    setInitialState,
     startGame,
     nextPlayerTurn,
     takeTile,

@@ -27,8 +27,13 @@ const MainView = () => {
     const board = useSelector((state: RootState) => state.game.tilesArray)
     const { isOpen, onOpen, onClose } = useDisclosure()
     const isPresent = useIsPresent()
-    const { roomCode, createRoom, joinRoom, playerAction } = useGameSocket(dispatch);
 
+    const roomCode = useSelector((state: RootState) => state.room.roomCode);
+    const maxPlayers = useSelector((state: RootState) => state.room.maxPlayers);
+    const playersJoined = useSelector((state: RootState) => state.room.playersJoined);
+
+    
+    
    
     // USE EFFECTS
     useEffect(() => {
@@ -57,7 +62,7 @@ const MainView = () => {
             mx="auto"
             maxW={650}
         >
-            {!numOfPlayers ? (
+            {!roomCode ? (
                 <>
                     <CreateRoomForm setNumOfPlayers={setNumOfPlayers} />
                     <JoinRoomForm/>
@@ -74,6 +79,18 @@ const MainView = () => {
                         style={{ originX: isPresent ? 0 : 1 }}
                         className="privacy-screen"
                     />
+                </>
+            ) : playersJoined !== maxPlayers ? (
+                <>
+                    <Box>
+                        <Text fontSize="xl" fontWeight="bold">
+                            Waiting for players...
+                        </Text>
+                        <Text fontSize="lg">
+                            {playersJoined}/{maxPlayers} players joined
+                            
+                        </Text>
+                    </Box>
                 </>
             ) : (
                 <>
