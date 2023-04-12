@@ -14,12 +14,18 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             dispatch(setRoomId(roomCode));
             dispatch(setMaxPlayers(maxPlayers));
             dispatch(setPlayersJoined(1));
+            
+            socket.on("player-joined", ({ playersJoined }: { playersJoined: number }) => {
+                dispatch(setPlayersJoined(playersJoined));
+              });
         }
 
-        const handleRoomJoined = ({ roomCode, playersJoined }: { roomCode: string; playersJoined: number }) => {
+        const handleRoomJoined = ({ roomCode, playersJoined, maxPlayers }: { roomCode: string; playersJoined: number, maxPlayers:number  }) => {
             setRoomCode(roomCode);
             dispatch(setRoomId(roomCode));
             dispatch(setPlayersJoined(playersJoined));
+            dispatch(setMaxPlayers(maxPlayers));
+
           };
 
         const handleGameStart = () => {
@@ -30,6 +36,9 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             console.log("Game action:", type, payload)
             dispatch({ type, payload })
         }
+        const handlePlayerJoined = ({ playersJoined }: { playersJoined: number }) => {
+            dispatch(setPlayersJoined(playersJoined));
+        };
         
         
 
@@ -37,7 +46,7 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
         socket.on("room-joined", handleRoomJoined)
         socket.on("game-start", handleGameStart)
         socket.on("game-action", handleGameAction)
-        
+        socket.on("player-joined", handlePlayerJoined);
 
 
         return () => {
@@ -45,6 +54,7 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             socket.off("room-joined", handleRoomJoined)
             socket.off("game-start", handleGameStart)
             socket.off("game-action", handleGameAction)
+            socket.off("player-joined", handlePlayerJoined);
             
         }
     }, [])
