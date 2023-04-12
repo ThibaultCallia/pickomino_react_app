@@ -1,5 +1,5 @@
 import "../../styles/components/mainView.scss"
-import { NumOfPlayersForm } from "../NumOfPlayersForm"
+
 import { useEffect, useState } from "react"
 import { Text, Box, Stack, useDisclosure } from "@chakra-ui/react"
 import { RollDice } from "../RollDice"
@@ -10,6 +10,12 @@ import { Board } from "../Board"
 import { RootState } from "../../store"
 import { GameOverModal } from "../GameOverModal"
 import { motion, useIsPresent } from "framer-motion"
+import socket from '../../socket';
+import { useGameSocket } from '../../hooks';
+import { JoinRoomForm } from "../JoinRoomForm"
+import { CreateRoomForm } from "../CreateRoomForm"
+
+
 
 const MainView = () => {
     // USE STATES
@@ -21,11 +27,14 @@ const MainView = () => {
     const board = useSelector((state: RootState) => state.game.tilesArray)
     const { isOpen, onOpen, onClose } = useDisclosure()
     const isPresent = useIsPresent()
+    const { roomCode, createRoom, joinRoom, playerAction } = useGameSocket(dispatch);
 
+   
     // USE EFFECTS
     useEffect(() => {
         if (numOfPlayers) {
-            dispatch(startGame(numOfPlayers))
+            socket.emit('startGame', numOfPlayers);
+            // dispatch(startGame(numOfPlayers))
         }
     }, [numOfPlayers])
 
@@ -50,7 +59,8 @@ const MainView = () => {
         >
             {!numOfPlayers ? (
                 <>
-                    <NumOfPlayersForm setNumOfPlayers={setNumOfPlayers} />
+                    <CreateRoomForm setNumOfPlayers={setNumOfPlayers} />
+                    <JoinRoomForm/>
                     <motion.div
                         initial={{ scaleX: 1 }}
                         animate={{
