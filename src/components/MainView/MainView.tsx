@@ -42,6 +42,7 @@ const MainView = () => {
             // dispatch(startGame(numOfPlayers))
         }
     }, [numOfPlayers])
+    // Start game only when all players are in room
 
     useEffect(() => {
         if (board.filter((tile) => !tile.disabled).length === 0) {

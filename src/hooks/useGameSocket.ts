@@ -10,14 +10,11 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
 
     useEffect(() => {
         const handleRoomCreated = ({ roomCode, maxPlayers }: { roomCode: string; maxPlayers: number }) => {
-            setRoomCode(roomCode)
+            // setRoomCode(roomCode)
             dispatch(setRoomId(roomCode));
             dispatch(setMaxPlayers(maxPlayers));
             dispatch(setPlayersJoined(1));
             
-            socket.on("player-joined", ({ playersJoined }: { playersJoined: number }) => {
-                dispatch(setPlayersJoined(playersJoined));
-              });
         }
 
         const handleRoomJoined = ({ roomCode, playersJoined, maxPlayers }: { roomCode: string; playersJoined: number, maxPlayers:number  }) => {
@@ -25,8 +22,18 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             dispatch(setRoomId(roomCode));
             dispatch(setPlayersJoined(playersJoined));
             dispatch(setMaxPlayers(maxPlayers));
-
+            
           };
+
+        const PlayerJoinedListener = () => {
+        socket.on("player-joined", ({ playersJoined }: { playersJoined: number }) => {
+            dispatch(setPlayersJoined(playersJoined));
+        });
+        };
+
+        const handlePlayerJoined = ({ playersJoined }: { playersJoined: number }) => {
+            dispatch(setPlayersJoined(playersJoined));
+        };
 
         const handleGameStart = () => {
             console.log("Game started")
@@ -36,14 +43,18 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             console.log("Game action:", type, payload)
             dispatch({ type, payload })
         }
-        const handlePlayerJoined = ({ playersJoined }: { playersJoined: number }) => {
-            dispatch(setPlayersJoined(playersJoined));
-        };
+        
         
         
 
-        socket.on("room-created", handleRoomCreated)
-        socket.on("room-joined", handleRoomJoined)
+        socket.on("room-created", (data)=>{
+            handleRoomCreated(data);
+            PlayerJoinedListener();
+        })
+        socket.on("room-joined", (data)=>{
+            handleRoomJoined(data);
+            PlayerJoinedListener();
+        })
         socket.on("game-start", handleGameStart)
         socket.on("game-action", handleGameAction)
         socket.on("player-joined", handlePlayerJoined);
