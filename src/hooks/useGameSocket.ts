@@ -82,13 +82,13 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             handleRoomJoined(data)
             PlayerJoinedListener(data.playerJoined, data.playerIds)
         })
-        socket.on("game-start", handleGameStart)
+        
         socket.on("game-action", handleGameAction)
 
         return () => {
             socket.off("room-created", handleRoomCreated)
             socket.off("room-joined", handleRoomJoined)
-            socket.off("game-start", handleGameStart)
+            
             socket.off("game-action", handleGameAction)
             // socket.off("player-joined", handlePlayerJoined);
         }
