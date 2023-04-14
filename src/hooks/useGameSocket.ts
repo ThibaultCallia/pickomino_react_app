@@ -4,16 +4,18 @@ import { GameActionPayload } from "./"
 import { PayloadAction, Dispatch } from "@reduxjs/toolkit"
 import { PlainGameState } from "../store/Game/Game.types"
 import { setRoomId, setMaxPlayers, setPlayersJoined } from "../store/Room/roomSlice"
+import { updatePlayersInfo } from "../store/Game/gameSlice"
 
 const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
     const [roomCode, setRoomCode] = useState<string | null>(null)
 
     useEffect(() => {
         const handleRoomCreated = ({ roomCode, maxPlayers }: { roomCode: string; maxPlayers: number }) => {
-            // setRoomCode(roomCode)
+            setRoomCode(roomCode)
             dispatch(setRoomId(roomCode));
             dispatch(setMaxPlayers(maxPlayers));
             dispatch(setPlayersJoined(1));
+            // Also update game state with room code and player info (max and current players)
             
         }
 
@@ -22,18 +24,23 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             dispatch(setRoomId(roomCode));
             dispatch(setPlayersJoined(playersJoined));
             dispatch(setMaxPlayers(maxPlayers));
+            // Create player name and id -> FOR THE GAME not the room?
+            // Also update game state with room code and player info (max and current players)
             
           };
 
-        const PlayerJoinedListener = () => {
+        const PlayerJoinedListener = (data : {maxPlayers: number, playersJoined:number}) => {
         socket.on("player-joined", ({ playersJoined }: { playersJoined: number }) => {
             dispatch(setPlayersJoined(playersJoined));
+            const maxPlayers = data.maxPlayers;
+            console.log('playerJoined');
+            dispatch(updatePlayersInfo({ maxPlayers, playersJoined }));
         });
         };
 
-        const handlePlayerJoined = ({ playersJoined }: { playersJoined: number }) => {
-            dispatch(setPlayersJoined(playersJoined));
-        };
+        // const handlePlayerJoined = ({ playersJoined }: { playersJoined: number }) => {
+        //     dispatch(setPlayersJoined(playersJoined));
+        // };
 
         const handleGameStart = () => {
             console.log("Game started")
@@ -49,15 +56,15 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
 
         socket.on("room-created", (data)=>{
             handleRoomCreated(data);
-            PlayerJoinedListener();
+            PlayerJoinedListener(data);
         })
         socket.on("room-joined", (data)=>{
             handleRoomJoined(data);
-            PlayerJoinedListener();
+            PlayerJoinedListener(data);
         })
         socket.on("game-start", handleGameStart)
         socket.on("game-action", handleGameAction)
-        socket.on("player-joined", handlePlayerJoined);
+        // socket.on("player-joined", handlePlayerJoined);
 
 
         return () => {
@@ -65,7 +72,7 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             socket.off("room-joined", handleRoomJoined)
             socket.off("game-start", handleGameStart)
             socket.off("game-action", handleGameAction)
-            socket.off("player-joined", handlePlayerJoined);
+            // socket.off("player-joined", handlePlayerJoined);
             
         }
     }, [])

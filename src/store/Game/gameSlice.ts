@@ -6,6 +6,7 @@ import { createPlayerArray } from "../Players/playerState"
 import { createUniqueNameArray } from "../../helpers"
 import { DieInterface, PlainTile } from "../../components"
 
+
 const initialState: PlainGameState = createInitialGameState()
 
 /*
@@ -20,6 +21,13 @@ const gameSlice = createSlice({
     reducers: {
         setInitialState: (state, { payload: initialState }: PayloadAction<PlainGameState>) => {
             return initialState
+        },
+        updatePlayersInfo: (state, { payload: { maxPlayers, playersJoined } }: PayloadAction<{ maxPlayers: number; playersJoined: number }>) => {
+            state.playerArray = createPlayerArray(maxPlayers);
+            const playerNames = createUniqueNameArray(playersJoined);
+            state.playerArray.forEach((player, index) => {
+                player.name = playerNames[index];
+            });
         },
         startGame: (
             state,
@@ -158,5 +166,6 @@ export const {
     setCurrentDiceRoll,
     resetCurrentDiceRoll,
     returnTile,
+    updatePlayersInfo
 } = gameSlice.actions
 export default gameSlice.reducer
