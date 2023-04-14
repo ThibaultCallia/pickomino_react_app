@@ -13,7 +13,6 @@ const Footer = () => {
             boxShadow="md"
             px={4}
             py={2}
-            
         >
             <Flex alignItems="center" justifyContent="space-between">
                 <Text noOfLines={1}>

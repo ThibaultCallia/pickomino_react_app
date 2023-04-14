@@ -10,12 +10,10 @@ import { Board } from "../Board"
 import { RootState } from "../../store"
 import { GameOverModal } from "../GameOverModal"
 import { motion, useIsPresent } from "framer-motion"
-import socket from '../../socket';
-import { useGameSocket } from '../../hooks';
+import socket from "../../socket"
+import { useGameSocket } from "../../hooks"
 import { JoinRoomForm } from "../JoinRoomForm"
 import { CreateRoomForm } from "../CreateRoomForm"
-
-
 
 const MainView = () => {
     // USE STATES
@@ -28,17 +26,16 @@ const MainView = () => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const isPresent = useIsPresent()
 
-    const roomCode = useSelector((state: RootState) => state.room.roomCode);
-    const maxPlayers = useSelector((state: RootState) => state.room.maxPlayers);
-    const playersJoined = useSelector((state: RootState) => state.room.playersJoined);
+    const roomCode = useSelector((state: RootState) => state.room.roomCode)
+    const maxPlayers = useSelector((state: RootState) => state.room.maxPlayers)
+    const playersJoined = useSelector(
+        (state: RootState) => state.room.playersJoined
+    )
 
-    
-    
-   
     // USE EFFECTS
     useEffect(() => {
         if (numOfPlayers) {
-            socket.emit('startGame', numOfPlayers);
+            socket.emit("startGame", numOfPlayers)
             // dispatch(startGame(numOfPlayers))
         }
     }, [numOfPlayers])
@@ -46,7 +43,7 @@ const MainView = () => {
 
     useEffect(() => {
         if (board.filter((tile) => !tile.disabled).length === 0) {
-            onOpen();
+            onOpen()
         }
     }, [board])
 
@@ -66,7 +63,7 @@ const MainView = () => {
             {!roomCode ? (
                 <>
                     <CreateRoomForm setNumOfPlayers={setNumOfPlayers} />
-                    <JoinRoomForm/>
+                    <JoinRoomForm />
                     <motion.div
                         initial={{ scaleX: 1 }}
                         animate={{
@@ -89,7 +86,6 @@ const MainView = () => {
                         </Text>
                         <Text fontSize="lg">
                             {playersJoined}/{maxPlayers} players joined
-                            
                         </Text>
                     </Box>
                 </>

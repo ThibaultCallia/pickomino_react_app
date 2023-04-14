@@ -10,9 +10,9 @@ export const store = configureStore({
     },
 })
 
-socket.on('game-action', (action) => {
-    store.dispatch(action);
-  });
+socket.on("game-action", (action) => {
+    store.dispatch(action)
+})
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>

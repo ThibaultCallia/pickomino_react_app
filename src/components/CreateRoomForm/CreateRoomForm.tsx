@@ -2,8 +2,8 @@
 import { FormEvent, useState, ChangeEvent } from "react"
 import { Box, FormControl, Button, Select, Flex, Input } from "@chakra-ui/react"
 import { CreateRoomFormProps } from "."
-import { useGameSocket } from '../../hooks';
-import { useDispatch } from "react-redux";
+import { useGameSocket } from "../../hooks"
+import { useDispatch } from "react-redux"
 
 const CreateRoomForm = ({ setNumOfPlayers }: CreateRoomFormProps) => {
     // HOOKS
@@ -11,22 +11,21 @@ const CreateRoomForm = ({ setNumOfPlayers }: CreateRoomFormProps) => {
     const [roomPass, setRoomPass] = useState<string>("")
     const [roomName, setRoomName] = useState<string>("")
     const dispatch = useDispatch()
-    const { createRoom } = useGameSocket(dispatch);
+    const { createRoom } = useGameSocket(dispatch)
 
     // FUNCTIONS
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault()
         if (num && roomName && roomPass) {
-            
             // onSubmit(parseInt(num), roomName, roomPass)
-            createRoom( roomName, roomPass, parseInt(num)).then((roomCode) => {
+            createRoom(roomName, roomPass, parseInt(num)).then((roomCode) => {
                 if (roomCode) {
-                    setNumOfPlayers(parseInt(num));
-                    console.log('success', `room code: ${roomCode}`);
-                } else{
-                    console.log('error')
+                    setNumOfPlayers(parseInt(num))
+                    console.log("success", `room code: ${roomCode}`)
+                } else {
+                    console.log("error")
                 }
-            });
+            })
         }
     }
 
@@ -52,14 +51,22 @@ const CreateRoomForm = ({ setNumOfPlayers }: CreateRoomFormProps) => {
                             <option>6</option>
                             <option>7</option>
                         </Select>
-                        <Input placeholder='room name' value = {roomName} onChange={(e:ChangeEvent<HTMLInputElement>) => {
-                            setRoomName(e.target.value)
-                        }}/>
-                        <Input placeholder='password' value = {roomPass} onChange={(e:ChangeEvent<HTMLInputElement>) => {
-                            setRoomPass(e.target.value)
-                        }}/>
+                        <Input
+                            placeholder="room name"
+                            value={roomName}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                                setRoomName(e.target.value)
+                            }}
+                        />
+                        <Input
+                            placeholder="password"
+                            value={roomPass}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                                setRoomPass(e.target.value)
+                            }}
+                        />
                     </FormControl>
-                    
+
                     <Button mt={4} colorScheme="yellow" type="submit">
                         Create Room
                     </Button>
