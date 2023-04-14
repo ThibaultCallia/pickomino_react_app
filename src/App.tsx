@@ -1,14 +1,53 @@
-import Navbar from "./components/Navbar"
-import MainView from "./components/MainView"
-import Footer from "./components/Footer"
-import { useState, useReducer } from "react"
-import "./App.css"
+import { NavBar, MainView, Footer } from "./components"
 
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+    useRoutes,
+    useLocation,
+} from "react-router-dom"
+
+import { HomePage, AboutPage, HowToPlayPage } from "./pages"
+import { AnimatePresence } from "framer-motion"
+import React from "react"
+import "./app.css"
+
+// Routing here?
 function App() {
+    const element = useRoutes([
+        {
+            path: "/",
+            element: <HomePage />,
+        },
+        {
+            path: "/home",
+            element: <HomePage />,
+        },
+        {
+            path: "/how-to-play",
+            element: <HowToPlayPage />,
+        },
+        {
+            path: "/about",
+            element: <AboutPage />,
+        },
+        {
+            path: "/game",
+            element: <MainView />,
+        },
+    ])
+
+    const location = useLocation()
+
+    if (!element) return null
+
     return (
         <>
-            <Navbar />
-            <MainView />
+            <NavBar />
+            <AnimatePresence mode="wait" initial={false}>
+                {React.cloneElement(element, { key: location.pathname })}
+            </AnimatePresence>
             <Footer />
         </>
     )

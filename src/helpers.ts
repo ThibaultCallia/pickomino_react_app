@@ -1,26 +1,24 @@
-import { DieInterface } from "./components/RollDice"
-export const createUniqueNameArray = (numOfNames: number) => {
+import { DieInterface, PlainTile } from "./components"
+const createUniqueNameArray = (numOfNames: number) => {
     const adjectives = [
         "Celestial",
         "Galactic",
         "Nebulous",
         "Interstellar",
         "Astral",
-        "Extraterrestrial",
         "Cosmic",
         "Starry",
         "Lunar",
         "Solar",
-        "Swashbuckling",
-        "Buccaneering",
         "Seafaring",
         "Plundering",
         "Marauding",
         "Corsair",
         "Nautical",
-        "Treasure-laden",
-        "Grog-swigging",
-        "Peg-legged",
+        "ahoy, ",
+        "Scurvy",
+        "Pirate",
+        "Salty",
     ]
     const nouns = [
         "Galaxy",
@@ -30,16 +28,16 @@ export const createUniqueNameArray = (numOfNames: number) => {
         "Black hole",
         "Comet",
         "Meteor",
-        "Constellation",
+        "Asteroid",
+        "star",
         "Satellite",
-        "Space station",
+        "rocket",
         "Buccaneer",
         "Cutlass",
         "Galleon",
         "Jolly Roger",
         "Plunder",
-        "Treasure chest",
-        "Skull and crossbones",
+        "Scallywag",
         "Parrot",
         "Privateer",
         "Eye patch",
@@ -57,7 +55,7 @@ export const createUniqueNameArray = (numOfNames: number) => {
     return Array.from(uniqueNames)
 }
 
-export const rollDice = (numOfDice: number) => {
+const rollDice = (numOfDice: number) => {
     let result = []
     let faces = ["1", "2", "3", "4", "5", "R"]
     for (let i = 0; i < numOfDice; i++) {
@@ -71,7 +69,7 @@ export const rollDice = (numOfDice: number) => {
     return result
 }
 
-export const canSelect = (
+const canSelect = (
     selectedDice: DieInterface[],
     currentDiceRoll: DieInterface[]
 ) => {
@@ -85,10 +83,58 @@ export const canSelect = (
     return false
 }
 
-export const hasSelectableDice = (
+const hasSelectableDice = (
     selectedDice: DieInterface[],
     currentRoll: DieInterface[]
 ): boolean => {
     const facesInArr1 = new Set(selectedDice.map((die) => die.face))
     return currentRoll.some((die) => !facesInArr1.has(die.face))
+}
+
+const totalDiceValue = (selectedDice: DieInterface[]) => {
+    return selectedDice.reduce(
+        (acc, die) => acc + (die.value === 6 ? 5 : die.value),
+        0
+    )
+}
+
+const includesRocket = (selectedDice: DieInterface[]) => {
+    return selectedDice.some((die) => die.face === "R")
+}
+
+const finalRollFailed = (
+    selectedDice: DieInterface[],
+    currentRoll: DieInterface[],
+    lowestTileOnBoard: number
+) => {
+    // Is it a final roll?
+    if (!currentRoll.every((die) => die.value === currentRoll[0].value)) {
+        return false
+    }
+    // ALL ROLLED DICE ARE SAME VALUE AT THIS POINT
+    if (!includesRocket(selectedDice) && !includesRocket(currentRoll)) {
+        return true
+    }
+    // Now check whether selecting the rocket // or the next die would have made a difference (vs least value tile )
+    // OR OTHER PLAYERS' TILE)
+    const toBeTotal = totalDiceValue(selectedDice) + totalDiceValue(currentRoll)
+    if (toBeTotal < lowestTileOnBoard) {
+        return true
+    }
+    return false
+}
+
+const totalPlanetsCollected = (collectedTiles: PlainTile[]) => {
+    return collectedTiles.reduce((acc, tile) => acc + tile.points, 0)
+}
+
+export {
+    createUniqueNameArray,
+    rollDice,
+    canSelect,
+    hasSelectableDice,
+    totalDiceValue,
+    includesRocket,
+    finalRollFailed,
+    totalPlanetsCollected,
 }
