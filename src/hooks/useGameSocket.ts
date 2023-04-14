@@ -26,10 +26,11 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             gameState: PlainGameState
         }) => {
             setRoomCode(roomCode)
+            // ROOM SLICE
             dispatch(setRoomId(roomCode))
             dispatch(setMaxPlayers(maxPlayers))
             dispatch(setPlayersJoined(1))
-
+            // GAME SLICE
             dispatch(setInitialState(gameState))
         }
 
@@ -47,11 +48,10 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             
         }) => {
             setRoomCode(roomCode)
+            // ROOM SLICE
             dispatch(setRoomId(roomCode))
             dispatch(setMaxPlayers(maxPlayers))
-
-            // Create player name and id -> FOR THE GAME not the room?
-
+            // GAME SLICE
             dispatch(setInitialState(gameState))
             
         }
@@ -60,15 +60,13 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             socket.on(
                 "player-joined",
                 ({ playersJoined, playerIds }: { playersJoined: number, playerIds: string[] }) => {
+                    // ROOM SLICE
                     dispatch(setPlayersJoined(playersJoined))
+                    // GAME SLICE
                     dispatch(updatePlayerIds(playerIds))
                     console.log("playerJoined")
                 }
             )
-        }
-
-        const handleGameStart = () => {
-            console.log("Game started")
         }
 
         const handleGameAction = ({ type, payload }: GameActionPayload) => {
@@ -121,7 +119,7 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
                 { roomName, roomPass },
                 (roomCode: string) => {
                     resolve(roomCode)
-                    // create gamestate with that code?
+                    
                 }
             )
         })
