@@ -13,14 +13,14 @@ const roomSlice = createSlice({
   name: "room",
   initialState,
   reducers: {
-    setRoomId: (state, action: PayloadAction<string>) => {
-      state.roomCode = action.payload;
+    setRoomId: (state, {payload:roomCode}: PayloadAction<string>) => {
+      state.roomCode = roomCode
     },
-    setPlayersJoined: (state, action: PayloadAction<number>) => {
-      state.playersJoined = action.payload;
+    setPlayersJoined: (state, {payload:playersJoined}: PayloadAction<number>) => {
+      state.playersJoined = playersJoined;
     },
-    setMaxPlayers: (state, action: PayloadAction<number>) => {
-      state.maxPlayers = action.payload;
+    setMaxPlayers: (state, {payload:maxPlayers}: PayloadAction<number>) => {
+      state.maxPlayers = maxPlayers;
     },
   },
 });
