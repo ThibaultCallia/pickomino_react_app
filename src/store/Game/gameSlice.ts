@@ -24,6 +24,11 @@ const gameSlice = createSlice({
         ) => {
             return initialState
         },
+        updatePlayerIds: (state, { payload: playerIds }: PayloadAction<string[]>) => {
+            playerIds.forEach((id, index) => {
+                  state.playerArray[index].id = id;
+              });
+        },
         startGame: (
             state,
             { payload: numOfPlayers }: PayloadAction<number>
@@ -161,5 +166,6 @@ export const {
     setCurrentDiceRoll,
     resetCurrentDiceRoll,
     returnTile,
+    updatePlayerIds
 } = gameSlice.actions
 export default gameSlice.reducer

@@ -8,7 +8,7 @@ import {
     setMaxPlayers,
     setPlayersJoined,
 } from "../store/Room/roomSlice"
-import { setInitialState } from "../store/Game/gameSlice"
+import { setInitialState, updatePlayerIds } from "../store/Game/gameSlice"
 
 import { createInitialGameState } from "../store/Game/GameStateObject"
 
@@ -38,11 +38,13 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             playersJoined,
             maxPlayers,
             gameState,
+            
         }: {
             roomCode: string
             playersJoined: number
             maxPlayers: number
             gameState: PlainGameState
+            
         }) => {
             setRoomCode(roomCode)
             dispatch(setRoomId(roomCode))
@@ -51,13 +53,15 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             // Create player name and id -> FOR THE GAME not the room?
 
             dispatch(setInitialState(gameState))
+            
         }
 
-        const PlayerJoinedListener = (playersJoined: number) => {
+        const PlayerJoinedListener = (playersJoined: number, playerIds: string[]) => {
             socket.on(
                 "player-joined",
-                ({ playersJoined }: { playersJoined: number }) => {
+                ({ playersJoined, playerIds }: { playersJoined: number, playerIds: string[] }) => {
                     dispatch(setPlayersJoined(playersJoined))
+                    dispatch(updatePlayerIds(playerIds))
                     console.log("playerJoined")
                 }
             )
@@ -74,11 +78,11 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
 
         socket.on("room-created", (data) => {
             handleRoomCreated(data)
-            PlayerJoinedListener(data.playerJoined)
+            PlayerJoinedListener(data.playerJoined, data.playerIds)
         })
         socket.on("room-joined", (data) => {
             handleRoomJoined(data)
-            PlayerJoinedListener(data.playerJoined)
+            PlayerJoinedListener(data.playerJoined, data.playerIds)
         })
         socket.on("game-start", handleGameStart)
         socket.on("game-action", handleGameAction)

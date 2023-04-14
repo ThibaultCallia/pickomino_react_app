@@ -1,11 +1,10 @@
-import { nanoid } from "nanoid"
 import { PlainPlayer } from "./Player.types"
 import { createUniqueNameArray } from "../../helpers"
 
 const createPlayer = (): PlainPlayer => {
     return {
         name: "",
-        id: nanoid(),
+        id: "",
         collectedTiles: [],
         isPlaying: false,
         currentlySelectedDice: [],
