@@ -5,6 +5,8 @@ import { PayloadAction, Dispatch } from "@reduxjs/toolkit"
 import { PlainGameState } from "../store/Game/Game.types"
 import { setRoomId, setMaxPlayers, setPlayersJoined } from "../store/Room/roomSlice"
 import { updatePlayersInfo } from "../store/Game/gameSlice"
+import { useMachine } from "@xstate/react";
+
 
 const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
     const [roomCode, setRoomCode] = useState<string | null>(null)
