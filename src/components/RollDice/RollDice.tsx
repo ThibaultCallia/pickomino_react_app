@@ -29,6 +29,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { DieInterface } from "../Die"
 import { RootState } from "../../store"
 import EndTurnModal from "../EndTurnModal/EndTurnModal"
+import socket from "../../socket"
+import { useGameSocket } from "../../hooks"
 
 const RollDice = () => {
     // HOOKS
@@ -61,6 +63,11 @@ const RollDice = () => {
     const playerArray = useSelector(
         (state: RootState) => state.game.playerArray
     )
+    const currentPlayerId = useSelector((state: RootState) => state.game.currentPlayerId);
+    const gameStatus = useSelector((state: RootState) => state.game.gameStatus);
+    const isCurrentUserPlaying = (socket.id === currentPlayerId && gameStatus === "playing");
+    const roomCode = useSelector((state: RootState) => state.room.roomCode)
+    const { sendPlayerAction } = useGameSocket(dispatch);
 
     // USE EFFECTS
     useEffect(() => {
@@ -99,9 +106,11 @@ const RollDice = () => {
     // FUNCTIONS
     const onRollClick = () => {
         setRollDisabled(true)
-        // if there are no selected dice, roll all dice
-        // Roll dice should not be able to be clicked if there are no selected dice atm
-        dispatch(setCurrentDiceRoll(rollDice(8 - selectedDice.length)))
+        
+        const dice = rollDice(8 - selectedDice.length);
+
+        dispatch(setCurrentDiceRoll(dice))
+        sendPlayerAction("rollDice", dice);
     }
 
     const highlightDice = (value: string) => {
@@ -198,7 +207,7 @@ const RollDice = () => {
                             direction="column"
                         >
                             <CustomButton
-                                isDisabled={rollDisabled}
+                                isDisabled={rollDisabled || !isCurrentUserPlaying}
                                 onClick={onRollClick}
                             >
                                 Roll
@@ -228,7 +237,7 @@ const RollDice = () => {
                                 </SimpleGrid>
                             </Box>
                             <CustomButton
-                                isDisabled={selectDisabled}
+                                isDisabled={selectDisabled || !isCurrentUserPlaying}
                                 onClick={selectDice}
                             >
                                 Select

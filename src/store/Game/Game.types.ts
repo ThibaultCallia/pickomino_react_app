@@ -7,6 +7,7 @@ export interface PlainGameState {
     tilesArray: PlainTile[]
     currentRound: number
     currentPlayersTurn: number
+    currentPlayerId: string
     gameStatus: string
     settings: {
         selectedDiceTotal: boolean

@@ -29,27 +29,21 @@ const gameSlice = createSlice({
                   state.playerArray[index].id = id;
               });
         },
-        startGame: (
-            state,
-            { payload: numOfPlayers }: PayloadAction<number>
-        ) => {
-            state.playerArray = createPlayerArray(numOfPlayers)
+        startGame: ( state ) => {
+            state.currentPlayerId = state.playerArray[0]?.id
             state.gameStatus = "playing"
-            const playerNames = createUniqueNameArray(numOfPlayers)
-            state.playerArray.forEach((player, index) => {
-                player.name = playerNames[index]
-            })
-            state.playerArray[0].isPlaying = true
         },
         nextPlayerTurn: (state) => {
-            state.currentPlayersTurn =
-                (state.currentPlayersTurn + 1) % state.playerArray.length
             const currentPlayerIndex = state.playerArray.findIndex(
-                (player) => player.isPlaying
-            )
-            state.playerArray[currentPlayerIndex].isPlaying = false
-            state.playerArray[state.currentPlayersTurn].isPlaying = true
-        },
+              (player) => player.id === state.currentPlayerId
+            );
+            state.playerArray[currentPlayerIndex].isPlaying = false;
+          
+            const nextPlayerIndex = (currentPlayerIndex + 1) % state.playerArray.length;
+            state.playerArray[nextPlayerIndex].isPlaying = true;
+            state.currentPlayerId = state.playerArray[nextPlayerIndex].id;
+          },
+          
         takeTile: (state, { payload: tileValue }: PayloadAction<number>) => {
             const tileIndex = state.tilesArray.findIndex(
                 (tile) => tile.value === tileValue

@@ -10,6 +10,7 @@ export const createInitialGameState = (noOfPlayers: number): PlainGameState => {
         tilesArray: defaultTilesSet,
         currentRound: 0,
         currentPlayersTurn: 0,
+        currentPlayerId: "",
         gameStatus: "not playing",
         settings: {
             selectedDiceTotal: false,

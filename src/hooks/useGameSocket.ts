@@ -8,7 +8,7 @@ import {
     setMaxPlayers,
     setPlayersJoined,
 } from "../store/Room/roomSlice"
-import { setInitialState, updatePlayerIds } from "../store/Game/gameSlice"
+import { setInitialState, updatePlayerIds, setCurrentDiceRoll, addSelectedDice } from "../store/Game/gameSlice"
 
 import { createInitialGameState } from "../store/Game/GameStateObject"
 
@@ -69,11 +69,17 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             )
         }
 
-        const handleGameAction = ({ type, payload }: GameActionPayload) => {
-            console.log("Game action:", type, payload)
-            dispatch({ type, payload })
-        }
+        const handleGameAction = (type:string, payload:any) => {
+            switch (type) {
+              case "rollDice":
+                dispatch(setCurrentDiceRoll(payload));
+                break;
+              default:
+                break;
+            }
+          };
 
+        // EVENT LISTENERS
         socket.on("room-created", (data) => {
             handleRoomCreated(data)
             PlayerJoinedListener(data.playerJoined, data.playerIds)
@@ -83,7 +89,10 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             PlayerJoinedListener(data.playerJoined, data.playerIds)
         })
         
-        socket.on("game-action", handleGameAction)
+        socket.on("game-action", ( {type, payload} ) => {
+            console.log(`game-action: ${type}`);
+            handleGameAction(type, payload);
+          });
 
         return () => {
             socket.off("room-created", handleRoomCreated)
@@ -125,15 +134,12 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
         })
     }
 
-    const playerAction = (type: string, payload: any) => {
-        if (roomCode) {
-            socket.emit("game-action", { roomCode, action: { type, payload } })
-        } else {
-            console.error("No room code available")
-        }
+    const sendPlayerAction = (type: string, payload: any) => {
+        
+            socket.emit("game-action", { type, payload })
     }
 
-    return { roomCode, createRoom, joinRoom, playerAction }
+    return { roomCode, createRoom, joinRoom, sendPlayerAction }
 }
 
 export default useGameSocket
