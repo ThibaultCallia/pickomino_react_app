@@ -46,14 +46,14 @@ function App() {
     if (!element) return null
 
     return (
-        <>  
-        <GameSocketProvider dispatch={dispatch}>
-            <NavBar />
-            <AnimatePresence mode="wait" initial={false}>
-                {React.cloneElement(element, { key: location.pathname })}
-            </AnimatePresence>
-            <Footer />
-        </GameSocketProvider>
+        <>
+            <GameSocketProvider dispatch={dispatch}>
+                <NavBar />
+                <AnimatePresence mode="wait" initial={false}>
+                    {React.cloneElement(element, { key: location.pathname })}
+                </AnimatePresence>
+                <Footer />
+            </GameSocketProvider>
         </>
     )
 }

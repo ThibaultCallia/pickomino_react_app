@@ -32,7 +32,6 @@ import EndTurnModal from "../EndTurnModal/EndTurnModal"
 import socket from "../../socket"
 import { useGameSocketContext } from "../../contexts"
 
-
 const RollDice = () => {
     // HOOKS
     const [rollDisabled, setRollDisabled] = useState<boolean>(false)
@@ -41,9 +40,7 @@ const RollDice = () => {
     const toast = useToast()
     const toastId = "selectError"
     const dispatch = useDispatch()
-    const currentPlayer = useSelector(
-        (state: RootState) => state.game.currentPlayersTurn
-    )
+
     // NOT SURE IF LOWEST TILE IS AVAILABLE
     const lowestTileOnBoard = useSelector(
         (state: RootState) => state.game.tilesArray[0].value
@@ -51,26 +48,25 @@ const RollDice = () => {
     const showDiceTotal = useSelector(
         (state: RootState) => state.game.settings.selectedDiceTotal
     )
-    const selectedDice =
-        useSelector(
-            (state: RootState) =>
-                state.game.dice.currentlySelectedDice)
-        
-    const currentDiceRoll =
-        useSelector(
-            (state: RootState) =>
-                state.game.dice.currentDiceRoll
-        )
-    
+    const selectedDice = useSelector(
+        (state: RootState) => state.game.dice.currentlySelectedDice
+    )
+
+    const currentDiceRoll = useSelector(
+        (state: RootState) => state.game.dice.currentDiceRoll
+    )
+    const currentPlayer = useSelector(
+        (state: RootState) => state.game.currentPlayersTurn
+    )
     const currentPlayerId = useSelector(
         (state: RootState) => state.game.currentPlayerId
     )
     const gameStatus = useSelector((state: RootState) => state.game.gameStatus)
     const isCurrentUserPlaying =
         socket.id === currentPlayerId && gameStatus === "playing"
-    const { sendPlayerAction } = useGameSocketContext();
-    
-    console.log('Component rendered');
+    const { sendPlayerAction } = useGameSocketContext()
+
+    console.log("Component rendered")
 
     // USE EFFECTS
     useEffect(() => {
@@ -158,7 +154,7 @@ const RollDice = () => {
 
         dispatch(addSelectedDice(diceSelection))
         dispatch(setCurrentDiceRoll([]))
-            console.log("diceSelection", diceSelection);
+        console.log("diceSelection", diceSelection)
         sendPlayerAction("selectDice", diceSelection)
         sendPlayerAction("rollDice", [])
     }

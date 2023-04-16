@@ -3,14 +3,13 @@ export interface GameActionPayload {
     payload: any
 }
 
-
 export interface IGameSocket {
-    roomCode: string | null;
+    roomCode: string | null
     createRoom: (
-      roomName: string,
-      roomPass: string,
-      noOfPlayers: number
-    ) => Promise<string>;
-    joinRoom: (roomName: string, roomPass: string) => Promise<string>;
-    sendPlayerAction: (type: string, payload: any) => void;
-  }
+        roomName: string,
+        roomPass: string,
+        noOfPlayers: number
+    ) => Promise<string>
+    joinRoom: (roomName: string, roomPass: string) => Promise<string>
+    sendPlayerAction: (type: string, payload: any) => void
+}

@@ -12,7 +12,7 @@ const CreateRoomForm = ({ setNumOfPlayers }: CreateRoomFormProps) => {
     const [roomPass, setRoomPass] = useState<string>("")
     const [roomName, setRoomName] = useState<string>("")
     const dispatch = useDispatch()
-    const { createRoom } = useGameSocketContext();
+    const { createRoom } = useGameSocketContext()
 
     // FUNCTIONS
     const handleSubmit = (e: FormEvent) => {

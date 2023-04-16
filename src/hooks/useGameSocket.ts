@@ -13,17 +13,17 @@ import {
     updatePlayerIds,
     setCurrentDiceRoll,
     addSelectedDice,
+    takeTile,
 } from "../store/Game/gameSlice"
 
 import { createInitialGameState } from "../store/Game/GameStateObject"
 
 const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
     const [roomCode, setRoomCode] = useState<string | null>(null)
-    console.log('useGameSocket called');
-    
+    console.log("useGameSocket called")
 
     useEffect(() => {
-        if(!socket) return;
+        if (!socket) return
 
         const handleRoomCreated = ({
             roomCode,
@@ -86,19 +86,19 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
 
         const handleGameAction = (type: string, payload: any) => {
             switch (type) {
-              case "selectDice":
-                dispatch(addSelectedDice(payload));
-                break;
-              case "rollDice":
-                dispatch(setCurrentDiceRoll(payload));
-                break;
-              default:
-                break;
+                case "selectDice":
+                    dispatch(addSelectedDice(payload))
+                    break
+                case "rollDice":
+                    dispatch(setCurrentDiceRoll(payload))
+                    break
+                case "takeTile":
+                    dispatch(takeTile(payload))
+                    break
+                default:
+                    break
             }
-          };
-          
-          
-          
+        }
 
         // EVENT LISTENERS
         socket.on("room-created", (data) => {
@@ -154,7 +154,6 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
     }
 
     const sendPlayerAction = (type: string, payload: any) => {
-        
         socket.emit("game-action", { type, payload })
     }
 

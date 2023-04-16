@@ -5,14 +5,12 @@ import { useGameSocket } from "../../hooks"
 import { useDispatch } from "react-redux"
 import { useGameSocketContext } from "../../contexts"
 
-
 const JoinRoomForm = () => {
     // HOOKS
     const [roomName, setRoomName] = useState<string>("")
     const [roomPass, setRoomPass] = useState<string>("")
     const dispatch = useDispatch()
-        const { joinRoom } = useGameSocketContext();
-
+    const { joinRoom } = useGameSocketContext()
 
     // FUNCTIONS
     const handleSubmit = (e: FormEvent) => {
