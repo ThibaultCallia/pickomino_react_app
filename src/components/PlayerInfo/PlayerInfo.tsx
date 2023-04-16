@@ -7,7 +7,6 @@ import { RootState } from "../../store"
 function PlayerInfo() {
     // HOOKS
     const gameState = useSelector((state: RootState) => state.game)
-    console.log(gameState)
 
     // RENDER
     return (

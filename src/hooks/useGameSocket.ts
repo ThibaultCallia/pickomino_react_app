@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import socket from "../socket" // Update the path to your socket instance
 import { GameActionPayload } from "./"
 import { PayloadAction, Dispatch } from "@reduxjs/toolkit"
@@ -8,7 +8,18 @@ import {
     setMaxPlayers,
     setPlayersJoined,
 } from "../store/Room/roomSlice"
-import { setInitialState, updatePlayerIds } from "../store/Game/gameSlice"
+import {
+    setInitialState,
+    updatePlayerIds,
+    setCurrentDiceRoll,
+    addSelectedDice,
+    takeTile,
+    stealTile,
+    returnTile,
+    nextPlayerTurn,
+    resetSelectedDice,
+    resetCurrentDiceRoll,
+} from "../store/Game/gameSlice"
 
 import { createInitialGameState } from "../store/Game/GameStateObject"
 
@@ -16,6 +27,8 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
     const [roomCode, setRoomCode] = useState<string | null>(null)
 
     useEffect(() => {
+        if (!socket) return
+
         const handleRoomCreated = ({
             roomCode,
             maxPlayers,
@@ -39,13 +52,11 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             playersJoined,
             maxPlayers,
             gameState,
-            
         }: {
             roomCode: string
             playersJoined: number
             maxPlayers: number
             gameState: PlainGameState
-            
         }) => {
             setRoomCode(roomCode)
             // ROOM SLICE
@@ -53,27 +64,61 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             dispatch(setMaxPlayers(maxPlayers))
             // GAME SLICE
             dispatch(setInitialState(gameState))
-            
         }
 
-        const PlayerJoinedListener = (playersJoined: number, playerIds: string[]) => {
+        const PlayerJoinedListener = (
+            playersJoined: number,
+            playerIds: string[]
+        ) => {
             socket.on(
                 "player-joined",
-                ({ playersJoined, playerIds }: { playersJoined: number, playerIds: string[] }) => {
+                ({
+                    playersJoined,
+                    playerIds,
+                }: {
+                    playersJoined: number
+                    playerIds: string[]
+                }) => {
                     // ROOM SLICE
                     dispatch(setPlayersJoined(playersJoined))
                     // GAME SLICE
                     dispatch(updatePlayerIds(playerIds))
-                    console.log("playerJoined")
                 }
             )
         }
 
-        const handleGameAction = ({ type, payload }: GameActionPayload) => {
-            console.log("Game action:", type, payload)
-            dispatch({ type, payload })
+        const handleGameAction = (type: string, payload: any) => {
+            switch (type) {
+                case "nextPlayerTurn":
+                    dispatch(nextPlayerTurn())
+                    break
+                case "selectDice":
+                    dispatch(addSelectedDice(payload))
+                    break
+                case "resetSelectedDice":
+                    dispatch(resetSelectedDice())
+                    break
+                case "rollDice":
+                    dispatch(setCurrentDiceRoll(payload))
+                    break
+                case "resetCurrentDiceRoll":
+                    dispatch(resetCurrentDiceRoll())
+                    break
+                case "takeTile":
+                    dispatch(takeTile(payload))
+                    break
+                case "stealTile":
+                    dispatch(stealTile(payload))
+                    break
+                case "returnTile":
+                    dispatch(returnTile())
+                    break
+                default:
+                    break
+            }
         }
 
+        // EVENT LISTENERS
         socket.on("room-created", (data) => {
             handleRoomCreated(data)
             PlayerJoinedListener(data.playerJoined, data.playerIds)
@@ -82,13 +127,14 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             handleRoomJoined(data)
             PlayerJoinedListener(data.playerJoined, data.playerIds)
         })
-        
-        socket.on("game-action", handleGameAction)
+
+        socket.on("game-action", ({ type, payload }) => {
+            handleGameAction(type, payload)
+        })
 
         return () => {
             socket.off("room-created", handleRoomCreated)
             socket.off("room-joined", handleRoomJoined)
-            
             socket.off("game-action", handleGameAction)
             // socket.off("player-joined", handlePlayerJoined);
         }
@@ -119,21 +165,16 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
                 { roomName, roomPass },
                 (roomCode: string) => {
                     resolve(roomCode)
-                    
                 }
             )
         })
     }
 
-    const playerAction = (type: string, payload: any) => {
-        if (roomCode) {
-            socket.emit("game-action", { roomCode, action: { type, payload } })
-        } else {
-            console.error("No room code available")
-        }
+    const sendPlayerAction = (type: string, payload: any) => {
+        socket.emit("game-action", { type, payload })
     }
 
-    return { roomCode, createRoom, joinRoom, playerAction }
+    return { roomCode, createRoom, joinRoom, sendPlayerAction }
 }
 
 export default useGameSocket

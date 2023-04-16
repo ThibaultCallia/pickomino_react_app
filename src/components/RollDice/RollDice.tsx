@@ -29,6 +29,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { DieInterface } from "../Die"
 import { RootState } from "../../store"
 import EndTurnModal from "../EndTurnModal/EndTurnModal"
+import socket from "../../socket"
+import { useGameSocketContext } from "../../contexts"
 
 const RollDice = () => {
     // HOOKS
@@ -38,9 +40,7 @@ const RollDice = () => {
     const toast = useToast()
     const toastId = "selectError"
     const dispatch = useDispatch()
-    const currentPlayer = useSelector(
-        (state: RootState) => state.game.currentPlayersTurn
-    )
+
     // NOT SURE IF LOWEST TILE IS AVAILABLE
     const lowestTileOnBoard = useSelector(
         (state: RootState) => state.game.tilesArray[0].value
@@ -48,36 +48,47 @@ const RollDice = () => {
     const showDiceTotal = useSelector(
         (state: RootState) => state.game.settings.selectedDiceTotal
     )
-    const selectedDice =
-        useSelector(
-            (state: RootState) =>
-                state.game.playerArray[currentPlayer]?.currentlySelectedDice
-        ) || []
-    const currentDiceRoll =
-        useSelector(
-            (state: RootState) =>
-                state.game.playerArray[currentPlayer]?.currentDiceRoll
-        ) || []
-    const playerArray = useSelector(
-        (state: RootState) => state.game.playerArray
+    const selectedDice = useSelector(
+        (state: RootState) => state.game.dice.currentlySelectedDice
     )
+
+    const currentDiceRoll = useSelector(
+        (state: RootState) => state.game.dice.currentDiceRoll
+    )
+
+    const currentPlayerId = useSelector(
+        (state: RootState) => state.game.currentPlayerId
+    )
+    const gameStatus = useSelector((state: RootState) => state.game.gameStatus)
+    const isCurrentUserPlaying =
+        socket.id === currentPlayerId && gameStatus === "playing"
+    const { sendPlayerAction } = useGameSocketContext()
+    console.log("rolldice rendering")
+    console.log("currenPlayerId: ", currentPlayerId)
+    console.log("socket.id: ", socket.id)
 
     // USE EFFECTS
     useEffect(() => {
         if (
             currentDiceRoll.length > 0 &&
-            !hasSelectableDice(selectedDice, currentDiceRoll)
+            !hasSelectableDice(selectedDice, currentDiceRoll) &&
+            isCurrentUserPlaying
         ) {
+            console.log("LVL1")
             dispatch(returnTile())
+            sendPlayerAction("returnTile", null)
             onOpen()
             return
         }
         // ADD CHECK WHETHER OTHER PLAYERS TILES ARE AVAILABLE TO STEAL
         if (
             currentDiceRoll.length > 0 &&
-            finalRollFailed(selectedDice, currentDiceRoll, lowestTileOnBoard)
+            finalRollFailed(selectedDice, currentDiceRoll, lowestTileOnBoard) &&
+            isCurrentUserPlaying
         ) {
+            console.log("LVL2")
             dispatch(returnTile())
+            sendPlayerAction("returnTile", null)
             onOpen()
             return
         }
@@ -86,9 +97,11 @@ const RollDice = () => {
     useEffect(() => {
         dispatch(resetCurrentDiceRoll())
         dispatch(resetSelectedDice())
+        sendPlayerAction("resetSelectedDice", null)
+        sendPlayerAction("resetCurrentDiceRoll", null)
         setRollDisabled(false)
         setSelectDisabled(true)
-    }, [currentPlayer])
+    }, [currentPlayerId])
 
     useEffect(() => {
         if (selectedDice.length > 0 && selectedDice.length < 8) {
@@ -99,9 +112,10 @@ const RollDice = () => {
     // FUNCTIONS
     const onRollClick = () => {
         setRollDisabled(true)
-        // if there are no selected dice, roll all dice
-        // Roll dice should not be able to be clicked if there are no selected dice atm
-        dispatch(setCurrentDiceRoll(rollDice(8 - selectedDice.length)))
+        const dice = rollDice(8 - selectedDice.length)
+
+        dispatch(setCurrentDiceRoll(dice))
+        sendPlayerAction("rollDice", dice)
     }
 
     const highlightDice = (value: string) => {
@@ -119,18 +133,7 @@ const RollDice = () => {
     }
 
     const selectDice = () => {
-        if (canSelect(selectedDice, currentDiceRoll)) {
-            toast.close(toastId)
-            setSelectDisabled(true)
-            dispatch(
-                addSelectedDice(
-                    currentDiceRoll
-                        .filter((die) => die.selected)
-                        .map((die) => ({ ...die, selected: false }))
-                )
-            )
-            dispatch(setCurrentDiceRoll([]))
-        } else {
+        if (!canSelect(selectedDice, currentDiceRoll)) {
             if (!toast.isActive(toastId)) {
                 toast({
                     id: toastId,
@@ -142,7 +145,25 @@ const RollDice = () => {
                     variant: "subtle",
                 })
             }
+            return
         }
+        toast.close(toastId)
+        setSelectDisabled(true)
+        const diceSelection = currentDiceRoll.reduce(
+            (acc: DieInterface[], die) => {
+                if (die.selected) {
+                    acc.push({ ...die, selected: false })
+                }
+                return acc
+            },
+            []
+        )
+
+        dispatch(addSelectedDice(diceSelection))
+        dispatch(setCurrentDiceRoll([]))
+        console.log("diceSelection", diceSelection)
+        sendPlayerAction("selectDice", diceSelection)
+        sendPlayerAction("rollDice", [])
     }
 
     // RENDER
@@ -198,7 +219,9 @@ const RollDice = () => {
                             direction="column"
                         >
                             <CustomButton
-                                isDisabled={rollDisabled}
+                                isDisabled={
+                                    rollDisabled || !isCurrentUserPlaying
+                                }
                                 onClick={onRollClick}
                             >
                                 Roll
@@ -228,7 +251,9 @@ const RollDice = () => {
                                 </SimpleGrid>
                             </Box>
                             <CustomButton
-                                isDisabled={selectDisabled}
+                                isDisabled={
+                                    selectDisabled || !isCurrentUserPlaying
+                                }
                                 onClick={selectDice}
                             >
                                 Select
@@ -242,11 +267,22 @@ const RollDice = () => {
                 onClose={() => {
                     onClose()
                     dispatch(nextPlayerTurn())
+                    sendPlayerAction("nextPlayerTurn", null)
+                    // Are you the current player? Otherwise you can't end your turn
+                    // if(isCurrentUserPlaying){
+                    //     dispatch(nextPlayerTurn())
+                    //     // sendPlayerAction("nextPlayerTurn", null)
+                    // }
                 }}
-                title="Your turn is over"
+                title={
+                    isCurrentUserPlaying
+                        ? "Your turn is over"
+                        : "Player's turn is over"
+                }
             >
-                One gamble too far. You have no selectable dice left. Your turn
-                is over.
+                {isCurrentUserPlaying
+                    ? "One gamble too far. You have no selectable dice left. Your turn is over."
+                    : "The current player has no selectable dice left. Their turn is over."}
             </EndTurnModal>
         </>
     )

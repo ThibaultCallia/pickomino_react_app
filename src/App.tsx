@@ -12,9 +12,12 @@ import { HomePage, AboutPage, HowToPlayPage } from "./pages"
 import { AnimatePresence } from "framer-motion"
 import React from "react"
 import "./app.css"
+import { useDispatch } from "react-redux"
+import { GameSocketProvider } from "./components"
 
 // Routing here?
 function App() {
+    const dispatch = useDispatch()
     const element = useRoutes([
         {
             path: "/",
@@ -44,11 +47,13 @@ function App() {
 
     return (
         <>
-            <NavBar />
-            <AnimatePresence mode="wait" initial={false}>
-                {React.cloneElement(element, { key: location.pathname })}
-            </AnimatePresence>
-            <Footer />
+            <GameSocketProvider dispatch={dispatch}>
+                <NavBar />
+                <AnimatePresence mode="wait" initial={false}>
+                    {React.cloneElement(element, { key: location.pathname })}
+                </AnimatePresence>
+                <Footer />
+            </GameSocketProvider>
         </>
     )
 }
