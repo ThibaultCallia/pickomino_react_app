@@ -55,9 +55,7 @@ const RollDice = () => {
     const currentDiceRoll = useSelector(
         (state: RootState) => state.game.dice.currentDiceRoll
     )
-    const currentPlayer = useSelector(
-        (state: RootState) => state.game.currentPlayersTurn
-    )
+    
     const currentPlayerId = useSelector(
         (state: RootState) => state.game.currentPlayerId
     )
@@ -65,8 +63,11 @@ const RollDice = () => {
     const isCurrentUserPlaying =
         socket.id === currentPlayerId && gameStatus === "playing"
     const { sendPlayerAction } = useGameSocketContext()
-
-    console.log("Component rendered")
+    console.log("rolldice rendering");
+    console.log("currenPlayerId: ", currentPlayerId);
+    console.log("socket.id: ", socket.id);
+    
+    
 
     // USE EFFECTS
     useEffect(() => {
@@ -92,9 +93,12 @@ const RollDice = () => {
     useEffect(() => {
         dispatch(resetCurrentDiceRoll())
         dispatch(resetSelectedDice())
+        sendPlayerAction("resetSelectedDice", null)
+        sendPlayerAction("resetCurrentDiceRoll", null)
         setRollDisabled(false)
         setSelectDisabled(true)
-    }, [currentPlayer])
+        
+    }, [currentPlayerId])
 
     useEffect(() => {
         if (selectedDice.length > 0 && selectedDice.length < 8) {
@@ -259,12 +263,18 @@ const RollDice = () => {
                 isOpen={isOpen}
                 onClose={() => {
                     onClose()
-                    dispatch(nextPlayerTurn())
+                    // Are yiou the current player? Otherwise you can't end your turn
+                    if(isCurrentUserPlaying){
+                        dispatch(nextPlayerTurn())
+                        sendPlayerAction("nextPlayerTurn", null)
+                        
+                    }
+                    
+                    
                 }}
-                title="Your turn is over"
+                title={isCurrentUserPlaying? "Your turn is over" : "Player's turn is over"}
             >
-                One gamble too far. You have no selectable dice left. Your turn
-                is over.
+                {isCurrentUserPlaying? "One gamble too far. You have no selectable dice left. Your turn is over." : "The current player has no selectable dice left. Their turn is over."}
             </EndTurnModal>
         </>
     )

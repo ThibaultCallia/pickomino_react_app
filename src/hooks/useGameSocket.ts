@@ -14,13 +14,16 @@ import {
     setCurrentDiceRoll,
     addSelectedDice,
     takeTile,
+    nextPlayerTurn,
+    resetSelectedDice,
+    resetCurrentDiceRoll
 } from "../store/Game/gameSlice"
 
 import { createInitialGameState } from "../store/Game/GameStateObject"
 
 const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
     const [roomCode, setRoomCode] = useState<string | null>(null)
-    console.log("useGameSocket called")
+    
 
     useEffect(() => {
         if (!socket) return
@@ -79,18 +82,27 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
                     dispatch(setPlayersJoined(playersJoined))
                     // GAME SLICE
                     dispatch(updatePlayerIds(playerIds))
-                    console.log("playerJoined")
+                    
                 }
             )
         }
 
         const handleGameAction = (type: string, payload: any) => {
             switch (type) {
+                case "nextPlayerTurn":
+                    dispatch(nextPlayerTurn())
+                    break
                 case "selectDice":
                     dispatch(addSelectedDice(payload))
                     break
+                case "resetSelectedDice":
+                    dispatch(resetSelectedDice())
+                    break
                 case "rollDice":
                     dispatch(setCurrentDiceRoll(payload))
+                    break
+                case "resetCurrentDiceRoll":
+                    dispatch(resetCurrentDiceRoll())
                     break
                 case "takeTile":
                     dispatch(takeTile(payload))
@@ -111,7 +123,7 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
         })
 
         socket.on("game-action", ({ type, payload }) => {
-            console.log(`handling game-action: ${type}`)
+            
             handleGameAction(type, payload)
         })
 
@@ -121,7 +133,7 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             socket.off("game-action", handleGameAction)
             // socket.off("player-joined", handlePlayerJoined);
         }
-    }, [socket, dispatch])
+    }, [])
 
     const createRoom = (
         roomName: string,

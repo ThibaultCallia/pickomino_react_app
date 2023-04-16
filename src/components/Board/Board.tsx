@@ -120,6 +120,7 @@ const Board = () => {
                 onClose={() => {
                     onClose()
                     dispatch(nextPlayerTurn())
+                    sendPlayerAction("nextPlayerTurn", null)
                 }}
                 title="End of turn"
             >
