@@ -24,26 +24,48 @@ const gameSlice = createSlice({
         ) => {
             return initialState
         },
-        updatePlayerIds: (state, { payload: playerIds }: PayloadAction<string[]>) => {
+        updatePlayerIds: (
+            state,
+            { payload: playerIds }: PayloadAction<string[]>
+        ) => {
             playerIds.forEach((id, index) => {
-                  state.playerArray[index].id = id;
-              });
+                state.playerArray[index].id = id
+            })
         },
-        startGame: ( state ) => {
+        startGame: (state) => {
             state.currentPlayerId = state.playerArray[0]?.id
             state.gameStatus = "playing"
         },
         nextPlayerTurn: (state) => {
             const currentPlayerIndex = state.playerArray.findIndex(
-              (player) => player.id === state.currentPlayerId
-            );
-            state.playerArray[currentPlayerIndex].isPlaying = false;
-          
-            const nextPlayerIndex = (currentPlayerIndex + 1) % state.playerArray.length;
-            state.playerArray[nextPlayerIndex].isPlaying = true;
-            state.currentPlayerId = state.playerArray[nextPlayerIndex].id;
-          },
-          
+                (player) => player.id === state.currentPlayerId
+            )
+            state.playerArray[currentPlayerIndex].isPlaying = false
+
+            const nextPlayerIndex =
+                (currentPlayerIndex + 1) % state.playerArray.length
+            state.playerArray[nextPlayerIndex].isPlaying = true
+            state.currentPlayerId = state.playerArray[nextPlayerIndex].id
+        },
+        addSelectedDice: (
+            state,
+            { payload: dice }: PayloadAction<DieInterface[]>
+        ) => {
+            state.dice.currentlySelectedDice.push(...dice)
+        },
+        resetSelectedDice: (state) => {
+            state.dice.currentlySelectedDice = []
+        },
+        setCurrentDiceRoll: (
+            state,
+            { payload: dice }: PayloadAction<DieInterface[]>
+        ) => {
+            state.dice.currentDiceRoll = dice
+        },
+        resetCurrentDiceRoll: (state) => {
+            state.dice.currentDiceRoll = []
+        },
+
         takeTile: (state, { payload: tileValue }: PayloadAction<number>) => {
             const tileIndex = state.tilesArray.findIndex(
                 (tile) => tile.value === tileValue
@@ -120,28 +142,7 @@ const gameSlice = createSlice({
                 )
             }
         },
-        addSelectedDice: (
-            state,
-            { payload: dice }: PayloadAction<DieInterface[]>
-        ) => {
-            state.playerArray[
-                state.currentPlayersTurn
-            ].currentlySelectedDice.push(...dice)
-        },
-        resetSelectedDice: (state) => {
-            state.playerArray.map(
-                (player) => (player.currentlySelectedDice = [])
-            )
-        },
-        setCurrentDiceRoll: (
-            state,
-            { payload: dice }: PayloadAction<DieInterface[]>
-        ) => {
-            state.playerArray[state.currentPlayersTurn].currentDiceRoll = dice
-        },
-        resetCurrentDiceRoll: (state) => {
-            state.playerArray.map((player) => (player.currentDiceRoll = []))
-        },
+
         toggleDiceTotal: (state) => {
             state.settings.selectedDiceTotal = !state.settings.selectedDiceTotal
         },
@@ -160,6 +161,6 @@ export const {
     setCurrentDiceRoll,
     resetCurrentDiceRoll,
     returnTile,
-    updatePlayerIds
+    updatePlayerIds,
 } = gameSlice.actions
 export default gameSlice.reducer

@@ -31,28 +31,30 @@ const MainView = () => {
     const playersJoined = useSelector(
         (state: RootState) => state.room.playersJoined
     )
-    const currentPlayerId = useSelector((state: RootState) => state.game.currentPlayerId);
-    const gameStatus = useSelector((state: RootState) => state.game.gameStatus);
-    const isCurrentUserPlaying = (socket.id === currentPlayerId && gameStatus === "playing");
+    const currentPlayerId = useSelector(
+        (state: RootState) => state.game.currentPlayerId
+    )
+    const gameStatus = useSelector((state: RootState) => state.game.gameStatus)
+    const isCurrentUserPlaying =
+        socket.id === currentPlayerId && gameStatus === "playing"
     const dispatch = useDispatch()
 
     useEffect(() => {
-        
         if (board.filter((tile) => !tile.disabled).length === 0) {
             onOpen()
         }
     }, [board])
 
     useEffect(() => {
-        if(playersJoined === maxPlayers) {
-            dispatch(startGame());
+        if (playersJoined === maxPlayers) {
+            dispatch(startGame())
         }
     }, [playersJoined])
 
     useEffect(() => {
-        if(gameStatus === "playing"){
-            console.log(`current player id: ${currentPlayerId}`);
-            console.log(`current user id: ${socket.id}`);
+        if (gameStatus === "playing") {
+            console.log(`current player id: ${currentPlayerId}`)
+            console.log(`current user id: ${socket.id}`)
         }
     }, [gameStatus])
     // RENDER
@@ -120,4 +122,3 @@ export default MainView
 function dispatch(arg0: { payload: undefined; type: "game/startGame" }) {
     throw new Error("Function not implemented.")
 }
-

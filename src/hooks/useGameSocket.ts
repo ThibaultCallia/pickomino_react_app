@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import socket from "../socket" // Update the path to your socket instance
 import { GameActionPayload } from "./"
 import { PayloadAction, Dispatch } from "@reduxjs/toolkit"
@@ -8,14 +8,23 @@ import {
     setMaxPlayers,
     setPlayersJoined,
 } from "../store/Room/roomSlice"
-import { setInitialState, updatePlayerIds, setCurrentDiceRoll, addSelectedDice } from "../store/Game/gameSlice"
+import {
+    setInitialState,
+    updatePlayerIds,
+    setCurrentDiceRoll,
+    addSelectedDice,
+} from "../store/Game/gameSlice"
 
 import { createInitialGameState } from "../store/Game/GameStateObject"
 
 const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
     const [roomCode, setRoomCode] = useState<string | null>(null)
+    console.log('useGameSocket called');
+    
 
     useEffect(() => {
+        if(!socket) return;
+
         const handleRoomCreated = ({
             roomCode,
             maxPlayers,
@@ -39,13 +48,11 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             playersJoined,
             maxPlayers,
             gameState,
-            
         }: {
             roomCode: string
             playersJoined: number
             maxPlayers: number
             gameState: PlainGameState
-            
         }) => {
             setRoomCode(roomCode)
             // ROOM SLICE
@@ -53,13 +60,21 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             dispatch(setMaxPlayers(maxPlayers))
             // GAME SLICE
             dispatch(setInitialState(gameState))
-            
         }
 
-        const PlayerJoinedListener = (playersJoined: number, playerIds: string[]) => {
+        const PlayerJoinedListener = (
+            playersJoined: number,
+            playerIds: string[]
+        ) => {
             socket.on(
                 "player-joined",
-                ({ playersJoined, playerIds }: { playersJoined: number, playerIds: string[] }) => {
+                ({
+                    playersJoined,
+                    playerIds,
+                }: {
+                    playersJoined: number
+                    playerIds: string[]
+                }) => {
                     // ROOM SLICE
                     dispatch(setPlayersJoined(playersJoined))
                     // GAME SLICE
@@ -69,8 +84,11 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             )
         }
 
-        const handleGameAction = (type:string, payload:any) => {
+        const handleGameAction = (type: string, payload: any) => {
             switch (type) {
+              case "selectDice":
+                dispatch(addSelectedDice(payload));
+                break;
               case "rollDice":
                 dispatch(setCurrentDiceRoll(payload));
                 break;
@@ -78,6 +96,9 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
                 break;
             }
           };
+          
+          
+          
 
         // EVENT LISTENERS
         socket.on("room-created", (data) => {
@@ -88,20 +109,19 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             handleRoomJoined(data)
             PlayerJoinedListener(data.playerJoined, data.playerIds)
         })
-        
-        socket.on("game-action", ( {type, payload} ) => {
-            console.log(`game-action: ${type}`);
-            handleGameAction(type, payload);
-          });
+
+        socket.on("game-action", ({ type, payload }) => {
+            console.log(`handling game-action: ${type}`)
+            handleGameAction(type, payload)
+        })
 
         return () => {
             socket.off("room-created", handleRoomCreated)
             socket.off("room-joined", handleRoomJoined)
-            
             socket.off("game-action", handleGameAction)
             // socket.off("player-joined", handlePlayerJoined);
         }
-    }, [])
+    }, [socket, dispatch])
 
     const createRoom = (
         roomName: string,
@@ -128,7 +148,6 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
                 { roomName, roomPass },
                 (roomCode: string) => {
                     resolve(roomCode)
-                    
                 }
             )
         })
@@ -136,7 +155,7 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
 
     const sendPlayerAction = (type: string, payload: any) => {
         
-            socket.emit("game-action", { type, payload })
+        socket.emit("game-action", { type, payload })
     }
 
     return { roomCode, createRoom, joinRoom, sendPlayerAction }
