@@ -72,10 +72,26 @@ const gameSlice = createSlice({
             )
             const tile = state.tilesArray[tileIndex]
             state.tilesArray.splice(tileIndex, 1)
-            state.playerArray[state.currentPlayersTurn].collectedTiles.push({
+            const currentPlayerIndex = state.playerArray.findIndex(
+                (player) => player.id === state.currentPlayerId
+            )
+            state.playerArray[currentPlayerIndex].collectedTiles.push({
                 ...tile,
                 selected: true,
             })
+        },
+        stealTile: (state, { payload: playerId }: PayloadAction<string>) => {
+            const stolenTile = state.playerArray
+                .find((player) => player.id === playerId)
+                ?.collectedTiles.pop()
+            if (stolenTile) {
+                const currentPlayerIndex = state.playerArray.findIndex(
+                    (player) => player.id === state.currentPlayerId
+                )
+                state.playerArray[currentPlayerIndex].collectedTiles.push(
+                    stolenTile
+                )
+            }
         },
         returnTile: (state) => {
             const disabledHighestTile = () => {
@@ -94,9 +110,13 @@ const gameSlice = createSlice({
                 })
                 state.tilesArray[highestTileIndex].disabled = true
             }
+            const currentPlayerIndex = state.playerArray.findIndex(
+                (player) => player.id === state.currentPlayerId
+            )
+            console.log(currentPlayerIndex, "---------------------")
             const tile =
-                state.playerArray[state.currentPlayersTurn].collectedTiles.pop()
-
+                state.playerArray[currentPlayerIndex].collectedTiles.pop()
+            console.log(tile, "---------------------")
             if (tile) {
                 // ---------------------------------------------- Put tile on board
                 // Find the index of the first tile with a value higher than the returned tile
@@ -130,16 +150,6 @@ const gameSlice = createSlice({
                 }
             } else {
                 disabledHighestTile()
-            }
-        },
-        stealTile: (state, { payload: playerId }: PayloadAction<string>) => {
-            const stolenTile = state.playerArray
-                .find((player) => player.id === playerId)
-                ?.collectedTiles.pop()
-            if (stolenTile) {
-                state.playerArray[state.currentPlayersTurn].collectedTiles.push(
-                    stolenTile
-                )
             }
         },
 

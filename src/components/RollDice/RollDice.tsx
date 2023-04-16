@@ -55,7 +55,7 @@ const RollDice = () => {
     const currentDiceRoll = useSelector(
         (state: RootState) => state.game.dice.currentDiceRoll
     )
-    
+
     const currentPlayerId = useSelector(
         (state: RootState) => state.game.currentPlayerId
     )
@@ -63,28 +63,32 @@ const RollDice = () => {
     const isCurrentUserPlaying =
         socket.id === currentPlayerId && gameStatus === "playing"
     const { sendPlayerAction } = useGameSocketContext()
-    console.log("rolldice rendering");
-    console.log("currenPlayerId: ", currentPlayerId);
-    console.log("socket.id: ", socket.id);
-    
-    
+    console.log("rolldice rendering")
+    console.log("currenPlayerId: ", currentPlayerId)
+    console.log("socket.id: ", socket.id)
 
     // USE EFFECTS
     useEffect(() => {
         if (
             currentDiceRoll.length > 0 &&
-            !hasSelectableDice(selectedDice, currentDiceRoll)
+            !hasSelectableDice(selectedDice, currentDiceRoll) &&
+            isCurrentUserPlaying
         ) {
+            console.log("LVL1")
             dispatch(returnTile())
+            sendPlayerAction("returnTile", null)
             onOpen()
             return
         }
         // ADD CHECK WHETHER OTHER PLAYERS TILES ARE AVAILABLE TO STEAL
         if (
             currentDiceRoll.length > 0 &&
-            finalRollFailed(selectedDice, currentDiceRoll, lowestTileOnBoard)
+            finalRollFailed(selectedDice, currentDiceRoll, lowestTileOnBoard) &&
+            isCurrentUserPlaying
         ) {
+            console.log("LVL2")
             dispatch(returnTile())
+            sendPlayerAction("returnTile", null)
             onOpen()
             return
         }
@@ -97,7 +101,6 @@ const RollDice = () => {
         sendPlayerAction("resetCurrentDiceRoll", null)
         setRollDisabled(false)
         setSelectDisabled(true)
-        
     }, [currentPlayerId])
 
     useEffect(() => {
@@ -263,18 +266,23 @@ const RollDice = () => {
                 isOpen={isOpen}
                 onClose={() => {
                     onClose()
-                    // Are yiou the current player? Otherwise you can't end your turn
-                    if(isCurrentUserPlaying){
-                        dispatch(nextPlayerTurn())
-                        sendPlayerAction("nextPlayerTurn", null)
-                        
-                    }
-                    
-                    
+                    dispatch(nextPlayerTurn())
+                    sendPlayerAction("nextPlayerTurn", null)
+                    // Are you the current player? Otherwise you can't end your turn
+                    // if(isCurrentUserPlaying){
+                    //     dispatch(nextPlayerTurn())
+                    //     // sendPlayerAction("nextPlayerTurn", null)
+                    // }
                 }}
-                title={isCurrentUserPlaying? "Your turn is over" : "Player's turn is over"}
+                title={
+                    isCurrentUserPlaying
+                        ? "Your turn is over"
+                        : "Player's turn is over"
+                }
             >
-                {isCurrentUserPlaying? "One gamble too far. You have no selectable dice left. Your turn is over." : "The current player has no selectable dice left. Their turn is over."}
+                {isCurrentUserPlaying
+                    ? "One gamble too far. You have no selectable dice left. Your turn is over."
+                    : "The current player has no selectable dice left. Their turn is over."}
             </EndTurnModal>
         </>
     )

@@ -8,7 +8,6 @@ import { EndTurnModal } from "../EndTurnModal"
 import socket from "../../socket"
 import { useGameSocketContext } from "../../contexts"
 
-
 const Board = () => {
     // HOOKS
     const gameState = useSelector((state: RootState) => state.game)
@@ -30,10 +29,10 @@ const Board = () => {
     const toast = useToast()
     const rocketToastId = "rocketToast"
     const diceToastId = "diceToast"
-    const currentDiceRoll =
-        useSelector((state: RootState) => state.game.dice.currentDiceRoll)
+    const currentDiceRoll = useSelector(
+        (state: RootState) => state.game.dice.currentDiceRoll
+    )
     const { sendPlayerAction } = useGameSocketContext()
-
 
     //   FUNCTIONS
     const onTileClick = (tileValue: number) => {

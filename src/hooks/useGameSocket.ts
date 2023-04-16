@@ -14,16 +14,17 @@ import {
     setCurrentDiceRoll,
     addSelectedDice,
     takeTile,
+    stealTile,
+    returnTile,
     nextPlayerTurn,
     resetSelectedDice,
-    resetCurrentDiceRoll
+    resetCurrentDiceRoll,
 } from "../store/Game/gameSlice"
 
 import { createInitialGameState } from "../store/Game/GameStateObject"
 
 const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
     const [roomCode, setRoomCode] = useState<string | null>(null)
-    
 
     useEffect(() => {
         if (!socket) return
@@ -82,7 +83,6 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
                     dispatch(setPlayersJoined(playersJoined))
                     // GAME SLICE
                     dispatch(updatePlayerIds(playerIds))
-                    
                 }
             )
         }
@@ -107,6 +107,12 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
                 case "takeTile":
                     dispatch(takeTile(payload))
                     break
+                case "stealTile":
+                    dispatch(stealTile(payload))
+                    break
+                case "returnTile":
+                    dispatch(returnTile())
+                    break
                 default:
                     break
             }
@@ -123,7 +129,6 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
         })
 
         socket.on("game-action", ({ type, payload }) => {
-            
             handleGameAction(type, payload)
         })
 

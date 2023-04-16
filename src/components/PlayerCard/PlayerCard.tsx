@@ -16,50 +16,44 @@ import { Tile } from "../Tile"
 import { EndTurnModal } from "../EndTurnModal"
 import { totalDiceValue } from "../../helpers"
 import { stealTile, nextPlayerTurn } from "../../store/Game/gameSlice"
+import { useGameSocketContext } from "../../contexts"
 
 function PlayerCard({ name, collectedTiles, id }: PlainPlayer) {
     // USE STATES
     const [isHovered, setIsHovered] = useState<boolean>(false)
     const selectedDice =
         useSelector(
-            (state: RootState) =>
-                state.game.playerArray[state.game.currentPlayersTurn]
-                    ?.currentlySelectedDice
+            (state: RootState) => state.game.dice.currentlySelectedDice
         ) || []
     const currentPlayerId = useSelector(
-        (state: RootState) =>
-            state.game.playerArray[state.game.currentPlayersTurn]?.id
+        (state: RootState) => state.game.currentPlayerId
     )
     const currentDiceRoll =
-        useSelector(
-            (state: RootState) =>
-                state.game.playerArray[state.game.currentPlayersTurn]
-                    ?.currentDiceRoll
-        ) || []
+        useSelector((state: RootState) => state.game.dice.currentDiceRoll) || []
     const { isOpen, onOpen, onClose } = useDisclosure()
     const dispatch = useDispatch()
     const toast = useToast()
     const toastId = "stealError"
+    const { sendPlayerAction } = useGameSocketContext()
 
     // FUNCTIONS
     const stealPlayerTile = (toStealPlayerId: string, tileValue: number) => {
-        if (currentDiceRoll.length !== 0) {
-            if (!toast.isActive(toastId)) {
-                toast({
-                    title: "You must choose a die ",
-                    status: "error",
-                    duration: 5000,
-                    isClosable: true,
-                    id: toastId,
-                    variant: "subtle",
-                })
+        if (toStealPlayerId !== currentPlayerId) {
+            if (currentDiceRoll.length !== 0) {
+                if (!toast.isActive(toastId)) {
+                    toast({
+                        title: "You must choose a die ",
+                        status: "error",
+                        duration: 5000,
+                        isClosable: true,
+                        id: toastId,
+                        variant: "subtle",
+                    })
+                }
+                return
             }
-        } else if (toStealPlayerId !== currentPlayerId) {
-            if (totalDiceValue(selectedDice) === tileValue) {
-                toast.close(toastId)
-                dispatch(stealTile(toStealPlayerId))
-                onOpen()
-            } else {
+
+            if (totalDiceValue(selectedDice) !== tileValue) {
                 if (!toast.isActive(toastId)) {
                     toast({
                         title: "You can't steal that tile",
@@ -72,7 +66,12 @@ function PlayerCard({ name, collectedTiles, id }: PlainPlayer) {
                         variant: "subtle",
                     })
                 }
+                return
             }
+            toast.close(toastId)
+            dispatch(stealTile(toStealPlayerId))
+            sendPlayerAction("stealTile", toStealPlayerId)
+            onOpen()
         }
 
         // small error message next to tile if no
@@ -134,6 +133,7 @@ function PlayerCard({ name, collectedTiles, id }: PlainPlayer) {
                 onClose={() => {
                     onClose()
                     dispatch(nextPlayerTurn())
+                    sendPlayerAction("nextPlayerTurn", null)
                 }}
                 title="End of turn"
             >
