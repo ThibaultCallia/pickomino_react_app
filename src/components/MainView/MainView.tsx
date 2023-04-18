@@ -15,6 +15,7 @@ import { useGameSocket } from "../../hooks"
 import { JoinRoomForm } from "../JoinRoomForm"
 import { CreateRoomForm } from "../CreateRoomForm"
 import { startGame } from "../../store/Game/gameSlice"
+import { WaitingForPlayers } from "../WaitingForPlayers"
 
 const MainView = () => {
     // USE STATES
@@ -90,14 +91,7 @@ const MainView = () => {
                 </>
             ) : playersJoined !== maxPlayers ? (
                 <>
-                    <Box>
-                        <Text fontSize="xl" fontWeight="bold">
-                            Waiting for players...
-                        </Text>
-                        <Text fontSize="lg">
-                            {playersJoined}/{maxPlayers} players joined
-                        </Text>
-                    </Box>
+                <WaitingForPlayers/>
                 </>
             ) : (
                 <>
@@ -110,7 +104,6 @@ const MainView = () => {
                         <RollDice />
                     </Stack>
                     <button onClick={onOpen}>winner modal test</button>
-                    <Button isDisabled={!isCurrentUserPlaying}>PLAYTEST</Button>
                     <GameOverModal isOpen={isOpen} onClose={onClose} />
                 </>
             )}
@@ -119,6 +112,4 @@ const MainView = () => {
 }
 
 export default MainView
-function dispatch(arg0: { payload: undefined; type: "game/startGame" }) {
-    throw new Error("Function not implemented.")
-}
+
