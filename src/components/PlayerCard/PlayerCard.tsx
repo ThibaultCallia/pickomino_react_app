@@ -105,7 +105,6 @@ function PlayerCard({ name, collectedTiles, id }: PlainPlayer) {
                 </Box>
 
                 <Text fontWeight="bold">{name}</Text>
-                <Text fontWeight="bold">{id}</Text>
 
                 <Collapse in={isHovered}>
                     {/* <Image  mx = "auto" boxSize="50px" mt={4} src="/PP_mini_logo.png" borderRadius="lg" /> */}

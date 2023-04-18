@@ -91,7 +91,7 @@ const MainView = () => {
                 </>
             ) : playersJoined !== maxPlayers ? (
                 <>
-                <WaitingForPlayers/>
+                    <WaitingForPlayers />
                 </>
             ) : (
                 <>
@@ -103,7 +103,7 @@ const MainView = () => {
                         </Text>
                         <RollDice />
                     </Stack>
-                    <button onClick={onOpen}>winner modal test</button>
+                    {/* <button onClick={onOpen}>winner modal test</button> */}
                     <GameOverModal isOpen={isOpen} onClose={onClose} />
                 </>
             )}
@@ -112,4 +112,3 @@ const MainView = () => {
 }
 
 export default MainView
-

@@ -15,17 +15,19 @@ const TileContent = ({ points, value }: { points: number; value: number }) => {
     return (
         <>
             <Center flex="1">
-                <Text fontSize="xl" fontWeight="bold">
+                <Text my="1" fontSize="l" fontWeight="bold">
                     {value}
                 </Text>
             </Center>
+            
             <Center flex="1">
                 <Image
                     src={imageSrc}
-                    alt={`Image for ${points} points`}
-                    width="1cm"
-                    height="1cm"
-                    objectFit="cover"
+                    alt={`Image for ${points} planets`}
+                    width="40px"
+                    height="40px"
+                    objectFit={"contain"}
+                    
                 />
             </Center>
         </>
@@ -35,14 +37,22 @@ const TileContent = ({ points, value }: { points: number; value: number }) => {
 function Tile({ value, points, onTileClick, selected, disabled }: PlainTile) {
     return (
         <Button
+        // change width if selected
+            width="55px"
+            
+            px={0}
+            py={1}
             variant="outline"
             height="auto"
-            boxShadow={"lg"}
+            boxShadow={"md"}
             onClick={disabled ? undefined : onTileClick}
             cursor={disabled ? "default" : onTileClick ? "pointer" : "default"}
             overflow="hidden"
             position="relative"
             isDisabled={disabled && !selected}
+            _hover={{
+                boxShadow: "lg",
+            }}
             _disabled={{
                 opacity: 0.3,
                 cursor: "default",
@@ -50,11 +60,11 @@ function Tile({ value, points, onTileClick, selected, disabled }: PlainTile) {
             }}
         >
             {selected ? (
-                <HStack width="100%" spacing={0}>
+                <HStack  spacing={0}>
                     <TileContent points={points} value={value} />
                 </HStack>
             ) : (
-                <VStack height="100%" spacing={0}>
+                <VStack  spacing={0}>
                     <TileContent points={points} value={value} />
                 </VStack>
             )}
