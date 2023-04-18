@@ -178,10 +178,7 @@ const RollDice = () => {
     // RENDER
     return (
         <>
-            <Box 
-                borderWidth="4px" 
-                borderRadius="lg" p={4}
-            >
+            <Box borderWidth="4px" borderRadius="lg" p={4}>
                 <Flex
                     direction={{ base: "column", sm: "row" }}
                     justify="center"

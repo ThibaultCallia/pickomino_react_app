@@ -7,14 +7,16 @@ import socket from "../../socket"
 
 function PlayerInfo() {
     // HOOKS
-    const otherPlayers = useSelector((state: RootState) => state.game).playerArray.filter(player=>player.id !== socket.id);
-    
+    const otherPlayers = useSelector(
+        (state: RootState) => state.game
+    ).playerArray.filter((player) => player.id !== socket.id)
 
     // RENDER
     return (
         <SimpleGrid
-            spacing={4}
-            templateColumns="repeat(auto-fill, minmax(150px, 1fr))"
+            spacing={1}
+            columns={3}
+            // templateColumns="repeat(auto-fill, minmax(150px, 1fr))"
             mt={4}
         >
             {otherPlayers.map((player, index) => {

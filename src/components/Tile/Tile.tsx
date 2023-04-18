@@ -19,7 +19,7 @@ const TileContent = ({ points, value }: { points: number; value: number }) => {
                     {value}
                 </Text>
             </Center>
-            
+
             <Center flex="1">
                 <Image
                     src={imageSrc}
@@ -27,7 +27,6 @@ const TileContent = ({ points, value }: { points: number; value: number }) => {
                     width="40px"
                     height="40px"
                     objectFit={"contain"}
-                    
                 />
             </Center>
         </>
@@ -37,14 +36,14 @@ const TileContent = ({ points, value }: { points: number; value: number }) => {
 function Tile({ value, points, onTileClick, selected, disabled }: PlainTile) {
     return (
         <Button
-        // change width if selected
+            // change width if selected
             width="55px"
-            
+            mr = {selected ? "5px" : "0"}
             px={0}
             py={1}
             variant="outline"
             height="auto"
-            boxShadow={"md"}
+            boxShadow={selected ? "none"  : "md"}
             onClick={disabled ? undefined : onTileClick}
             cursor={disabled ? "default" : onTileClick ? "pointer" : "default"}
             overflow="hidden"
@@ -58,16 +57,13 @@ function Tile({ value, points, onTileClick, selected, disabled }: PlainTile) {
                 cursor: "default",
                 boxShadow: "none",
             }}
+
         >
-            {selected ? (
-                <HStack  spacing={0}>
-                    <TileContent points={points} value={value} />
-                </HStack>
-            ) : (
-                <VStack  spacing={0}>
+            
+                <VStack spacing={0}>
                     <TileContent points={points} value={value} />
                 </VStack>
-            )}
+            
         </Button>
     )
 }
