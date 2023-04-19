@@ -1,4 +1,4 @@
-import "../../styles/components/mainView.scss"
+
 
 import { useEffect, useState } from "react"
 import { Text, Box, Stack, useDisclosure, Button } from "@chakra-ui/react"
@@ -11,20 +11,19 @@ import { RootState } from "../../store"
 import { GameOverModal } from "../GameOverModal"
 import { motion, useIsPresent } from "framer-motion"
 import socket from "../../socket"
-import { useGameSocket } from "../../hooks"
+
 import { JoinRoomForm } from "../JoinRoomForm"
 import { CreateRoomForm } from "../CreateRoomForm"
 import { startGame } from "../../store/Game/gameSlice"
 import { WaitingForPlayers } from "../WaitingForPlayers"
+import { GamePlay } from "../GamePlay"
 
 const MainView = () => {
     // USE STATES
     const [numOfPlayers, setNumOfPlayers] = useState<number | null>(null)
-    const currentPlayer = useSelector(
-        (state: RootState) => state.game.currentPlayersTurn
-    )
+    
     const board = useSelector((state: RootState) => state.game.tilesArray)
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { onOpen } = useDisclosure()
     const isPresent = useIsPresent()
 
     const roomCode = useSelector((state: RootState) => state.room.roomCode)
@@ -36,8 +35,7 @@ const MainView = () => {
         (state: RootState) => state.game.currentPlayerId
     )
     const gameStatus = useSelector((state: RootState) => state.game.gameStatus)
-    const isCurrentUserPlaying =
-        socket.id === currentPlayerId && gameStatus === "playing"
+    
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -70,6 +68,8 @@ const MainView = () => {
             width="90%"
             mx="auto"
             maxW={650}
+            
+            
         >
             {!roomCode ? (
                 <>
@@ -90,22 +90,9 @@ const MainView = () => {
                     />
                 </>
             ) : playersJoined !== maxPlayers ? (
-                <>
-                    <WaitingForPlayers />
-                </>
+                <WaitingForPlayers />
             ) : (
-                <>
-                    <PlayerInfo />
-                    <Board />
-                    <Stack spacing={2}>
-                        <Text fontWeight={"bold"}>
-                            Player {currentPlayer + 1}'s turn
-                        </Text>
-                        <RollDice />
-                    </Stack>
-                    {/* <button onClick={onOpen}>winner modal test</button> */}
-                    <GameOverModal isOpen={isOpen} onClose={onClose} />
-                </>
+                <GamePlay />
             )}
         </Box>
     )

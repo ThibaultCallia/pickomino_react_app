@@ -1,9 +1,7 @@
 import { NavBar, MainView, Footer } from "./components"
 
 import {
-    BrowserRouter,
-    Routes,
-    Route,
+    
     useRoutes,
     useLocation,
 } from "react-router-dom"
@@ -14,6 +12,7 @@ import React from "react"
 import "./app.css"
 import { useDispatch } from "react-redux"
 import { GameSocketProvider } from "./components"
+import { Box } from "@chakra-ui/react"
 
 // Routing here?
 function App() {
@@ -53,6 +52,7 @@ function App() {
                     {React.cloneElement(element, { key: location.pathname })}
                 </AnimatePresence>
                 <Footer />
+            
             </GameSocketProvider>
         </>
     )

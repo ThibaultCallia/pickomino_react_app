@@ -40,13 +40,15 @@ function PlayerCard({ name, collectedTiles, id }: PlainPlayer) {
     const toast = useToast()
     const toastId = "stealError"
     const { sendPlayerAction } = useGameSocketContext()
-    const hoverStyles = collectedTiles.length > 0 ? {
-        _hover: {
-          ".card-image": { display: "none" },
-          ".card-tile": { display: "flex" },
-        },
-        
-      } : {};
+    const hoverStyles =
+        collectedTiles.length > 0
+            ? {
+                  _hover: {
+                      ".card-image": { display: "none" },
+                      ".card-tile": { display: "flex" },
+                  },
+              }
+            : {}
 
     // FUNCTIONS
     const stealPlayerTile = (toStealPlayerId: string, tileValue: number) => {
@@ -91,11 +93,10 @@ function PlayerCard({ name, collectedTiles, id }: PlainPlayer) {
     // RENDER
     return (
         <>
-            <Center cursor={"pointer"} >
+            <Box cursor={"pointer"} display="flex" minW={"6rem"} mr={2}>
                 <Box
                     rounded={"sm"}
                     my={2}
-                    
                     overflow={"hidden"}
                     bg="white"
                     border={"1px"}
@@ -118,50 +119,58 @@ function PlayerCard({ name, collectedTiles, id }: PlainPlayer) {
                             mb={2}
                         >
                             <Text fontSize={"xs"} fontWeight="medium">
-                                {`${collectedTiles.length} ${collectedTiles.length === 1 ? "tile" : "tiles"}`}
+                                {`${collectedTiles.length} ${
+                                    collectedTiles.length === 1
+                                        ? "tile"
+                                        : "tiles"
+                                }`}
                             </Text>
                         </Box>
-                        <Heading h="2.5rem" w={"6rem"} color={"black"} fontSize={"sm"} noOfLines={2}>
+                        <Heading
+                            h="2.5rem"
+                            w={"6rem"}
+                            color={"black"}
+                            fontSize={"sm"}
+                            noOfLines={2}
+                        >
                             {name}
                         </Heading>
-                        
                     </Box>
-                    <Box  display={"flex"} flexDirection="column" justifyContent={"center"} >
-                        <Box
-                            className="card-image" 
-                            h="full"
-                            w="60px"
-                            >
-                        <Img
-                            src={
-                                "/game_art/planetary_pirates_art.jpg"
-                            }
-                            // roundedTop={"sm"}
-                            objectFit="cover"
-                            alt={"Image"}
-                            h="full"
-                            w="60px"
-                        />
+                    <Box
+                        display={"flex"}
+                        flexDirection="column"
+                        justifyContent={"center"}
+                    >
+                        <Box className="card-image" h="full" w="60px">
+                            <Img
+                                src={"/game_art/planetary_pirates_art.jpg"}
+                                // roundedTop={"sm"}
+                                objectFit="cover"
+                                alt={"Image"}
+                                h="full"
+                                w="60px"
+                            />
                         </Box>
                         <Box className="card-tile" display={"none"}>
-                        {collectedTiles.length > 0 && (
-                        <Tile
-                            {...collectedTiles[collectedTiles.length - 1]}
-                            onTileClick={() =>
-                                stealPlayerTile(
-                                    id,
-                                    collectedTiles[collectedTiles.length - 1]
-                                        .value
-                                )
-                            }
-                        ></Tile>
-                    )}
+                            {collectedTiles.length > 0 && (
+                                <Tile
+                                    {...collectedTiles[
+                                        collectedTiles.length - 1
+                                    ]}
+                                    onTileClick={() =>
+                                        stealPlayerTile(
+                                            id,
+                                            collectedTiles[
+                                                collectedTiles.length - 1
+                                            ].value
+                                        )
+                                    }
+                                ></Tile>
+                            )}
                         </Box>
                     </Box>
-                    
-                    
                 </Box>
-            </Center>
+            </Box>
             <EndTurnModal
                 isOpen={isOpen}
                 onClose={() => {

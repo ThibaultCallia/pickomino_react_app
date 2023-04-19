@@ -1,16 +1,13 @@
 import {
     Box,
-    Button,
     Center,
     Flex,
     SimpleGrid,
     Stack,
     Tag,
-    useBreakpointValue,
     useDisclosure,
     useToast,
     Text,
-    StackDivider,
 } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
 import {
@@ -64,6 +61,7 @@ const RollDice = () => {
     const currentPlayerId = useSelector(
         (state: RootState) => state.game.currentPlayerId
     )
+
     const gameStatus = useSelector((state: RootState) => state.game.gameStatus)
     const isCurrentUserPlaying =
         socket.id === currentPlayerId && gameStatus === "playing"
@@ -76,6 +74,7 @@ const RollDice = () => {
 
     const diceAreaWidth = "190px"
     const diceAreaHeight = "95px"
+
     // USE EFFECTS
     useEffect(() => {
         if (
@@ -178,9 +177,9 @@ const RollDice = () => {
     // RENDER
     return (
         <>
-            <Box borderWidth="4px" borderRadius="lg" p={4}>
+            <Box border = "1px solid black"  borderRadius="sm" p={4}>
                 <Flex
-                    direction={{ base: "column", sm: "row" }}
+                    direction={{ base: "column", md: "row" }}
                     justify="center"
                     gap={4}
                 >

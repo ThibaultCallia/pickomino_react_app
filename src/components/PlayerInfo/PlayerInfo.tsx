@@ -13,12 +13,7 @@ function PlayerInfo() {
 
     // RENDER
     return (
-        <SimpleGrid
-            spacing={1}
-            columns={3}
-            // templateColumns="repeat(auto-fill, minmax(150px, 1fr))"
-            mt={4}
-        >
+        <SimpleGrid spacing={1} columns={3} alignItems="flex-start" mt={4}>
             {otherPlayers.map((player, index) => {
                 return <PlayerCard key={index} {...player} />
             })}
