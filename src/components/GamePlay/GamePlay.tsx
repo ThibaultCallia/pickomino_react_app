@@ -1,4 +1,4 @@
-import { Stack, Text, useDisclosure } from "@chakra-ui/react"
+import { Stack, Text, useDisclosure, Box } from "@chakra-ui/react"
 import { Board } from "../Board"
 import { GameOverModal } from "../GameOverModal"
 import { PlayerInfo } from "../PlayerInfo"
@@ -31,11 +31,13 @@ function GamePlay() {
             <PlayerInfo />
             <Board />
             <Stack spacing={2}>
-                <Text fontWeight={"bold"}>
-                    {`${
-                        isCurrentUserPlaying ? "Your" : `${currenPlayerName}'s`
-                    } turn`}
-                </Text>
+                <Box backgroundColor={"hsl(46, 83%, 61%)"} mb={3}>
+                    <Text fontWeight={"bolder"} textAlign="center" fontSize={"xl"}>
+                        {`${
+                            isCurrentUserPlaying ? "Your" : `${currenPlayerName}'s`
+                        } turn`}
+                    </Text>
+                </Box>
                 <RollDice />
             </Stack>
             {/* <button onClick={onOpen}>winner modal test</button> */}

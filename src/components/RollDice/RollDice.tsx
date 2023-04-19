@@ -8,6 +8,7 @@ import {
     useDisclosure,
     useToast,
     Text,
+    useMediaQuery,
 } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
 import {
@@ -72,7 +73,7 @@ const RollDice = () => {
     console.log("currenPlayerId: ", currentPlayerId)
     console.log("socket.id: ", socket.id)
     const yourInfo = useSelector((state: RootState) => state.game.playerArray.find((player) => player.id === socket.id))
-    
+    const [isMobile] = useMediaQuery("(max-width: 615px)")
 
     // const buttonSize = useBreakpointValue({ base: "sm", md: "lg", lg: "lg" })
 
@@ -181,23 +182,36 @@ const RollDice = () => {
     // RENDER
     return (
         <>
-            <Box  borderRadius="sm" >
+            <Box  
+                
+                >
                 <Flex
                     direction={{ base: "column", md: "row" }}
                     justify="center"
                     gap={4}
+                    alignItems="stretch"
                     
                 >
-                    <Box p={2} borderRadius="sm" >
-                    <Center>
-                            <Text fontWeight="bold">You</Text>
-                        </Center>
-                        <Center>
+                    <Box p={2}  >
+                    
+                        <Center >
                             
                             {yourInfo && <PlayerCard player={yourInfo}/>}
                         </Center>
                     </Box>
-                    <Box p={2} >
+                    <Box p={2} 
+                    border={"1px"}
+                    borderColor="black"
+                    boxShadow= "3px 3px 0 black"
+                    backgroundImage={"./game_art/cloudsL.png"} 
+                    backgroundRepeat={"no-repeat"} 
+                    backgroundPosition={" center bottom"} 
+                    // change this to 70% for mobile
+                    backgroundSize={isMobile ? "70%" : "90%"}
+                    
+                    minH={"200px"}
+                    
+                    >
                         <Center>
                             <Text fontWeight="bold">Selected Dice</Text>
                         </Center>
@@ -205,9 +219,10 @@ const RollDice = () => {
                         <Center>
                             <Box
                                 my={2}
-                                // border = {"1px solid green"}
                                 width={diceAreaWidth}
                                 height={diceAreaHeight}
+                                
+                
                             >
                                 <SimpleGrid columns={4} spacing={2}>
                                     {selectedDice.length > 0 &&
@@ -245,6 +260,9 @@ const RollDice = () => {
                         display="flex"
                         flexDirection="column"
                         alignItems="center"
+                        border={"1px"}
+                        borderColor="black"
+                        boxShadow= "3px 3px 0 black"
                         
                         
                         p={2}
