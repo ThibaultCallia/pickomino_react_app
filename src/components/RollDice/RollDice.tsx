@@ -75,9 +75,7 @@ const RollDice = () => {
     const yourInfo = useSelector((state: RootState) =>
         state.game.playerArray.find((player) => player.id === socket.id)
     )
-    const [isMobile] = useMediaQuery("(max-width: 615px)")
-
-    // const buttonSize = useBreakpointValue({ base: "sm", md: "lg", lg: "lg" })
+    const [isMobile] = useMediaQuery("(max-width: 715px)")
 
     const diceAreaWidth = "190px"
     const diceAreaHeight = "95px"

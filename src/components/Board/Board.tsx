@@ -1,7 +1,7 @@
 import { Tile } from "../Tile"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store"
-import { SimpleGrid, useDisclosure, useToast } from "@chakra-ui/react"
+import { SimpleGrid, useDisclosure, useMediaQuery, useToast } from "@chakra-ui/react"
 import { takeTile, nextPlayerTurn } from "../../store/Game/gameSlice"
 import { totalDiceValue, includesRocket } from "../../helpers"
 import { EndTurnModal } from "../EndTurnModal"
@@ -33,6 +33,7 @@ const Board = () => {
         (state: RootState) => state.game.dice.currentDiceRoll
     )
     const { sendPlayerAction } = useGameSocketContext()
+    const [isMobile] = useMediaQuery("(max-width: 560px)")
 
     //   FUNCTIONS
     const onTileClick = (tileValue: number) => {
@@ -103,7 +104,7 @@ const Board = () => {
     // RENDER
     return (
         <>
-            <SimpleGrid columns={{ base: 4, sm: 4, md: 8, lg: 8 }} spacing={6}>
+            <SimpleGrid columns={isMobile ? 4 : 8} spacing={6}>
                 {gameState.tilesArray.map((tile, index) => {
                     return (
                         <Tile

@@ -11,7 +11,7 @@ import { BrowserRouter } from "react-router-dom"
 // 2. Update the breakpoints as key-value pairs
 const breakpoints = {
     sm: "320px",
-    md: "615px",
+    md: "715px",
     lg: "960px",
     xl: "1200px",
     "2xl": "1536px",

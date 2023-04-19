@@ -21,7 +21,7 @@ function PlayerInfo() {
     const otherPlayers = useSelector(
         (state: RootState) => state.game
     ).playerArray.filter((player) => player.id !== socket.id)
-    const [isMobile] = useMediaQuery("(max-width: 615px)")
+    const [isMobile] = useMediaQuery("(max-width: 715px)")
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     // RENDER
