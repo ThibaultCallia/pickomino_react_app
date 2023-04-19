@@ -72,7 +72,9 @@ const RollDice = () => {
     console.log("rolldice rendering")
     console.log("currenPlayerId: ", currentPlayerId)
     console.log("socket.id: ", socket.id)
-    const yourInfo = useSelector((state: RootState) => state.game.playerArray.find((player) => player.id === socket.id))
+    const yourInfo = useSelector((state: RootState) =>
+        state.game.playerArray.find((player) => player.id === socket.id)
+    )
     const [isMobile] = useMediaQuery("(max-width: 615px)")
 
     // const buttonSize = useBreakpointValue({ base: "sm", md: "lg", lg: "lg" })
@@ -182,35 +184,31 @@ const RollDice = () => {
     // RENDER
     return (
         <>
-            <Box  
-                
-                >
+            <Box>
                 <Flex
                     direction={{ base: "column", md: "row" }}
                     justify="center"
                     gap={4}
                     alignItems="stretch"
-                    
                 >
-                    <Box p={2}  >
-                    
-                        <Center >
-                            
-                            {yourInfo && <PlayerCard player={yourInfo}/>}
-                        </Center>
-                    </Box>
-                    <Box p={2} 
-                    border={"1px"}
-                    borderColor="black"
-                    boxShadow= "3px 3px 0 black"
-                    backgroundImage={"./game_art/cloudsL.png"} 
-                    backgroundRepeat={"no-repeat"} 
-                    backgroundPosition={" center bottom"} 
-                    // change this to 70% for mobile
-                    backgroundSize={isMobile ? "70%" : "90%"}
-                    
-                    minH={"200px"}
-                    
+                    <Flex justifyContent="center" flexDirection="column">
+                        <Box p={2}>
+                            <Center>
+                                {yourInfo && <PlayerCard player={yourInfo} />}
+                            </Center>
+                        </Box>
+                    </Flex>
+                    <Box
+                        p={2}
+                        border={"1px"}
+                        borderColor="black"
+                        boxShadow="3px 3px 0 black"
+                        backgroundImage={"./game_art/cloudsL.png"}
+                        backgroundRepeat={"no-repeat"}
+                        backgroundPosition={" center bottom"}
+                        // change this to 70% for mobile
+                        backgroundSize={isMobile ? "70%" : "90%"}
+                        minH={"200px"}
                     >
                         <Center>
                             <Text fontWeight="bold">Selected Dice</Text>
@@ -221,8 +219,6 @@ const RollDice = () => {
                                 my={2}
                                 width={diceAreaWidth}
                                 height={diceAreaHeight}
-                                
-                
                             >
                                 <SimpleGrid columns={4} spacing={2}>
                                     {selectedDice.length > 0 &&
@@ -262,11 +258,8 @@ const RollDice = () => {
                         alignItems="center"
                         border={"1px"}
                         borderColor="black"
-                        boxShadow= "3px 3px 0 black"
-                        
-                        
+                        boxShadow="3px 3px 0 black"
                         p={2}
-                        
                     >
                         <Center>
                             <Text fontWeight="bold">Current Roll</Text>

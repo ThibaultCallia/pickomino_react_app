@@ -17,7 +17,7 @@ function GamePlay() {
     const gameStatus = useSelector((state: RootState) => state.game.gameStatus)
     const isCurrentUserPlaying =
         socket.id === currentPlayerId && gameStatus === "playing"
-    const currenPlayerName = useSelector(
+    const currentPlayerName = useSelector(
         (state: RootState) =>
             state.game.playerArray.find(
                 (player) => player.id === currentPlayerId
@@ -32,9 +32,19 @@ function GamePlay() {
             <Board />
             <Stack spacing={2}>
                 <Box backgroundColor={"hsl(46, 83%, 61%)"} mb={3}>
-                    <Text fontWeight={"bolder"} textAlign="center" fontSize={"xl"}>
+                    <Text
+                        fontWeight={"bolder"}
+                        textAlign="center"
+                        fontSize={"xl"}
+                    >
                         {`${
-                            isCurrentUserPlaying ? "Your" : `${currenPlayerName}'s`
+                            isCurrentUserPlaying
+                                ? "Your"
+                                : `${currentPlayerName}'${
+                                      currentPlayerName?.slice(-1) === "s"
+                                          ? ""
+                                          : "s"
+                                  }`
                         } turn`}
                     </Text>
                 </Box>
