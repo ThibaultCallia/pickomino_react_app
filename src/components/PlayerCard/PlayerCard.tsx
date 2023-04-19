@@ -22,8 +22,10 @@ import { EndTurnModal } from "../EndTurnModal"
 import { totalDiceValue } from "../../helpers"
 import { stealTile, nextPlayerTurn } from "../../store/Game/gameSlice"
 import { useGameSocketContext } from "../../contexts"
+import { PlayerCardProps } from "./"
 
-function PlayerCard({ name, collectedTiles, id }: PlainPlayer) {
+function PlayerCard({ player, closeDrawer }: PlayerCardProps) {
+    const { name, collectedTiles, id } = player;
     // USE STATES
     const [isHovered, setIsHovered] = useState<boolean>(false)
     const selectedDice =
@@ -85,6 +87,7 @@ function PlayerCard({ name, collectedTiles, id }: PlainPlayer) {
             toast.close(toastId)
             dispatch(stealTile(toStealPlayerId))
             sendPlayerAction("stealTile", toStealPlayerId)
+            
             onOpen()
         }
 

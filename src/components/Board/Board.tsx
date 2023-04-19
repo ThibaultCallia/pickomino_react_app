@@ -103,7 +103,7 @@ const Board = () => {
     // RENDER
     return (
         <>
-            <SimpleGrid columns={{ base: 6, sm: 8, md: 8, lg: 8 }} spacing={6}>
+            <SimpleGrid columns={{ base: 4, sm: 4, md: 8, lg: 8 }} spacing={6}>
                 {gameState.tilesArray.map((tile, index) => {
                     return (
                         <Tile
