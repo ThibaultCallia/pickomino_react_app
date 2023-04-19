@@ -7,6 +7,11 @@ import {
     useToast,
     useDisclosure,
     Center,
+    Flex,
+    Heading,
+    HStack,
+    Img,
+    useColorModeValue,
 } from "@chakra-ui/react"
 import { useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
@@ -17,8 +22,10 @@ import { EndTurnModal } from "../EndTurnModal"
 import { totalDiceValue } from "../../helpers"
 import { stealTile, nextPlayerTurn } from "../../store/Game/gameSlice"
 import { useGameSocketContext } from "../../contexts"
+import { PlayerCardProps } from "./"
 
-function PlayerCard({ name, collectedTiles, id }: PlainPlayer) {
+function PlayerCard({ player }: PlayerCardProps) {
+    const { name, collectedTiles, id, image } = player
     // USE STATES
     const [isHovered, setIsHovered] = useState<boolean>(false)
     const selectedDice =
@@ -35,6 +42,15 @@ function PlayerCard({ name, collectedTiles, id }: PlainPlayer) {
     const toast = useToast()
     const toastId = "stealError"
     const { sendPlayerAction } = useGameSocketContext()
+    const hoverStyles =
+        collectedTiles.length > 0
+            ? {
+                  _hover: {
+                      ".card-image": { display: "none" },
+                      ".card-tile": { display: "flex" },
+                  },
+              }
+            : {}
 
     // FUNCTIONS
     const stealPlayerTile = (toStealPlayerId: string, tileValue: number) => {
@@ -71,6 +87,7 @@ function PlayerCard({ name, collectedTiles, id }: PlainPlayer) {
             toast.close(toastId)
             dispatch(stealTile(toStealPlayerId))
             sendPlayerAction("stealTile", toStealPlayerId)
+
             onOpen()
         }
 
@@ -79,55 +96,84 @@ function PlayerCard({ name, collectedTiles, id }: PlainPlayer) {
     // RENDER
     return (
         <>
-            <Center
-                flexDir={"column"}
-                borderWidth="1px"
-                borderRadius="lg"
-                p={4}
-                onMouseOver={() => setIsHovered(true)}
-                onMouseOut={() => setIsHovered(false)}
-                textAlign="center"
-                position="relative"
-            >
+            <Box cursor={"pointer"} display="flex" minW={"6rem"} mr={2}>
                 <Box
-                    boxSize={5}
-                    bgColor="yellow.500"
-                    position="absolute"
-                    top={-2}
-                    right={-2}
-                    borderRadius="100%"
-                    display={"grid"}
-                    placeItems="center"
-                >
-                    <Text fontSize="xs" color="white" fontWeight={"bold"}>
-                        {collectedTiles.length}
-                    </Text>
-                </Box>
-
-                <Text fontWeight="bold">{name}</Text>
-                <Text fontWeight="bold">{id}</Text>
-
-                <Collapse in={isHovered}>
-                    {/* <Image  mx = "auto" boxSize="50px" mt={4} src="/PP_mini_logo.png" borderRadius="lg" /> */}
-                    {/* <Text> */}
-                    {/*     latest tile value:{" "} */}
-                    {/*     {collectedTiles[collectedTiles.length - 1]?.value} */}
-                    {/* </Text> */}
-
-                    {collectedTiles.length > 0 && (
-                        <Tile
-                            {...collectedTiles[collectedTiles.length - 1]}
-                            onTileClick={() =>
-                                stealPlayerTile(
-                                    id,
-                                    collectedTiles[collectedTiles.length - 1]
-                                        .value
-                                )
-                            }
-                        ></Tile>
+                    rounded={"sm"}
+                    my={2}
+                    overflow={"hidden"}
+                    bg="white"
+                    border={"1px"}
+                    borderColor="black"
+                    boxShadow={useColorModeValue(
+                        "3px 3px 0 black",
+                        "4px 4px 0 cyan"
                     )}
-                </Collapse>
-            </Center>
+                    display="flex"
+                    flexDirection="row"
+                    {...hoverStyles}
+                >
+                    <Box p={2}>
+                        <Box
+                            bg="yellow.500"
+                            display={"inline-block"}
+                            px={2}
+                            py={1}
+                            color="white"
+                            mb={2}
+                        >
+                            <Text fontSize={"xs"} fontWeight="medium">
+                                {`${collectedTiles.length} ${
+                                    collectedTiles.length === 1
+                                        ? "tile"
+                                        : "tiles"
+                                }`}
+                            </Text>
+                        </Box>
+                        <Heading
+                            h="2.5rem"
+                            w={"6rem"}
+                            color={"black"}
+                            fontSize={"sm"}
+                            noOfLines={2}
+                        >
+                            {name}
+                        </Heading>
+                    </Box>
+                    <Box
+                        display={"flex"}
+                        flexDirection="column"
+                        justifyContent={"center"}
+                    >
+                        <Box className="card-image" h="full" w="60px">
+                            <Img
+                                src={`/game_art/characters/character_${image}.jpg`}
+                                // roundedTop={"sm"}
+                                objectFit="cover"
+                                alt={"Image"}
+                                h="full"
+                                w="60px"
+                            />
+                        </Box>
+                        <Box className="card-tile" display={"none"}>
+                            {collectedTiles.length > 0 && (
+                                <Tile
+                                    {...collectedTiles[
+                                        collectedTiles.length - 1
+                                    ]}
+                                    onTileClick={() =>
+                                        stealPlayerTile(
+                                            id,
+                                            collectedTiles[
+                                                collectedTiles.length - 1
+                                            ].value
+                                        )
+                                    }
+                                ></Tile>
+                            )}
+                        </Box>
+                    </Box>
+                </Box>
+            </Box>
             <EndTurnModal
                 isOpen={isOpen}
                 onClose={() => {

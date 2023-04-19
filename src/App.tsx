@@ -1,12 +1,6 @@
 import { NavBar, MainView, Footer } from "./components"
 
-import {
-    BrowserRouter,
-    Routes,
-    Route,
-    useRoutes,
-    useLocation,
-} from "react-router-dom"
+import { useRoutes, useLocation } from "react-router-dom"
 
 import { HomePage, AboutPage, HowToPlayPage } from "./pages"
 import { AnimatePresence } from "framer-motion"
@@ -14,6 +8,7 @@ import React from "react"
 import "./app.css"
 import { useDispatch } from "react-redux"
 import { GameSocketProvider } from "./components"
+import { Box } from "@chakra-ui/react"
 
 // Routing here?
 function App() {

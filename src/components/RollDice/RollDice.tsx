@@ -1,11 +1,14 @@
 import {
     Box,
-    Button,
+    Center,
+    Flex,
     SimpleGrid,
     Stack,
     Tag,
     useDisclosure,
     useToast,
+    Text,
+    useMediaQuery,
 } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
 import {
@@ -31,6 +34,8 @@ import { RootState } from "../../store"
 import EndTurnModal from "../EndTurnModal/EndTurnModal"
 import socket from "../../socket"
 import { useGameSocketContext } from "../../contexts"
+
+import { PlayerCard } from "../PlayerCard"
 
 const RollDice = () => {
     // HOOKS
@@ -59,6 +64,7 @@ const RollDice = () => {
     const currentPlayerId = useSelector(
         (state: RootState) => state.game.currentPlayerId
     )
+
     const gameStatus = useSelector((state: RootState) => state.game.gameStatus)
     const isCurrentUserPlaying =
         socket.id === currentPlayerId && gameStatus === "playing"
@@ -66,6 +72,13 @@ const RollDice = () => {
     console.log("rolldice rendering")
     console.log("currenPlayerId: ", currentPlayerId)
     console.log("socket.id: ", socket.id)
+    const yourInfo = useSelector((state: RootState) =>
+        state.game.playerArray.find((player) => player.id === socket.id)
+    )
+    const [isMobile] = useMediaQuery("(max-width: 715px)")
+
+    const diceAreaWidth = "190px"
+    const diceAreaHeight = "95px"
 
     // USE EFFECTS
     useEffect(() => {
@@ -169,98 +182,139 @@ const RollDice = () => {
     // RENDER
     return (
         <>
-            <Box borderWidth="4px" borderRadius="lg" maxW={"100%"}>
-                <Box
-                    p="6"
-                    display="flex"
-                    gap="10px"
-                    justifyContent="space-between"
+            <Box>
+                <Flex
+                    direction={{ base: "column", md: "row" }}
+                    justify="center"
+                    gap={4}
+                    alignItems="stretch"
                 >
-                    <Box flex={1} minWidth="175px" minHeight="250">
-                        {showDiceTotal && (
-                            <Tag
-                                size="md"
-                                variant="solid"
-                                color="black"
-                                bgColor="yellow.400"
-                                mb="1rem"
-                            >
-                                Dice total: {totalDiceValue(selectedDice)}
-                            </Tag>
-                        )}
+                    <Flex justifyContent="center" flexDirection="column">
+                        <Box p={2}>
+                            <Center>
+                                {yourInfo && <PlayerCard player={yourInfo} />}
+                            </Center>
+                        </Box>
+                    </Flex>
+                    <Box
+                        p={2}
+                        border={"1px"}
+                        borderColor="black"
+                        boxShadow="3px 3px 0 black"
+                        backgroundImage={"./game_art/cloudsL.png"}
+                        backgroundRepeat={"no-repeat"}
+                        backgroundPosition={" center bottom"}
+                        // change this to 70% for mobile
+                        backgroundSize={isMobile ? "70%" : "90%"}
+                        minH={"200px"}
+                    >
+                        <Center>
+                            <Text fontWeight="bold">Selected Dice</Text>
+                        </Center>
 
-                        <SimpleGrid columns={2} spacing={3}>
-                            {selectedDice.length > 0 &&
-                                selectedDice.map(
-                                    (die: DieInterface, index: number) => {
-                                        return (
-                                            <Die
-                                                selected={die.selected}
-                                                key={index}
-                                                die={die.face}
-                                            ></Die>
-                                        )
-                                    }
-                                )}
-                        </SimpleGrid>
+                        <Center>
+                            <Box
+                                my={2}
+                                width={diceAreaWidth}
+                                height={diceAreaHeight}
+                            >
+                                <SimpleGrid columns={4} spacing={2}>
+                                    {selectedDice.length > 0 &&
+                                        selectedDice.map(
+                                            (
+                                                die: DieInterface,
+                                                index: number
+                                            ) => (
+                                                <Die
+                                                    selected={die.selected}
+                                                    key={index}
+                                                    die={die.face}
+                                                />
+                                            )
+                                        )}
+                                </SimpleGrid>
+                            </Box>
+                        </Center>
+                        <Center>
+                            {showDiceTotal && (
+                                <Tag
+                                    size="md"
+                                    variant="solid"
+                                    color="black"
+                                    bgColor="yellow.400"
+                                    mb="1rem"
+                                >
+                                    Dice total: {totalDiceValue(selectedDice)}
+                                </Tag>
+                            )}
+                        </Center>
                     </Box>
 
                     <Box
                         display="flex"
                         flexDirection="column"
                         alignItems="center"
-                        minWidth="200px"
-                        minHeight="250"
+                        border={"1px"}
+                        borderColor="black"
+                        boxShadow="3px 3px 0 black"
+                        p={2}
                     >
-                        <Stack
-                            justify="center"
-                            width="100%"
-                            height="100%"
-                            direction="column"
+                        <Center>
+                            <Text fontWeight="bold">Current Roll</Text>
+                        </Center>
+
+                        <Box
+                            my={2}
+                            // border={"1px solid green"}
+                            width={diceAreaWidth}
+                            height={diceAreaHeight}
                         >
-                            <CustomButton
-                                isDisabled={
-                                    rollDisabled || !isCurrentUserPlaying
-                                }
-                                onClick={onRollClick}
+                            <SimpleGrid columns={4} spacing={"10px"}>
+                                {currentDiceRoll.length > 0 &&
+                                    currentDiceRoll.map(
+                                        (die: DieInterface, index: number) => (
+                                            <Die
+                                                selected={die.selected}
+                                                onClick={() =>
+                                                    highlightDice(die.face)
+                                                }
+                                                key={index}
+                                                die={die.face}
+                                            />
+                                        )
+                                    )}
+                            </SimpleGrid>
+                        </Box>
+
+                        <Center>
+                            <Stack
+                                direction={"row"}
+                                spacing={4}
+                                align="center"
+                                mt={4}
                             >
-                                Roll
-                            </CustomButton>
-                            <Box flex={1}>
-                                <SimpleGrid columns={4} spacing={3}>
-                                    {currentDiceRoll.length > 0 &&
-                                        currentDiceRoll.map(
-                                            (
-                                                die: DieInterface,
-                                                index: number
-                                            ) => {
-                                                return (
-                                                    <Die
-                                                        selected={die.selected}
-                                                        onClick={() =>
-                                                            highlightDice(
-                                                                die.face
-                                                            )
-                                                        }
-                                                        key={index}
-                                                        die={die.face}
-                                                    />
-                                                )
-                                            }
-                                        )}
-                                </SimpleGrid>
-                            </Box>
-                            <CustomButton
-                                isDisabled={
-                                    selectDisabled || !isCurrentUserPlaying
-                                }
-                                onClick={selectDice}
-                            >
-                                Select
-                            </CustomButton>
-                        </Stack>
+                                <CustomButton
+                                    size="lg"
+                                    isDisabled={
+                                        selectDisabled || !isCurrentUserPlaying
+                                    }
+                                    onClick={selectDice}
+                                >
+                                    Select
+                                </CustomButton>
+                                <CustomButton
+                                    size="lg"
+                                    isDisabled={
+                                        rollDisabled || !isCurrentUserPlaying
+                                    }
+                                    onClick={onRollClick}
+                                >
+                                    Roll
+                                </CustomButton>
+                            </Stack>
+                        </Center>
                     </Box>
-                </Box>
+                </Flex>
             </Box>
             <EndTurnModal
                 isOpen={isOpen}
