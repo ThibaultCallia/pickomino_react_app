@@ -1,58 +1,11 @@
 import { DieInterface, PlainTile } from "./components"
-const createUniqueNameArray = (numOfNames: number) => {
-    const adjectives = [
-        "Celestial",
-        "Galactic",
-        "Nebulous",
-        "Interstellar",
-        "Astral",
-        "Cosmic",
-        "Starry",
-        "Lunar",
-        "Solar",
-        "Seafaring",
-        "Plundering",
-        "Marauding",
-        "Corsair",
-        "Nautical",
-        "ahoy, ",
-        "Scurvy",
-        "Pirate",
-        "Salty",
-    ]
-    const nouns = [
-        "Galaxy",
-        "Nebula",
-        "Spaceship",
-        "Astronaut",
-        "Black hole",
-        "Comet",
-        "Meteor",
-        "Asteroid",
-        "star",
-        "Satellite",
-        "rocket",
-        "Buccaneer",
-        "Cutlass",
-        "Galleon",
-        "Jolly Roger",
-        "Plunder",
-        "Scallywag",
-        "Parrot",
-        "Privateer",
-        "Eye patch",
-    ]
-    const uniqueNames: Set<string> = new Set()
 
-    while (uniqueNames.size < numOfNames) {
-        const adjective =
-            adjectives[Math.floor(Math.random() * adjectives.length)]
-        const noun = nouns[Math.floor(Math.random() * nouns.length)]
-        const name = `${adjective} ${noun}`
-
-        uniqueNames.add(name)
+const shuffleArray = (array: { name: string; image: string; }[]) => {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[array[i], array[j]] = [array[j], array[i]]
     }
-    return Array.from(uniqueNames)
+    return array
 }
 
 const rollDice = (numOfDice: number) => {
@@ -129,7 +82,7 @@ const totalPlanetsCollected = (collectedTiles: PlainTile[]) => {
 }
 
 export {
-    createUniqueNameArray,
+    shuffleArray,
     rollDice,
     canSelect,
     hasSelectableDice,

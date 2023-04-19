@@ -1,5 +1,3 @@
-
-
 import { useEffect, useState } from "react"
 import { Text, Box, Stack, useDisclosure, Button } from "@chakra-ui/react"
 import { RollDice } from "../RollDice"
@@ -21,7 +19,7 @@ import { GamePlay } from "../GamePlay"
 const MainView = () => {
     // USE STATES
     const [numOfPlayers, setNumOfPlayers] = useState<number | null>(null)
-    
+
     const board = useSelector((state: RootState) => state.game.tilesArray)
     const { onOpen } = useDisclosure()
     const isPresent = useIsPresent()
@@ -35,7 +33,7 @@ const MainView = () => {
         (state: RootState) => state.game.currentPlayerId
     )
     const gameStatus = useSelector((state: RootState) => state.game.gameStatus)
-    
+
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -68,8 +66,6 @@ const MainView = () => {
             width="90%"
             mx="auto"
             maxW={650}
-            
-            
         >
             {!roomCode ? (
                 <>

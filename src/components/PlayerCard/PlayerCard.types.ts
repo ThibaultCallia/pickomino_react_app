@@ -1,7 +1,6 @@
-import { PlainPlayer } from "../../store/Players/Player.types";
+import { PlainPlayer } from "../../store/Players/Player.types"
 
-export interface PlayerCardProps{
-    
-    closeDrawer?: () => void;
-    player: PlainPlayer;
+export interface PlayerCardProps {
+    closeDrawer?: () => void
+    player: PlainPlayer
 }

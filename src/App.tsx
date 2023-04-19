@@ -1,10 +1,6 @@
 import { NavBar, MainView, Footer } from "./components"
 
-import {
-    
-    useRoutes,
-    useLocation,
-} from "react-router-dom"
+import { useRoutes, useLocation } from "react-router-dom"
 
 import { HomePage, AboutPage, HowToPlayPage } from "./pages"
 import { AnimatePresence } from "framer-motion"
@@ -52,7 +48,6 @@ function App() {
                     {React.cloneElement(element, { key: location.pathname })}
                 </AnimatePresence>
                 <Footer />
-            
             </GameSocketProvider>
         </>
     )

@@ -10,7 +10,7 @@ import { useSelector } from "react-redux"
 function GamePlay() {
     // HOOKS
     const { isOpen, onClose } = useDisclosure()
-    
+
     const currentPlayerId = useSelector(
         (state: RootState) => state.game.currentPlayerId
     )

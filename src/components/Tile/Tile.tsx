@@ -43,6 +43,7 @@ function Tile({ value, points, onTileClick, selected, disabled }: PlainTile) {
             width="55px"
             mr={selected ? "5px" : "0"}
             px={0}
+            
             py={1}
             borderRadius="sm"
             color={"hsl(224, 49%, 21%)"}

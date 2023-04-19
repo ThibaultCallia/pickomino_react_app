@@ -34,6 +34,8 @@ import EndTurnModal from "../EndTurnModal/EndTurnModal"
 import socket from "../../socket"
 import { useGameSocketContext } from "../../contexts"
 
+import { PlayerCard } from "../PlayerCard"
+
 const RollDice = () => {
     // HOOKS
     const [rollDisabled, setRollDisabled] = useState<boolean>(false)
@@ -69,6 +71,8 @@ const RollDice = () => {
     console.log("rolldice rendering")
     console.log("currenPlayerId: ", currentPlayerId)
     console.log("socket.id: ", socket.id)
+    const yourInfo = useSelector((state: RootState) => state.game.playerArray.find((player) => player.id === socket.id))
+    
 
     // const buttonSize = useBreakpointValue({ base: "sm", md: "lg", lg: "lg" })
 
@@ -177,17 +181,23 @@ const RollDice = () => {
     // RENDER
     return (
         <>
-            <Box border = "1px solid black"  borderRadius="sm" p={4}>
+            <Box  borderRadius="sm" >
                 <Flex
                     direction={{ base: "column", md: "row" }}
                     justify="center"
                     gap={4}
+                    
                 >
-                    <Box
-                        p={2}
-                        borderRadius="lg"
-                        // border="2px solid blue"
-                    >
+                    <Box p={2} borderRadius="sm" >
+                    <Center>
+                            <Text fontWeight="bold">You</Text>
+                        </Center>
+                        <Center>
+                            
+                            {yourInfo && <PlayerCard player={yourInfo}/>}
+                        </Center>
+                    </Box>
+                    <Box p={2} >
                         <Center>
                             <Text fontWeight="bold">Selected Dice</Text>
                         </Center>
@@ -235,10 +245,10 @@ const RollDice = () => {
                         display="flex"
                         flexDirection="column"
                         alignItems="center"
-                        // minWidth={{ base: "100%", md: "200px" }}
+                        
+                        
                         p={2}
-                        // border = "2px solid blue"
-                        borderRadius="lg"
+                        
                     >
                         <Center>
                             <Text fontWeight="bold">Current Roll</Text>

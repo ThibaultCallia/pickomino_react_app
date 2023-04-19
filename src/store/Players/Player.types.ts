@@ -7,4 +7,5 @@ export interface PlainPlayer {
     isPlaying: boolean
     currentlySelectedDice: DieInterface[]
     currentDiceRoll: DieInterface[]
+    image: string
 }

@@ -24,8 +24,8 @@ import { stealTile, nextPlayerTurn } from "../../store/Game/gameSlice"
 import { useGameSocketContext } from "../../contexts"
 import { PlayerCardProps } from "./"
 
-function PlayerCard({ player, closeDrawer }: PlayerCardProps) {
-    const { name, collectedTiles, id } = player;
+function PlayerCard({ player }: PlayerCardProps) {
+    const { name, collectedTiles, id, image } = player
     // USE STATES
     const [isHovered, setIsHovered] = useState<boolean>(false)
     const selectedDice =
@@ -87,7 +87,7 @@ function PlayerCard({ player, closeDrawer }: PlayerCardProps) {
             toast.close(toastId)
             dispatch(stealTile(toStealPlayerId))
             sendPlayerAction("stealTile", toStealPlayerId)
-            
+
             onOpen()
         }
 
@@ -146,7 +146,7 @@ function PlayerCard({ player, closeDrawer }: PlayerCardProps) {
                     >
                         <Box className="card-image" h="full" w="60px">
                             <Img
-                                src={"/game_art/planetary_pirates_art.jpg"}
+                                src={`/game_art/characters/character_${image}.jpg`}
                                 // roundedTop={"sm"}
                                 objectFit="cover"
                                 alt={"Image"}
