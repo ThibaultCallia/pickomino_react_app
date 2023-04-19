@@ -104,7 +104,7 @@ const Board = () => {
     // RENDER
     return (
         <>
-            <SimpleGrid columns={isMobile ? 4 : 8} spacing={6}>
+            <SimpleGrid columns={isMobile ? 4 : 8} spacing={6} placeItems="center" placeSelf={"center"}>
                 {gameState.tilesArray.map((tile, index) => {
                     return (
                         <Tile
