@@ -45,6 +45,9 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             dispatch(setPlayersJoined(1))
             // GAME SLICE
             dispatch(setInitialState(gameState))
+            localStorage.setItem("roomCode", roomCode);
+            localStorage.setItem("playerId", socket.id);
+            localStorage.setItem("previouslyDisconnected", "false");
         }
 
         const handleRoomJoined = ({

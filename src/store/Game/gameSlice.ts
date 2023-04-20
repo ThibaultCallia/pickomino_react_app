@@ -3,7 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit"
 import { PlainGameState } from "./Game.types"
 import { createInitialGameState } from "./GameStateObject"
 import { createPlayerArray } from "../Players/playerState"
-import { createUniqueNameArray } from "../../helpers"
+
 import { DieInterface, PlainTile } from "../../components"
 
 const initialState: PlainGameState = createInitialGameState(0)
@@ -113,10 +113,10 @@ const gameSlice = createSlice({
             const currentPlayerIndex = state.playerArray.findIndex(
                 (player) => player.id === state.currentPlayerId
             )
-            console.log(currentPlayerIndex, "---------------------")
+            
             const tile =
                 state.playerArray[currentPlayerIndex].collectedTiles.pop()
-            console.log(tile, "---------------------")
+            
             if (tile) {
                 // ---------------------------------------------- Put tile on board
                 // Find the index of the first tile with a value higher than the returned tile

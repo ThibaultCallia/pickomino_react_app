@@ -2,11 +2,11 @@
 import { FormEvent, useState, ChangeEvent } from "react"
 import { Box, FormControl, Button, Select, Flex, Input } from "@chakra-ui/react"
 import { CreateRoomFormProps } from "."
-import { useGameSocket } from "../../hooks"
+
 import { useDispatch } from "react-redux"
 import { useGameSocketContext } from "../../contexts"
 
-const CreateRoomForm = ({ setNumOfPlayers }: CreateRoomFormProps) => {
+const CreateRoomForm = () => {
     // HOOKS
     const [num, setNum] = useState<string>("")
     const [roomPass, setRoomPass] = useState<string>("")
@@ -21,8 +21,8 @@ const CreateRoomForm = ({ setNumOfPlayers }: CreateRoomFormProps) => {
             // onSubmit(parseInt(num), roomName, roomPass)
             createRoom(roomName, roomPass, parseInt(num)).then((roomCode) => {
                 if (roomCode) {
-                    setNumOfPlayers(parseInt(num))
-                    console.log("success", `room code: ${roomCode}`)
+                    
+                    
                 } else {
                     console.log("error")
                 }

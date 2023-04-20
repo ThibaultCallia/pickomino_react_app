@@ -1,7 +1,6 @@
 // Import necessary components and hooks
 import { FormEvent, useState, ChangeEvent } from "react"
 import { Box, FormControl, Button, Select, Flex, Input } from "@chakra-ui/react"
-import { useGameSocket } from "../../hooks"
 import { useDispatch } from "react-redux"
 import { useGameSocketContext } from "../../contexts"
 
@@ -18,7 +17,7 @@ const JoinRoomForm = () => {
         if (roomName && roomPass) {
             joinRoom(roomName, roomPass).then((roomCode) => {
                 if (roomCode) {
-                    console.log("success", `room code: ${roomCode}`)
+                    
                 } else {
                     console.log("error")
                 }

@@ -69,9 +69,7 @@ const RollDice = () => {
     const isCurrentUserPlaying =
         socket.id === currentPlayerId && gameStatus === "playing"
     const { sendPlayerAction } = useGameSocketContext()
-    console.log("rolldice rendering")
-    console.log("currenPlayerId: ", currentPlayerId)
-    console.log("socket.id: ", socket.id)
+    
     const yourInfo = useSelector((state: RootState) =>
         state.game.playerArray.find((player) => player.id === socket.id)
     )
@@ -87,7 +85,7 @@ const RollDice = () => {
             !hasSelectableDice(selectedDice, currentDiceRoll) &&
             isCurrentUserPlaying
         ) {
-            console.log("LVL1")
+            
             dispatch(returnTile())
             sendPlayerAction("returnTile", null)
             onOpen()
@@ -99,7 +97,7 @@ const RollDice = () => {
             finalRollFailed(selectedDice, currentDiceRoll, lowestTileOnBoard) &&
             isCurrentUserPlaying
         ) {
-            console.log("LVL2")
+            
             dispatch(returnTile())
             sendPlayerAction("returnTile", null)
             onOpen()
@@ -174,7 +172,7 @@ const RollDice = () => {
 
         dispatch(addSelectedDice(diceSelection))
         dispatch(setCurrentDiceRoll([]))
-        console.log("diceSelection", diceSelection)
+        
         sendPlayerAction("selectDice", diceSelection)
         sendPlayerAction("rollDice", [])
     }

@@ -18,23 +18,40 @@ import { GamePlay } from "../GamePlay"
 
 const MainView = () => {
     // USE STATES
-    const [numOfPlayers, setNumOfPlayers] = useState<number | null>(null)
+    
 
     const board = useSelector((state: RootState) => state.game.tilesArray)
     const { onOpen } = useDisclosure()
     const isPresent = useIsPresent()
-
     const roomCode = useSelector((state: RootState) => state.room.roomCode)
     const maxPlayers = useSelector((state: RootState) => state.room.maxPlayers)
     const playersJoined = useSelector(
         (state: RootState) => state.room.playersJoined
     )
-    const currentPlayerId = useSelector(
-        (state: RootState) => state.game.currentPlayerId
-    )
     const gameStatus = useSelector((state: RootState) => state.game.gameStatus)
-
     const dispatch = useDispatch()
+    const storedRoomCode:string|null = localStorage.getItem("roomCode");
+    const storedPlayerId:string|null = localStorage.getItem("playerId");
+    
+    const rejoinRoom = async (storedRoomCode:string|null, storedPlayerId:string|null) => {
+        
+        // const roomData = await getRoomData(storedRoomCode, storedPlayerId);
+        
+        // if (roomData) {
+          
+          
+        // } else {
+          
+        //   localStorage.removeItem("roomCode");
+        //   localStorage.removeItem("playerId");
+        // }
+      };
+
+    useEffect(() => {
+        if (storedRoomCode && storedPlayerId) {
+          rejoinRoom(storedRoomCode, storedPlayerId);
+        }
+      }, []);
 
     useEffect(() => {
         if (board.filter((tile) => !tile.disabled).length === 0) {
@@ -50,8 +67,7 @@ const MainView = () => {
 
     useEffect(() => {
         if (gameStatus === "playing") {
-            console.log(`current player id: ${currentPlayerId}`)
-            console.log(`current user id: ${socket.id}`)
+        
         }
     }, [gameStatus])
     // RENDER
@@ -69,7 +85,7 @@ const MainView = () => {
         >
             {!roomCode ? (
                 <>
-                    <CreateRoomForm setNumOfPlayers={setNumOfPlayers} />
+                    <CreateRoomForm  />
                     <JoinRoomForm />
                     <motion.div
                         initial={{ scaleX: 1 }}
