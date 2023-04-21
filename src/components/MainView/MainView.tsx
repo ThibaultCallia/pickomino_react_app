@@ -4,9 +4,9 @@ import { RollDice } from "../RollDice"
 import { PlayerInfo } from "../PlayerInfo"
 import { useDispatch, useSelector } from "react-redux"
 
-import { Board } from "../Board"
+
 import { RootState } from "../../store"
-import { GameOverModal } from "../GameOverModal"
+
 import { motion, useIsPresent } from "framer-motion"
 import socket from "../../socket"
 

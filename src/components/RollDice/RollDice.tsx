@@ -78,6 +78,8 @@ const RollDice = () => {
     const diceAreaWidth = "190px"
     const diceAreaHeight = "95px"
 
+    
+
     // USE EFFECTS
     useEffect(() => {
         if (
@@ -89,6 +91,8 @@ const RollDice = () => {
             dispatch(returnTile())
             sendPlayerAction("returnTile", null)
             onOpen()
+            
+            
             return
         }
         // ADD CHECK WHETHER OTHER PLAYERS TILES ARE AVAILABLE TO STEAL
@@ -320,6 +324,7 @@ const RollDice = () => {
                     onClose()
                     dispatch(nextPlayerTurn())
                     sendPlayerAction("nextPlayerTurn", null)
+                    // endTurn();
                     // Are you the current player? Otherwise you can't end your turn
                     // if(isCurrentUserPlaying){
                     //     dispatch(nextPlayerTurn())

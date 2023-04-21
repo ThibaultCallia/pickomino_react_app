@@ -32,7 +32,7 @@ const Board = () => {
     const currentDiceRoll = useSelector(
         (state: RootState) => state.game.dice.currentDiceRoll
     )
-    const { sendPlayerAction } = useGameSocketContext()
+    const { sendPlayerAction, endTurn } = useGameSocketContext()
     const [isMobile] = useMediaQuery("(max-width: 560px)")
 
     //   FUNCTIONS
@@ -104,7 +104,7 @@ const Board = () => {
     // RENDER
     return (
         <>
-            <SimpleGrid columns={isMobile ? 4 : 8} spacing={6} placeItems="center" placeSelf={"center"}>
+            <SimpleGrid columns={isMobile ? 4 : 8} spacing={6} placeItems="center" placeSelf={isMobile? "center" : "flex-start"}>
                 {gameState.tilesArray.map((tile, index) => {
                     return (
                         <Tile
@@ -119,6 +119,8 @@ const Board = () => {
                 isOpen={isOpen}
                 onClose={() => {
                     onClose()
+                    endTurn();
+
                     dispatch(nextPlayerTurn())
                     sendPlayerAction("nextPlayerTurn", null)
                 }}
