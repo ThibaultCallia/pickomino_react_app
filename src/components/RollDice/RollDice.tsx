@@ -68,7 +68,7 @@ const RollDice = () => {
     const gameStatus = useSelector((state: RootState) => state.game.gameStatus)
     const isCurrentUserPlaying =
         socket.id === currentPlayerId && gameStatus === "playing"
-    const { sendPlayerAction } = useGameSocketContext()
+    const { sendPlayerAction, endTurn } = useGameSocketContext()
     
     const yourInfo = useSelector((state: RootState) =>
         state.game.playerArray.find((player) => player.id === socket.id)
@@ -322,6 +322,7 @@ const RollDice = () => {
                 isOpen={isOpen}
                 onClose={() => {
                     onClose()
+                    endTurn();
                     dispatch(nextPlayerTurn())
                     sendPlayerAction("nextPlayerTurn", null)
                     // endTurn();
