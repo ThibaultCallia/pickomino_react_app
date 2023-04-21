@@ -5,7 +5,7 @@ import { AnimatePresence } from "framer-motion"
 import React from "react"
 import "./app.css"
 import { useDispatch } from "react-redux"
-import { GameSocketProvider } from "./components"
+import { GameSocketProvider, DisconnectedPlayerProvider } from "./components"
 
 
 // Routing here?
@@ -40,13 +40,15 @@ function App() {
 
     return (
         <>
-            <GameSocketProvider dispatch={dispatch}>
-                <NavBar />
-                <AnimatePresence mode="wait" initial={false}>
-                    {React.cloneElement(element, { key: location.pathname })}
-                </AnimatePresence>
-                <Footer />
-            </GameSocketProvider>
+            <DisconnectedPlayerProvider>
+                <GameSocketProvider dispatch={dispatch}>
+                    <NavBar />
+                    <AnimatePresence mode="wait" initial={false}>
+                        {React.cloneElement(element, { key: location.pathname })}
+                    </AnimatePresence>
+                    <Footer />
+                </GameSocketProvider>
+            </DisconnectedPlayerProvider>
         </>
     )
 }

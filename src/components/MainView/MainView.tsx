@@ -15,6 +15,7 @@ import { CreateRoomForm } from "../CreateRoomForm"
 import { startGame } from "../../store/Game/gameSlice"
 import { WaitingForPlayers } from "../WaitingForPlayers"
 import { GamePlay } from "../GamePlay"
+import { DisconnectedPlayer } from "../DisconnectedPlayer"
 
 const MainView = () => {
     // USE STATES
@@ -73,6 +74,7 @@ const MainView = () => {
     // RENDER
 
     return (
+        <>
         <Box
             py={2}
             minHeight="calc(100vh - 56px - 40px)"
@@ -107,6 +109,8 @@ const MainView = () => {
                 <GamePlay />
             )}
         </Box>
+        <DisconnectedPlayer />
+        </>
     )
 }
 

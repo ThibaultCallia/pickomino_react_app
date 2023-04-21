@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useContext } from "react"
 import socket from "../socket" // Update the path to your socket instance
 import { GameActionPayload } from "./"
 import { PayloadAction, Dispatch } from "@reduxjs/toolkit"
@@ -24,6 +24,7 @@ import {
 import { createInitialGameState } from "../store/Game/GameStateObject"
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import { DisconnectedPlayerContext } from "../contexts"
 
 
 const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
@@ -34,6 +35,8 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
     )
     const isCurrentUserPlaying =
         socket.id === currentPlayerId
+
+    const { setShowWaitingScreen} = useContext(DisconnectedPlayerContext);
 
 
     useEffect(() => {
@@ -153,6 +156,9 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
         socket.on("sync-game-state", ({ gameState }) => {
             console.log('syncing game state');
             handleSyncGameState(gameState)
+        });
+        socket.on("player-disconnected", () => {
+            setShowWaitingScreen(true);
         });
 
         return () => {

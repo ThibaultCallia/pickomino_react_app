@@ -1,3 +1,5 @@
+import { DisconnectedPlayerContext } from "../contexts"
+
 export * from "./Die"
 export * from "./Footer"
 export * from "./EndTurnModal"
@@ -11,3 +13,4 @@ export * from "./Tile"
 export * from "./GameSocketProvider"
 export * from "./WaitingForPlayers"
 export * from "./GamePlay"
+export * from "./DisconnectedPlayerProvider"

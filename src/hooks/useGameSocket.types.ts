@@ -3,7 +3,7 @@ export interface GameActionPayload {
     payload: any
 }
 
-export interface IGameSocket {
+export interface GameSocketInterface {
     roomCode: string | null
     createRoom: (
         roomName: string,
