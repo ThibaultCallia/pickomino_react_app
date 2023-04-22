@@ -25,6 +25,9 @@ function GamePlay() {
     )
     // FUNCTIONS
 
+
+    
+
     // RENDER
     return (
         <>
@@ -50,8 +53,8 @@ function GamePlay() {
                 </Box>
                 <RollDice />
             </Stack>
-            {/* <button onClick={onOpen}>winner modal test</button> */}
-            <GameOverModal isOpen={isOpen} onClose={onClose} />
+            
+            
         </>
     )
 }

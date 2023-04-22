@@ -52,6 +52,8 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             gameState: PlainGameState
         }) => {
             setRoomCode(roomCode)
+            localStorage.setItem("playerId", socket.id);
+            localStorage.setItem("roomCode", roomCode);
             // ROOM SLICE
             dispatch(setRoomId(roomCode))
             dispatch(setMaxPlayers(maxPlayers))
@@ -60,6 +62,8 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             dispatch(setInitialState(gameState))
             localStorage.setItem("roomCode", roomCode);
             localStorage.setItem("playerId", socket.id);
+            localStorage.setItem("gameActive", "true");
+
             localStorage.setItem("previouslyDisconnected", "false");
         }
 
@@ -75,6 +79,9 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             gameState: PlainGameState
         }) => {
             setRoomCode(roomCode)
+            localStorage.setItem("playerId", socket.id);
+            localStorage.setItem("roomCode", roomCode);
+            localStorage.setItem("gameActive", "true");
             // ROOM SLICE
             dispatch(setRoomId(roomCode))
             dispatch(setMaxPlayers(maxPlayers))
@@ -160,6 +167,9 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
         socket.on("player-disconnected", () => {
             setShowWaitingScreen(true);
         });
+        socket.on("player-reconnected", () => {
+            setShowWaitingScreen(false);
+        });
 
         return () => {
             socket.off("room-created", handleRoomCreated)
@@ -208,6 +218,19 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
         })
     }
 
+    const rejoinRoom = (playerId:string, roomCode:string) => {
+        return new Promise((resolve, reject) => {
+          socket.emit("rejoin-room", { playerId, roomCode }, (response:any) => {
+            if (response.success) {
+              resolve(response.roomData);
+              localStorage.setItem("playerId", socket.id);
+            } else {
+              reject(response.message);
+            }
+          });
+        });
+      };
+
     const sendPlayerAction = (type: string, payload: any) => {
         console.log('send player action called');
         socket.emit("game-action", { type, payload })
@@ -217,7 +240,7 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
         socket.emit("end-turn", { roomCode });
     };
 
-    return { roomCode, createRoom, joinRoom, sendPlayerAction, endTurn }
+    return { roomCode, createRoom, joinRoom, sendPlayerAction, endTurn, rejoinRoom }
 }
 
 export default useGameSocket

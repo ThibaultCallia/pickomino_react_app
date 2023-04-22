@@ -2,7 +2,7 @@ import { NavBar, MainView, Footer } from "./components"
 import { useRoutes, useLocation } from "react-router-dom"
 import { HomePage, AboutPage, HowToPlayPage } from "./pages"
 import { AnimatePresence } from "framer-motion"
-import React from "react"
+import React, { useEffect } from "react"
 import "./app.css"
 import { useDispatch } from "react-redux"
 import { GameSocketProvider, DisconnectedPlayerProvider } from "./components"
@@ -37,6 +37,8 @@ function App() {
     const location = useLocation()
 
     if (!element) return null
+
+  
 
     return (
         <>

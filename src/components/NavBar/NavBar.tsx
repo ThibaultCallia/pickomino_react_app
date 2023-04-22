@@ -25,6 +25,11 @@ const Navbar = () => {
         setDisplayMenu(!displayMenu)
     }
 
+    const deleteLocalStorage = () => {
+        localStorage.removeItem('roomCode');
+        localStorage.removeItem('playerId');
+    }
+
     // RENDER
     return (
         <Flex
@@ -60,6 +65,11 @@ const Navbar = () => {
                 <Button bg="transparent" onClick={onOpen}>
                     Game Rules
                 </Button>
+                <Link href="/">
+                    <Button bg="transparent" onClick={deleteLocalStorage}>
+                        Leave Game
+                    </Button>
+                </Link>
                 <GameRulesDrawer
                     onOpen={onOpen}
                     isOpen={isOpen}

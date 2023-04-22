@@ -13,4 +13,5 @@ export interface GameSocketInterface {
     joinRoom: (roomName: string, roomPass: string) => Promise<string>
     sendPlayerAction: (type: string, payload: any) => void
     endTurn: () => void
+    rejoinRoom: (playerId: string, roomCode: string) => Promise<any>
 }

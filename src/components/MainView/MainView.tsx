@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { Text, Box, Stack, useDisclosure, Button } from "@chakra-ui/react"
-import { RollDice } from "../RollDice"
-import { PlayerInfo } from "../PlayerInfo"
+
 import { useDispatch, useSelector } from "react-redux"
 
 
@@ -12,17 +11,21 @@ import socket from "../../socket"
 
 import { JoinRoomForm } from "../JoinRoomForm"
 import { CreateRoomForm } from "../CreateRoomForm"
-import { startGame } from "../../store/Game/gameSlice"
+import { setInitialState, startGame } from "../../store/Game/gameSlice"
 import { WaitingForPlayers } from "../WaitingForPlayers"
 import { GamePlay } from "../GamePlay"
 import { DisconnectedPlayer } from "../DisconnectedPlayer"
+import { GameOverModal } from "../GameOverModal"
+import { useGameSocket } from "../../hooks";
+import { useGameSocketContext } from "../../contexts"
+import { setRoomId } from "../../store/Room/roomSlice"
 
 const MainView = () => {
     // USE STATES
     
 
     const board = useSelector((state: RootState) => state.game.tilesArray)
-    const { onOpen } = useDisclosure()
+    const { onOpen, isOpen, onClose } = useDisclosure()
     const isPresent = useIsPresent()
     const roomCode = useSelector((state: RootState) => state.room.roomCode)
     const maxPlayers = useSelector((state: RootState) => state.room.maxPlayers)
@@ -33,26 +36,12 @@ const MainView = () => {
     const dispatch = useDispatch()
     const storedRoomCode:string|null = localStorage.getItem("roomCode");
     const storedPlayerId:string|null = localStorage.getItem("playerId");
-    
-    const rejoinRoom = async (storedRoomCode:string|null, storedPlayerId:string|null) => {
-        
-        // const roomData = await getRoomData(storedRoomCode, storedPlayerId);
-        
-        // if (roomData) {
-          
-          
-        // } else {
-          
-        //   localStorage.removeItem("roomCode");
-        //   localStorage.removeItem("playerId");
-        // }
-      };
+    console.log(storedRoomCode, storedPlayerId);
+    const [hasCheckedLocalStorage, setHasCheckedLocalStorage] = useState(false);
+    const { rejoinRoom } = useGameSocketContext()
 
-    useEffect(() => {
-        if (storedRoomCode && storedPlayerId) {
-          rejoinRoom(storedRoomCode, storedPlayerId);
-        }
-      }, []);
+     
+    
 
     useEffect(() => {
         if (board.filter((tile) => !tile.disabled).length === 0) {
@@ -71,7 +60,29 @@ const MainView = () => {
         
         }
     }, [gameStatus])
+
+    
     // RENDER
+
+
+    if(!hasCheckedLocalStorage && storedPlayerId && storedRoomCode && !roomCode) {
+        console.log("rejoining room accessed");
+        setHasCheckedLocalStorage(true);
+         (async()=>{
+            try{
+                const roomData = await rejoinRoom( storedPlayerId, storedRoomCode);
+                console.log(roomData);
+                dispatch(setInitialState(roomData.gameState))
+                dispatch(setRoomId(roomData.roomName))
+                // PLAYER ID IS NOW NO LONGER SAME AS SOCKET ID -> CHANGE IT IN BACKEND
+
+            } catch(err) {
+                console.log(err);
+            }
+        })()
+        
+    }
+    
 
     return (
         <>
@@ -110,6 +121,8 @@ const MainView = () => {
             )}
         </Box>
         <DisconnectedPlayer />
+        <GameOverModal isOpen={isOpen} onClose={onClose} />
+        {/* <button onClick={onOpen}>winner modal test</button> */}
         </>
     )
 }
