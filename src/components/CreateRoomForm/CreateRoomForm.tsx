@@ -83,7 +83,7 @@ const CreateRoomForm = () => {
                             focusBorderColor="transparent"
                             
                             borderRadius={0}
-                            placeholder="room name"
+                            placeholder="Room Name"
                             value={roomName}
                             onChange={(e: ChangeEvent<HTMLInputElement>) => {
                                 setRoomName(e.target.value)
@@ -93,7 +93,7 @@ const CreateRoomForm = () => {
                         border={"none"}
                         errorBorderColor="transparent"
                         borderRadius={0}
-                            placeholder="password"
+                            placeholder="Password"
                             focusBorderColor="transparent"
                             value={roomPass}
                             onChange={(e: ChangeEvent<HTMLInputElement>) => {

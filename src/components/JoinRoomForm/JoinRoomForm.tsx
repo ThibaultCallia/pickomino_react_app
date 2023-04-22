@@ -50,7 +50,7 @@ const JoinRoomForm = () => {
                         
                         border={"none"}
                         borderRadius={0}
-                            placeholder="room name"
+                            placeholder="Room Name"
                             focusBorderColor="transparent"
                             value={roomName}
                             onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -61,7 +61,7 @@ const JoinRoomForm = () => {
                         border={"none"}
                         
                         borderRadius={0}
-                            placeholder="password"
+                            placeholder="Password"
                             value={roomPass}
                             focusBorderColor="transparent"
                             onChange={(e: ChangeEvent<HTMLInputElement>) => {
