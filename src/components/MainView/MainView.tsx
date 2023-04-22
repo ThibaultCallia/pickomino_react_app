@@ -34,10 +34,13 @@ const MainView = () => {
     )
     const gameStatus = useSelector((state: RootState) => state.game.gameStatus)
     const dispatch = useDispatch()
-    const storedRoomCode:string|null = localStorage.getItem("roomCode");
-    const storedPlayerId:string|null = localStorage.getItem("playerId");
+    const storedPlayerData: string | null = (Cookies.get("PP_playerData")) ?? null;
+    const parsedPlayerData = storedPlayerData ? JSON.parse(storedPlayerData) : null;
+        
+    const storedRoomCode:string|null = parsedPlayerData?.roomCode ?? null;
+    const storedPlayerId:string|null = parsedPlayerData?.playerId ?? null;
     console.log(storedRoomCode, storedPlayerId);
-    const [hasCheckedLocalStorage, setHasCheckedLocalStorage] = useState(false);
+    const [hasCheckedCookie, setHasCheckedCookie] = useState(false);
     const { rejoinRoom } = useGameSocketContext()
 
      
@@ -65,9 +68,9 @@ const MainView = () => {
     // RENDER
 
 
-    if(!hasCheckedLocalStorage && storedPlayerId && storedRoomCode && !roomCode) {
+    if(!hasCheckedCookie && storedPlayerId && storedRoomCode && !roomCode) {
         console.log("rejoining room accessed");
-        setHasCheckedLocalStorage(true);
+        setHasCheckedCookie(true);
          (async()=>{
             try{
                 const roomData = await rejoinRoom( storedPlayerId, storedRoomCode);

@@ -2,7 +2,7 @@ import { Tile } from "../Tile"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store"
 import { SimpleGrid, useDisclosure, useMediaQuery, useToast } from "@chakra-ui/react"
-import { takeTile, nextPlayerTurn } from "../../store/Game/gameSlice"
+import { takeTile, nextPlayerTurn, resetCurrentDiceRoll } from "../../store/Game/gameSlice"
 import { totalDiceValue, includesRocket } from "../../helpers"
 import { EndTurnModal } from "../EndTurnModal"
 import socket from "../../socket"
@@ -122,6 +122,7 @@ const Board = () => {
                     endTurn();
 
                     dispatch(nextPlayerTurn())
+                    
                     sendPlayerAction("nextPlayerTurn", null)
                 }}
                 title="End of turn"

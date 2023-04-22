@@ -56,6 +56,7 @@ const RollDice = () => {
     const selectedDice = useSelector(
         (state: RootState) => state.game.dice.currentlySelectedDice
     )
+    console.log(JSON.stringify(selectedDice));
 
     const currentDiceRoll = useSelector(
         (state: RootState) => state.game.dice.currentDiceRoll
@@ -68,10 +69,10 @@ const RollDice = () => {
     const gameStatus = useSelector((state: RootState) => state.game.gameStatus)
     // const isCurrentUserPlaying =
     //     socket.id === currentPlayerId && gameStatus === "playing"
-    const { sendPlayerAction, endTurn, isMyTurn } = useGameSocketContext()
+    const { sendPlayerAction, endTurn, isMyTurn, returnMyPlayerId } = useGameSocketContext()
     
     const yourInfo = useSelector((state: RootState) =>
-        state.game.playerArray.find((player) => player.id === socket.id)
+        state.game.playerArray.find((player) => player.id === returnMyPlayerId())
     )
     const [isMobile] = useMediaQuery("(max-width: 715px)")
 
@@ -109,15 +110,7 @@ const RollDice = () => {
         }
     }, [currentDiceRoll])
 
-    useEffect(() => {
-        dispatch(resetCurrentDiceRoll())
-        dispatch(resetSelectedDice())
-        sendPlayerAction("resetSelectedDice", null)
-        sendPlayerAction("resetCurrentDiceRoll", null)
-        setRollDisabled(false)
-        setSelectDisabled(true)
-    }, [currentPlayerId])
-
+    
     useEffect(() => {
         if (selectedDice.length > 0 && selectedDice.length < 8) {
             setRollDisabled(false)
@@ -134,6 +127,7 @@ const RollDice = () => {
     }
 
     const highlightDice = (value: string) => {
+        if(!isMyTurn()) return;
         setSelectDisabled(false)
         dispatch(
             setCurrentDiceRoll(
@@ -298,7 +292,7 @@ const RollDice = () => {
                                 <CustomButton
                                     size="lg"
                                     isDisabled={
-                                        selectDisabled || !isMyTurn()
+                                        selectDisabled || !isMyTurn() 
                                     }
                                     onClick={selectDice}
                                 >
@@ -307,7 +301,7 @@ const RollDice = () => {
                                 <CustomButton
                                     size="lg"
                                     isDisabled={
-                                        rollDisabled || !isMyTurn()
+                                        rollDisabled || !isMyTurn() || currentDiceRoll.length > 0
                                     }
                                     onClick={onRollClick}
                                 >

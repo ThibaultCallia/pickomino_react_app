@@ -39,7 +39,8 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
 
     const { setShowWaitingScreen} = useContext(DisconnectedPlayerContext);
 
-    let myPlayerId = useRef<string | null>(null)
+    const [myPlayerId, setMyPlayerId] = useState<string | null>(null)
+
 
     useEffect(() => {
         if (!socket) return
@@ -53,9 +54,9 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             maxPlayers: number
             gameState: PlainGameState
         }) => {
-            Cookies.set('playerData', JSON.stringify({ playerId: socket.id, roomCode: roomCode }), { expires: 1 });
+            Cookies.set('PP_playerData', JSON.stringify({ playerId: socket.id, roomCode: roomCode }), { expires: 1 });
             setRoomCode(roomCode)
-            myPlayerId.current = socket.id
+            setMyPlayerId(socket.id)
             
             // ROOM SLICE
             dispatch(setRoomId(roomCode))
@@ -77,9 +78,9 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             maxPlayers: number
             gameState: PlainGameState
         }) => {
-            Cookies.set('playerData', JSON.stringify({ playerId: socket.id, roomCode: roomCode }), { expires: 1 });
+            Cookies.set('PP_playerData', JSON.stringify({ playerId: socket.id, roomCode: roomCode }), { expires: 1 });
             setRoomCode(roomCode)
-            myPlayerId.current = socket.id
+            setMyPlayerId(socket.id)
             
             // ROOM SLICE
             dispatch(setRoomId(roomCode))
@@ -113,6 +114,7 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             switch (type) {
                 case "nextPlayerTurn":
                     dispatch(nextPlayerTurn())
+                    
                     break
                 case "selectDice":
                     dispatch(addSelectedDice(payload))
@@ -184,7 +186,7 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
     useEffect(() => {
         if(!isMyTurn()) return
         socket.emit("update-game-state", { roomCode, newGameState: gameState });
-        console.log("game state updated");
+        console.log("game state updated", `on room ${roomCode}`);
 
     }, [gameState])
 
@@ -224,7 +226,9 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
           socket.emit("rejoin-room", { playerId, roomCode }, (response:any) => {
             if (response.success) {
               resolve(response.roomData);
-              localStorage.setItem("playerId", socket.id);
+              setMyPlayerId(playerId);
+              
+              setRoomCode(response.roomCode);
             } else {
               reject(response.message);
             }
@@ -234,7 +238,8 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
 
     const sendPlayerAction = (type: string, payload: any) => {
         console.log('send player action called');
-        socket.emit("game-action", { type, payload }, myPlayerId.current)
+        console.log(`my player id is now ${myPlayerId}`);
+        socket.emit("game-action", { type, payload }, myPlayerId)
         
     }
     const endTurn = () => {
@@ -242,11 +247,15 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
     };
 
     const isMyTurn = () => {
-        if (!myPlayerId.current) return false
-        return currentPlayerId === myPlayerId.current
+        if (!myPlayerId) return false
+        return currentPlayerId === myPlayerId
     }
+    const returnMyPlayerId = () => {
+        return myPlayerId
+    }
+    
 
-    return { roomCode, createRoom, joinRoom, sendPlayerAction, endTurn, rejoinRoom, isMyTurn }
+    return { roomCode, createRoom, joinRoom, sendPlayerAction, endTurn, rejoinRoom, isMyTurn, returnMyPlayerId }
 }
 
 export default useGameSocket

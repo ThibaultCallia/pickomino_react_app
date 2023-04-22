@@ -15,4 +15,5 @@ export interface GameSocketInterface {
     endTurn: () => void
     rejoinRoom: (playerId: string, roomCode: string) => Promise<any>
     isMyTurn: () => boolean
+    returnMyPlayerId: () => string
 }

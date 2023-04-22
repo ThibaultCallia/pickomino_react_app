@@ -46,6 +46,8 @@ const gameSlice = createSlice({
                 (currentPlayerIndex + 1) % state.playerArray.length
             state.playerArray[nextPlayerIndex].isPlaying = true
             state.currentPlayerId = state.playerArray[nextPlayerIndex].id
+            state.dice.currentDiceRoll = []
+            state.dice.currentlySelectedDice = []
         },
         addSelectedDice: (
             state,
