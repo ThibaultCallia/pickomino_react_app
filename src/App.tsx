@@ -7,7 +7,6 @@ import "./app.css"
 import { useDispatch } from "react-redux"
 import { GameSocketProvider, DisconnectedPlayerProvider } from "./components"
 
-
 // Routing here?
 function App() {
     const dispatch = useDispatch()
@@ -38,15 +37,15 @@ function App() {
 
     if (!element) return null
 
-  
-
     return (
         <>
             <DisconnectedPlayerProvider>
                 <GameSocketProvider dispatch={dispatch}>
                     <NavBar />
                     <AnimatePresence mode="wait" initial={false}>
-                        {React.cloneElement(element, { key: location.pathname })}
+                        {React.cloneElement(element, {
+                            key: location.pathname,
+                        })}
                     </AnimatePresence>
                     <Footer />
                 </GameSocketProvider>

@@ -42,7 +42,7 @@ function PlayerCard({ player }: PlayerCardProps) {
     const toast = useToast()
     const toastId = "stealError"
     const { sendPlayerAction, endTurn } = useGameSocketContext()
-    
+
     const hoverStyles =
         collectedTiles.length > 0
             ? {

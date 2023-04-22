@@ -27,9 +27,6 @@ function GamePlay() {
     const { isMyTurn } = useGameSocketContext()
     // FUNCTIONS
 
-
-    
-
     // RENDER
     return (
         <>
@@ -55,8 +52,6 @@ function GamePlay() {
                 </Box>
                 <RollDice />
             </Stack>
-            
-            
         </>
     )
 }

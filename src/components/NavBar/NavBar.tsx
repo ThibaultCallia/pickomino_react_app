@@ -27,7 +27,7 @@ const Navbar = () => {
     }
 
     const deleteCookie = () => {
-        Cookies.remove('PP_playerData')
+        Cookies.remove("PP_playerData")
     }
 
     // RENDER

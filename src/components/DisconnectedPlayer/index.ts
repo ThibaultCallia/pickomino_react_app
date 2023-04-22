@@ -1,1 +1,1 @@
-export {default as DisconnectedPlayer} from "./DisconnectedPlayer"
+export { default as DisconnectedPlayer } from "./DisconnectedPlayer"

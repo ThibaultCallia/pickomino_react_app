@@ -56,7 +56,7 @@ const RollDice = () => {
     const selectedDice = useSelector(
         (state: RootState) => state.game.dice.currentlySelectedDice
     )
-    console.log(JSON.stringify(selectedDice));
+    console.log(JSON.stringify(selectedDice))
 
     const currentDiceRoll = useSelector(
         (state: RootState) => state.game.dice.currentDiceRoll
@@ -69,17 +69,18 @@ const RollDice = () => {
     const gameStatus = useSelector((state: RootState) => state.game.gameStatus)
     // const isCurrentUserPlaying =
     //     socket.id === currentPlayerId && gameStatus === "playing"
-    const { sendPlayerAction, endTurn, isMyTurn, returnMyPlayerId } = useGameSocketContext()
-    
+    const { sendPlayerAction, endTurn, isMyTurn, returnMyPlayerId } =
+        useGameSocketContext()
+
     const yourInfo = useSelector((state: RootState) =>
-        state.game.playerArray.find((player) => player.id === returnMyPlayerId())
+        state.game.playerArray.find(
+            (player) => player.id === returnMyPlayerId()
+        )
     )
     const [isMobile] = useMediaQuery("(max-width: 715px)")
 
     const diceAreaWidth = "190px"
     const diceAreaHeight = "95px"
-
-    
 
     // USE EFFECTS
     useEffect(() => {
@@ -88,12 +89,10 @@ const RollDice = () => {
             !hasSelectableDice(selectedDice, currentDiceRoll) &&
             isMyTurn()
         ) {
-            
             dispatch(returnTile())
             sendPlayerAction("returnTile", null)
             onOpen()
-            
-            
+
             return
         }
         // ADD CHECK WHETHER OTHER PLAYERS TILES ARE AVAILABLE TO STEAL
@@ -102,7 +101,6 @@ const RollDice = () => {
             finalRollFailed(selectedDice, currentDiceRoll, lowestTileOnBoard) &&
             isMyTurn()
         ) {
-            
             dispatch(returnTile())
             sendPlayerAction("returnTile", null)
             onOpen()
@@ -110,7 +108,6 @@ const RollDice = () => {
         }
     }, [currentDiceRoll])
 
-    
     useEffect(() => {
         if (selectedDice.length > 0 && selectedDice.length < 8) {
             setRollDisabled(false)
@@ -127,7 +124,7 @@ const RollDice = () => {
     }
 
     const highlightDice = (value: string) => {
-        if(!isMyTurn()) return;
+        if (!isMyTurn()) return
         setSelectDisabled(false)
         dispatch(
             setCurrentDiceRoll(
@@ -170,7 +167,7 @@ const RollDice = () => {
 
         dispatch(addSelectedDice(diceSelection))
         dispatch(setCurrentDiceRoll([]))
-        
+
         sendPlayerAction("selectDice", diceSelection)
         sendPlayerAction("rollDice", [])
     }
@@ -291,9 +288,7 @@ const RollDice = () => {
                             >
                                 <CustomButton
                                     size="lg"
-                                    isDisabled={
-                                        selectDisabled || !isMyTurn() 
-                                    }
+                                    isDisabled={selectDisabled || !isMyTurn()}
                                     onClick={selectDice}
                                 >
                                     Select
@@ -301,7 +296,9 @@ const RollDice = () => {
                                 <CustomButton
                                     size="lg"
                                     isDisabled={
-                                        rollDisabled || !isMyTurn() || currentDiceRoll.length > 0
+                                        rollDisabled ||
+                                        !isMyTurn() ||
+                                        currentDiceRoll.length > 0
                                     }
                                     onClick={onRollClick}
                                 >
@@ -316,7 +313,7 @@ const RollDice = () => {
                 isOpen={isOpen}
                 onClose={() => {
                     onClose()
-                    endTurn();
+                    endTurn()
                     dispatch(nextPlayerTurn())
                     sendPlayerAction("nextPlayerTurn", null)
                     // endTurn();
@@ -327,9 +324,7 @@ const RollDice = () => {
                     // }
                 }}
                 title={
-                    isMyTurn()
-                        ? "Your turn is over"
-                        : "Player's turn is over"
+                    isMyTurn() ? "Your turn is over" : "Player's turn is over"
                 }
             >
                 {isMyTurn()

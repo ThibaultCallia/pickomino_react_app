@@ -115,10 +115,10 @@ const gameSlice = createSlice({
             const currentPlayerIndex = state.playerArray.findIndex(
                 (player) => player.id === state.currentPlayerId
             )
-            
+
             const tile =
                 state.playerArray[currentPlayerIndex].collectedTiles.pop()
-            
+
             if (tile) {
                 // ---------------------------------------------- Put tile on board
                 // Find the index of the first tile with a value higher than the returned tile
