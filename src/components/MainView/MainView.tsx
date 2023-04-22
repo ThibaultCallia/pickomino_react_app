@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Text, Box, Stack, useDisclosure, Button } from "@chakra-ui/react"
+import {  Box, useDisclosure } from "@chakra-ui/react"
 
 import { useDispatch, useSelector } from "react-redux"
 
@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store"
 
 import { motion, useIsPresent } from "framer-motion"
-import socket from "../../socket"
+
 
 import { JoinRoomForm } from "../JoinRoomForm"
 import { CreateRoomForm } from "../CreateRoomForm"
@@ -16,9 +16,9 @@ import { WaitingForPlayers } from "../WaitingForPlayers"
 import { GamePlay } from "../GamePlay"
 import { DisconnectedPlayer } from "../DisconnectedPlayer"
 import { GameOverModal } from "../GameOverModal"
-import { useGameSocket } from "../../hooks";
 import { useGameSocketContext } from "../../contexts"
 import { setRoomId } from "../../store/Room/roomSlice"
+import Cookies from "js-cookie"
 
 const MainView = () => {
     // USE STATES

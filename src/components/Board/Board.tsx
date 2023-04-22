@@ -32,12 +32,12 @@ const Board = () => {
     const currentDiceRoll = useSelector(
         (state: RootState) => state.game.dice.currentDiceRoll
     )
-    const { sendPlayerAction, endTurn } = useGameSocketContext()
+    const { sendPlayerAction, endTurn, isMyTurn } = useGameSocketContext()
     const [isMobile] = useMediaQuery("(max-width: 560px)")
 
     //   FUNCTIONS
     const onTileClick = (tileValue: number) => {
-        if (!isCurrentUserPlaying) {
+        if (!isMyTurn()) {
             if (!toast.isActive(rocketToastId)) {
                 toast({
                     title: "Wait for your turn",

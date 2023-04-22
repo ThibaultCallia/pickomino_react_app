@@ -25,6 +25,7 @@ import { createInitialGameState } from "../store/Game/GameStateObject"
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { DisconnectedPlayerContext } from "../contexts"
+import Cookies from "js-cookie";
 
 
 const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
@@ -38,6 +39,7 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
 
     const { setShowWaitingScreen} = useContext(DisconnectedPlayerContext);
 
+    let myPlayerId = useRef<string | null>(null)
 
     useEffect(() => {
         if (!socket) return
@@ -51,20 +53,17 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             maxPlayers: number
             gameState: PlainGameState
         }) => {
+            Cookies.set('playerData', JSON.stringify({ playerId: socket.id, roomCode: roomCode }), { expires: 1 });
             setRoomCode(roomCode)
-            localStorage.setItem("playerId", socket.id);
-            localStorage.setItem("roomCode", roomCode);
+            myPlayerId.current = socket.id
+            
             // ROOM SLICE
             dispatch(setRoomId(roomCode))
             dispatch(setMaxPlayers(maxPlayers))
             dispatch(setPlayersJoined(1))
             // GAME SLICE
             dispatch(setInitialState(gameState))
-            localStorage.setItem("roomCode", roomCode);
-            localStorage.setItem("playerId", socket.id);
-            localStorage.setItem("gameActive", "true");
-
-            localStorage.setItem("previouslyDisconnected", "false");
+            
         }
 
         const handleRoomJoined = ({
@@ -78,10 +77,10 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             maxPlayers: number
             gameState: PlainGameState
         }) => {
+            Cookies.set('playerData', JSON.stringify({ playerId: socket.id, roomCode: roomCode }), { expires: 1 });
             setRoomCode(roomCode)
-            localStorage.setItem("playerId", socket.id);
-            localStorage.setItem("roomCode", roomCode);
-            localStorage.setItem("gameActive", "true");
+            myPlayerId.current = socket.id
+            
             // ROOM SLICE
             dispatch(setRoomId(roomCode))
             dispatch(setMaxPlayers(maxPlayers))
@@ -149,10 +148,12 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
 
         // EVENT LISTENERS
         socket.on("room-created", (data) => {
+            
             handleRoomCreated(data)
             PlayerJoinedListener(data.playerJoined, data.playerIds)
         })
         socket.on("room-joined", (data) => {
+            
             handleRoomJoined(data)
             PlayerJoinedListener(data.playerJoined, data.playerIds)
         })
@@ -181,7 +182,7 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
     }, [])
 
     useEffect(() => {
-        if(!isCurrentUserPlaying) return
+        if(!isMyTurn()) return
         socket.emit("update-game-state", { roomCode, newGameState: gameState });
         console.log("game state updated");
 
@@ -233,14 +234,19 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
 
     const sendPlayerAction = (type: string, payload: any) => {
         console.log('send player action called');
-        socket.emit("game-action", { type, payload })
+        socket.emit("game-action", { type, payload }, myPlayerId.current)
         
     }
     const endTurn = () => {
         socket.emit("end-turn", { roomCode });
     };
 
-    return { roomCode, createRoom, joinRoom, sendPlayerAction, endTurn, rejoinRoom }
+    const isMyTurn = () => {
+        if (!myPlayerId.current) return false
+        return currentPlayerId === myPlayerId.current
+    }
+
+    return { roomCode, createRoom, joinRoom, sendPlayerAction, endTurn, rejoinRoom, isMyTurn }
 }
 
 export default useGameSocket

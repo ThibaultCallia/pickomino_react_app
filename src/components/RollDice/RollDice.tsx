@@ -66,9 +66,9 @@ const RollDice = () => {
     )
 
     const gameStatus = useSelector((state: RootState) => state.game.gameStatus)
-    const isCurrentUserPlaying =
-        socket.id === currentPlayerId && gameStatus === "playing"
-    const { sendPlayerAction, endTurn } = useGameSocketContext()
+    // const isCurrentUserPlaying =
+    //     socket.id === currentPlayerId && gameStatus === "playing"
+    const { sendPlayerAction, endTurn, isMyTurn } = useGameSocketContext()
     
     const yourInfo = useSelector((state: RootState) =>
         state.game.playerArray.find((player) => player.id === socket.id)
@@ -85,7 +85,7 @@ const RollDice = () => {
         if (
             currentDiceRoll.length > 0 &&
             !hasSelectableDice(selectedDice, currentDiceRoll) &&
-            isCurrentUserPlaying
+            isMyTurn()
         ) {
             
             dispatch(returnTile())
@@ -99,7 +99,7 @@ const RollDice = () => {
         if (
             currentDiceRoll.length > 0 &&
             finalRollFailed(selectedDice, currentDiceRoll, lowestTileOnBoard) &&
-            isCurrentUserPlaying
+            isMyTurn()
         ) {
             
             dispatch(returnTile())
@@ -298,7 +298,7 @@ const RollDice = () => {
                                 <CustomButton
                                     size="lg"
                                     isDisabled={
-                                        selectDisabled || !isCurrentUserPlaying
+                                        selectDisabled || !isMyTurn()
                                     }
                                     onClick={selectDice}
                                 >
@@ -307,7 +307,7 @@ const RollDice = () => {
                                 <CustomButton
                                     size="lg"
                                     isDisabled={
-                                        rollDisabled || !isCurrentUserPlaying
+                                        rollDisabled || !isMyTurn()
                                     }
                                     onClick={onRollClick}
                                 >
@@ -333,12 +333,12 @@ const RollDice = () => {
                     // }
                 }}
                 title={
-                    isCurrentUserPlaying
+                    isMyTurn()
                         ? "Your turn is over"
                         : "Player's turn is over"
                 }
             >
-                {isCurrentUserPlaying
+                {isMyTurn()
                     ? "One gamble too far. You have no selectable dice left. Your turn is over."
                     : "The current player has no selectable dice left. Their turn is over."}
             </EndTurnModal>
