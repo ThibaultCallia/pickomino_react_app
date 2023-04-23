@@ -212,7 +212,10 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
         })
     }
 
-    const joinRoom = (roomName: string, roomPass: string): Promise<{ success: boolean; roomCode?: string; message?: string }> => {
+    const joinRoom = (
+        roomName: string,
+        roomPass: string
+    ): Promise<{ success: boolean; roomCode?: string; message?: string }> => {
         return new Promise((resolve, reject) => {
             socket.emit(
                 "join-room",
