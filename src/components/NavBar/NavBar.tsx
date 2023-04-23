@@ -14,6 +14,7 @@ import {
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons"
 import { SettingsMenu } from "../SettingsMenu"
 import { GameRulesDrawer } from "../GameRulesDrawer"
+import Cookies from "js-cookie"
 
 const Navbar = () => {
     // HOOKS
@@ -23,6 +24,10 @@ const Navbar = () => {
 
     const toggleMenu = () => {
         setDisplayMenu(!displayMenu)
+    }
+
+    const deleteCookie = () => {
+        Cookies.remove("PP_playerData")
     }
 
     // RENDER
@@ -60,6 +65,11 @@ const Navbar = () => {
                 <Button bg="transparent" onClick={onOpen}>
                     Game Rules
                 </Button>
+                <Link href="/">
+                    <Button bg="transparent" onClick={deleteCookie}>
+                        Leave Game
+                    </Button>
+                </Link>
                 <GameRulesDrawer
                     onOpen={onOpen}
                     isOpen={isOpen}

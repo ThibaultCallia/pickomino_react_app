@@ -1,8 +1,17 @@
 import { Tile } from "../Tile"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store"
-import { SimpleGrid, useDisclosure, useMediaQuery, useToast } from "@chakra-ui/react"
-import { takeTile, nextPlayerTurn } from "../../store/Game/gameSlice"
+import {
+    SimpleGrid,
+    useDisclosure,
+    useMediaQuery,
+    useToast,
+} from "@chakra-ui/react"
+import {
+    takeTile,
+    nextPlayerTurn,
+    resetCurrentDiceRoll,
+} from "../../store/Game/gameSlice"
 import { totalDiceValue, includesRocket } from "../../helpers"
 import { EndTurnModal } from "../EndTurnModal"
 import socket from "../../socket"
@@ -32,12 +41,12 @@ const Board = () => {
     const currentDiceRoll = useSelector(
         (state: RootState) => state.game.dice.currentDiceRoll
     )
-    const { sendPlayerAction } = useGameSocketContext()
+    const { sendPlayerAction, endTurn, isMyTurn } = useGameSocketContext()
     const [isMobile] = useMediaQuery("(max-width: 560px)")
 
     //   FUNCTIONS
     const onTileClick = (tileValue: number) => {
-        if (!isCurrentUserPlaying) {
+        if (!isMyTurn()) {
             if (!toast.isActive(rocketToastId)) {
                 toast({
                     title: "Wait for your turn",
@@ -104,7 +113,12 @@ const Board = () => {
     // RENDER
     return (
         <>
-            <SimpleGrid columns={isMobile ? 4 : 8} spacing={6} placeItems="center" placeSelf={"center"}>
+            <SimpleGrid
+                columns={isMobile ? 4 : 8}
+                spacing={6}
+                placeItems="center"
+                placeSelf={isMobile ? "center" : "flex-start"}
+            >
                 {gameState.tilesArray.map((tile, index) => {
                     return (
                         <Tile
@@ -119,7 +133,10 @@ const Board = () => {
                 isOpen={isOpen}
                 onClose={() => {
                     onClose()
+                    endTurn()
+
                     dispatch(nextPlayerTurn())
+
                     sendPlayerAction("nextPlayerTurn", null)
                 }}
                 title="End of turn"

@@ -56,6 +56,7 @@ const RollDice = () => {
     const selectedDice = useSelector(
         (state: RootState) => state.game.dice.currentlySelectedDice
     )
+    console.log(JSON.stringify(selectedDice))
 
     const currentDiceRoll = useSelector(
         (state: RootState) => state.game.dice.currentDiceRoll
@@ -66,14 +67,15 @@ const RollDice = () => {
     )
 
     const gameStatus = useSelector((state: RootState) => state.game.gameStatus)
-    const isCurrentUserPlaying =
-        socket.id === currentPlayerId && gameStatus === "playing"
-    const { sendPlayerAction } = useGameSocketContext()
-    console.log("rolldice rendering")
-    console.log("currenPlayerId: ", currentPlayerId)
-    console.log("socket.id: ", socket.id)
+    // const isCurrentUserPlaying =
+    //     socket.id === currentPlayerId && gameStatus === "playing"
+    const { sendPlayerAction, endTurn, isMyTurn, returnMyPlayerId } =
+        useGameSocketContext()
+
     const yourInfo = useSelector((state: RootState) =>
-        state.game.playerArray.find((player) => player.id === socket.id)
+        state.game.playerArray.find(
+            (player) => player.id === returnMyPlayerId()
+        )
     )
     const [isMobile] = useMediaQuery("(max-width: 715px)")
 
@@ -85,36 +87,26 @@ const RollDice = () => {
         if (
             currentDiceRoll.length > 0 &&
             !hasSelectableDice(selectedDice, currentDiceRoll) &&
-            isCurrentUserPlaying
+            isMyTurn()
         ) {
-            console.log("LVL1")
             dispatch(returnTile())
             sendPlayerAction("returnTile", null)
             onOpen()
+
             return
         }
         // ADD CHECK WHETHER OTHER PLAYERS TILES ARE AVAILABLE TO STEAL
         if (
             currentDiceRoll.length > 0 &&
             finalRollFailed(selectedDice, currentDiceRoll, lowestTileOnBoard) &&
-            isCurrentUserPlaying
+            isMyTurn()
         ) {
-            console.log("LVL2")
             dispatch(returnTile())
             sendPlayerAction("returnTile", null)
             onOpen()
             return
         }
     }, [currentDiceRoll])
-
-    useEffect(() => {
-        dispatch(resetCurrentDiceRoll())
-        dispatch(resetSelectedDice())
-        sendPlayerAction("resetSelectedDice", null)
-        sendPlayerAction("resetCurrentDiceRoll", null)
-        setRollDisabled(false)
-        setSelectDisabled(true)
-    }, [currentPlayerId])
 
     useEffect(() => {
         if (selectedDice.length > 0 && selectedDice.length < 8) {
@@ -132,6 +124,7 @@ const RollDice = () => {
     }
 
     const highlightDice = (value: string) => {
+        if (!isMyTurn()) return
         setSelectDisabled(false)
         dispatch(
             setCurrentDiceRoll(
@@ -174,7 +167,7 @@ const RollDice = () => {
 
         dispatch(addSelectedDice(diceSelection))
         dispatch(setCurrentDiceRoll([]))
-        console.log("diceSelection", diceSelection)
+
         sendPlayerAction("selectDice", diceSelection)
         sendPlayerAction("rollDice", [])
     }
@@ -295,9 +288,7 @@ const RollDice = () => {
                             >
                                 <CustomButton
                                     size="lg"
-                                    isDisabled={
-                                        selectDisabled || !isCurrentUserPlaying
-                                    }
+                                    isDisabled={selectDisabled || !isMyTurn()}
                                     onClick={selectDice}
                                 >
                                     Select
@@ -305,7 +296,9 @@ const RollDice = () => {
                                 <CustomButton
                                     size="lg"
                                     isDisabled={
-                                        rollDisabled || !isCurrentUserPlaying
+                                        rollDisabled ||
+                                        !isMyTurn() ||
+                                        currentDiceRoll.length > 0
                                     }
                                     onClick={onRollClick}
                                 >
@@ -320,8 +313,10 @@ const RollDice = () => {
                 isOpen={isOpen}
                 onClose={() => {
                     onClose()
+                    endTurn()
                     dispatch(nextPlayerTurn())
                     sendPlayerAction("nextPlayerTurn", null)
+                    // endTurn();
                     // Are you the current player? Otherwise you can't end your turn
                     // if(isCurrentUserPlaying){
                     //     dispatch(nextPlayerTurn())
@@ -329,12 +324,10 @@ const RollDice = () => {
                     // }
                 }}
                 title={
-                    isCurrentUserPlaying
-                        ? "Your turn is over"
-                        : "Player's turn is over"
+                    isMyTurn() ? "Your turn is over" : "Player's turn is over"
                 }
             >
-                {isCurrentUserPlaying
+                {isMyTurn()
                     ? "One gamble too far. You have no selectable dice left. Your turn is over."
                     : "The current player has no selectable dice left. Their turn is over."}
             </EndTurnModal>

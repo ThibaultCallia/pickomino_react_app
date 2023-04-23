@@ -41,7 +41,8 @@ function PlayerCard({ player }: PlayerCardProps) {
     const dispatch = useDispatch()
     const toast = useToast()
     const toastId = "stealError"
-    const { sendPlayerAction } = useGameSocketContext()
+    const { sendPlayerAction, endTurn } = useGameSocketContext()
+
     const hoverStyles =
         collectedTiles.length > 0
             ? {
@@ -178,6 +179,7 @@ function PlayerCard({ player }: PlayerCardProps) {
                 isOpen={isOpen}
                 onClose={() => {
                     onClose()
+                    endTurn()
                     dispatch(nextPlayerTurn())
                     sendPlayerAction("nextPlayerTurn", null)
                 }}

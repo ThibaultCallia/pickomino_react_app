@@ -1,8 +1,8 @@
 // GameSocketContext.tsx
 import { createContext, useContext } from "react"
-import { IGameSocket } from "../hooks"
+import { GameSocketInterface } from "../hooks"
 
-export const GameSocketContext = createContext<IGameSocket | null>(null)
+export const GameSocketContext = createContext<GameSocketInterface | null>(null)
 
 export const useGameSocketContext = () => {
     const context = useContext(GameSocketContext)

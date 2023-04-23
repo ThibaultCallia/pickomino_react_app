@@ -1,12 +1,23 @@
 // Import necessary components and hooks
-import { FormEvent, useState, ChangeEvent } from "react"
-import { Box, FormControl, Button, Select, Flex, Input } from "@chakra-ui/react"
+import { FormEvent, useState, ChangeEvent, useEffect } from "react"
+import {
+    Box,
+    FormControl,
+    Button,
+    Select,
+    Flex,
+    Input,
+    Text,
+    FormErrorMessage,
+    useToast,
+} from "@chakra-ui/react"
 import { CreateRoomFormProps } from "."
-import { useGameSocket } from "../../hooks"
+
 import { useDispatch } from "react-redux"
 import { useGameSocketContext } from "../../contexts"
+import { TriangleDownIcon } from "@chakra-ui/icons"
 
-const CreateRoomForm = ({ setNumOfPlayers }: CreateRoomFormProps) => {
+const CreateRoomForm = () => {
     // HOOKS
     const [num, setNum] = useState<string>("")
     const [roomPass, setRoomPass] = useState<string>("")
@@ -14,32 +25,77 @@ const CreateRoomForm = ({ setNumOfPlayers }: CreateRoomFormProps) => {
     const dispatch = useDispatch()
     const { createRoom } = useGameSocketContext()
 
+    const [validation, setValidation] = useState<string>("")
+
+    const toast = useToast()
+    const roomCreateError = "roomCreateError"
+
     // FUNCTIONS
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault()
         if (num && roomName && roomPass) {
-            // onSubmit(parseInt(num), roomName, roomPass)
-            createRoom(roomName, roomPass, parseInt(num)).then((roomCode) => {
-                if (roomCode) {
-                    setNumOfPlayers(parseInt(num))
-                    console.log("success", `room code: ${roomCode}`)
-                } else {
-                    console.log("error")
+            ;(async () => {
+                try {
+                    setValidation("")
+                    const response: any = await createRoom(
+                        roomName,
+                        roomPass,
+                        parseInt(num)
+                    )
+                } catch (error: any) {
+                    setValidation(error.message)
                 }
-            })
+            })()
         }
     }
+
+    useEffect(() => {
+        if (validation) {
+            toast({
+                id: roomCreateError,
+                title: `${validation}`,
+
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                variant: "subtle",
+            })
+        }
+        if (!validation) {
+            toast.close(roomCreateError)
+        }
+    }, [validation])
 
     // RENDER
     return (
         <Box>
             <form onSubmit={handleSubmit}>
                 {/* Alternatively work with mr on input field? */}
-                <Flex gap="10px">
-                    <FormControl isRequired id="numOfPlayersForm" mt={4}>
+                <Flex gap={4} alignItems={"center"}>
+                    <Button
+                        type="submit"
+                        mt={4}
+                        colorScheme="yellow"
+                        border={"1px solid black"}
+                        borderRadius={2}
+                        boxShadow="3px 3px 0 black"
+                        w={"80px"}
+                    >
+                        Create
+                    </Button>
+                    <FormControl
+                        isRequired
+                        id="numOfPlayersForm"
+                        mt={4}
+                        borderLeft={"1px solid lightgrey"}
+                    >
                         {/* <FormLabel>How many players? </FormLabel> */}
+
                         <Select
+                            maxW={"230px"}
+                            border={"none"}
                             placeholder="How many players?"
+                            focusBorderColor="transparent"
                             value={num}
                             onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                                 setNum(e.target.value)
@@ -53,24 +109,28 @@ const CreateRoomForm = ({ setNumOfPlayers }: CreateRoomFormProps) => {
                             <option>7</option>
                         </Select>
                         <Input
-                            placeholder="room name"
+                            border={"none"}
+                            errorBorderColor="transparent"
+                            focusBorderColor="transparent"
+                            borderRadius={0}
+                            placeholder="Room Name"
                             value={roomName}
                             onChange={(e: ChangeEvent<HTMLInputElement>) => {
                                 setRoomName(e.target.value)
                             }}
                         />
                         <Input
-                            placeholder="password"
+                            border={"none"}
+                            errorBorderColor="transparent"
+                            borderRadius={0}
+                            placeholder="Password"
+                            focusBorderColor="transparent"
                             value={roomPass}
                             onChange={(e: ChangeEvent<HTMLInputElement>) => {
                                 setRoomPass(e.target.value)
                             }}
                         />
                     </FormControl>
-
-                    <Button mt={4} colorScheme="yellow" type="submit">
-                        Create Room
-                    </Button>
                 </Flex>
             </form>
         </Box>

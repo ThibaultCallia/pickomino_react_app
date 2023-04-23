@@ -6,6 +6,7 @@ import { RollDice } from "../RollDice"
 import socket from "../../socket"
 import { RootState } from "../../store"
 import { useSelector } from "react-redux"
+import { useGameSocketContext } from "../../contexts"
 
 function GamePlay() {
     // HOOKS
@@ -23,6 +24,7 @@ function GamePlay() {
                 (player) => player.id === currentPlayerId
             )?.name
     )
+    const { isMyTurn } = useGameSocketContext()
     // FUNCTIONS
 
     // RENDER
@@ -38,7 +40,7 @@ function GamePlay() {
                         fontSize={"xl"}
                     >
                         {`${
-                            isCurrentUserPlaying
+                            isMyTurn()
                                 ? "Your"
                                 : `${currentPlayerName}'${
                                       currentPlayerName?.slice(-1) === "s"
@@ -50,8 +52,6 @@ function GamePlay() {
                 </Box>
                 <RollDice />
             </Stack>
-            {/* <button onClick={onOpen}>winner modal test</button> */}
-            <GameOverModal isOpen={isOpen} onClose={onClose} />
         </>
     )
 }

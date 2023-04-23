@@ -17,6 +17,7 @@
         "@emotion/styled": "^11.10.6",
         "@reduxjs/toolkit": "^1.9.3",
         "framer-motion": "^10.10.0",
+        "js-cookie": "^3.0.4",
         "nanoid": "^4.0.2",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
@@ -26,6 +27,7 @@
         "socket.io-client": "^4.6.1"
     },
     "devDependencies": {
+        "@types/js-cookie": "^3.0.3",
         "@types/react": "^18.0.28",
         "@types/react-dom": "^18.0.11",
         "@typescript-eslint/eslint-plugin": "^5.58.0",
