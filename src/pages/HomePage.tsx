@@ -47,19 +47,18 @@ const HomePage = () => {
                         >
                             GAME RULES
                         </Button>
-                        <Button 
+                        <Button
                             position={"relative"}
-                            as={Link} 
-                            colorScheme="yellow" 
+                            as={Link}
+                            colorScheme="yellow"
                             variant="outline"
                             to="/game"
                             borderRadius={2}
-                            
                             _hover={{
-                                boxShadow:"7px 7px 0 hsl(47, 80%, 61%)",
+                                boxShadow: "7px 7px 0 hsl(47, 80%, 61%)",
                                 transform: "translate(-3px, -3px)",
                             }}
-                            >
+                        >
                             PLAY THE GAME
                         </Button>
                     </SimpleGrid>

@@ -203,22 +203,26 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
                 { roomName, roomPass, noOfPlayers, initialGameState },
                 (response: any) => {
                     if (response.success) {
-                        resolve({ success: true, roomCode: response.roomCode });
+                        resolve({ success: true, roomCode: response.roomCode })
                     } else {
-                        reject({ success: false, message: response.message });
+                        reject({ success: false, message: response.message })
                     }
                 }
             )
         })
     }
 
-    const joinRoom = (roomName: string, roomPass: string): Promise<string> => {
+    const joinRoom = (roomName: string, roomPass: string): Promise<{ success: boolean; roomCode?: string; message?: string }> => {
         return new Promise((resolve, reject) => {
             socket.emit(
                 "join-room",
                 { roomName, roomPass },
-                (roomCode: string) => {
-                    resolve(roomCode)
+                (response: any) => {
+                    if (response.success) {
+                        resolve({ success: true, roomCode: response.roomCode })
+                    } else {
+                        reject({ success: false, message: response.message })
+                    }
                 }
             )
         })
