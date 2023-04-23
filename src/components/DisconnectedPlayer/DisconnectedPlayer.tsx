@@ -9,10 +9,17 @@ import {
     Center,
     Box,
     Text,
+    Button,
+    Link,
+    ModalFooter,
 } from "@chakra-ui/react"
+import Cookies from "js-cookie"
 
 const DisconnectedPlayer = () => {
     const { showWaitingScreen } = useContext(DisconnectedPlayerContext)
+    const deleteCookie = () => {
+        Cookies.remove("PP_playerData")
+    }
 
     return (
         <>
@@ -30,11 +37,26 @@ const DisconnectedPlayer = () => {
                             <Box>
                                 <Text>
                                     A player has disconnected. Please wait for
-                                    them to reconnect...
+                                    them to reconnect or leave the game.
                                 </Text>
                             </Box>
+                            
                         </Center>
                     </ModalBody>
+                    <ModalFooter>
+                        <Link href="/">
+                            <Button 
+                                colorScheme="yellow" 
+                                mr={3} 
+                                onClick={deleteCookie} 
+                                borderRadius={2} 
+                                border={"1px solid black"} 
+                                boxShadow="2px 2px 0 black"
+                                >
+                                Leave Game
+                            </Button>
+                        </Link>
+                </ModalFooter>
                 </ModalContent>
             </Modal>
         </>

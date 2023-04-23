@@ -41,7 +41,7 @@ const EndTurnModal: React.FC<EndTurnModalProps> = ({
 
     return (
         <Modal
-            isCentered={false}
+            isCentered={true}
             closeOnOverlayClick={false}
             isOpen={isOpen}
             onClose={onClose}
@@ -53,14 +53,21 @@ const EndTurnModal: React.FC<EndTurnModalProps> = ({
 
                 <ModalBody>{children}</ModalBody>
 
-                <Box p={2} position={"absolute"} right={2} top={2}>
+                <Box p={2} position={"absolute"} right={3} top={2}>
                     <Text fontSize={"xl"} fontWeight={"bold"}>
                         {countdown}
                     </Text>
                 </Box>
 
                 <ModalFooter>
-                    <Button colorScheme="yellow" mr={3} onClick={onClose}>
+                    <Button 
+                        colorScheme="yellow" 
+                        mr={3} 
+                        onClick={onClose} 
+                        borderRadius={2} 
+                        border={"1px solid black"} 
+                        boxShadow="2px 2px 0 black"
+                        >
                         End Turn
                     </Button>
                 </ModalFooter>
