@@ -40,23 +40,22 @@ const DisconnectedPlayer = () => {
                                     them to reconnect or leave the game.
                                 </Text>
                             </Box>
-                            
                         </Center>
                     </ModalBody>
                     <ModalFooter>
                         <Link href="/">
-                            <Button 
-                                colorScheme="yellow" 
-                                mr={3} 
-                                onClick={deleteCookie} 
-                                borderRadius={2} 
-                                border={"1px solid black"} 
+                            <Button
+                                colorScheme="yellow"
+                                mr={3}
+                                onClick={deleteCookie}
+                                borderRadius={2}
+                                border={"1px solid black"}
                                 boxShadow="2px 2px 0 black"
-                                >
+                            >
                                 Leave Game
                             </Button>
                         </Link>
-                </ModalFooter>
+                    </ModalFooter>
                 </ModalContent>
             </Modal>
         </>
