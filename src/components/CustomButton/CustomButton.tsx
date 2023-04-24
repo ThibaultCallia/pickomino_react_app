@@ -9,6 +9,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
 }) => {
     return (
         <Box
+            borderRadius={3}
             as={Button}
             onClick={!isDisabled ? onClick : undefined}
             isDisabled={isDisabled}

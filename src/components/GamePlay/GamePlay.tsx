@@ -33,7 +33,7 @@ function GamePlay() {
             <PlayerInfo />
             <Board />
             <Stack spacing={2}>
-                <Box backgroundColor={"hsl(46, 83%, 61%)"} mb={3}>
+                <Box backgroundColor={"hsl(46, 83%, 61%)"} mb={3} borderRadius={2}>
                     <Text
                         fontWeight={"bolder"}
                         textAlign="center"
