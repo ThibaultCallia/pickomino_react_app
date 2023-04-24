@@ -45,7 +45,7 @@ const HomePage = () => {
                             colorScheme="yellow"
                             to="/how-to-play"
                         >
-                            GAME RULES
+                            HOW TO PLAY
                         </Button>
                         <Button
                             position={"relative"}

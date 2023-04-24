@@ -9,11 +9,11 @@ export interface GameSocketInterface {
         roomName: string,
         roomPass: string,
         noOfPlayers: number
-    ) => Promise<string>
-    joinRoom: (roomName: string, roomPass: string) => Promise<string>
+    ) => Promise<{ success: boolean; roomCode?: string; message?: string }>
+    joinRoom: (roomName: string, roomPass: string) => Promise<{ success: boolean; roomCode?: string; message?: string }>
     sendPlayerAction: (type: string, payload: any) => void
     endTurn: () => void
     rejoinRoom: (playerId: string, roomCode: string) => Promise<any>
     isMyTurn: () => boolean
-    returnMyPlayerId: () => string
+    returnMyPlayerId: () => string | null
 }

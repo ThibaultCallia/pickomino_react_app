@@ -60,7 +60,7 @@ const Navbar = () => {
             <Spacer />
 
             <Box alignItems="center" display={{ base: "none", md: "flex" }}>
-                <SettingsMenu />
+                {/* <SettingsMenu /> */}
 
                 <Button bg="transparent" onClick={onOpen}>
                     Game Rules
@@ -83,7 +83,7 @@ const Navbar = () => {
                 aria-label={displayMenu ? "Close menu" : "Open menu"}
             />
 
-            <Collapse in={displayMenu} animateOpacity>
+            <Collapse in={displayMenu}>
                 <Box
                     position="absolute"
                     top="100%"
@@ -93,7 +93,6 @@ const Navbar = () => {
                     p={4}
                     display={{ base: "block", md: "none" }}
                     bg={colorMode === "dark" ? "gray.700" : "gray.100"}
-                    
                 >
                     <Link
                         href="/gameRules"

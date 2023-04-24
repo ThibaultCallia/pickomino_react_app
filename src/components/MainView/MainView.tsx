@@ -92,10 +92,6 @@ const MainView = () => {
                 width="90%"
                 mx="auto"
                 maxW={680}
-                
-                
-                
-                
             >
                 {!roomCode ? (
                     <>

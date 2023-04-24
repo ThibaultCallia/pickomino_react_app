@@ -62,7 +62,6 @@ const RollDice = () => {
         (state: RootState) => state.game.dice.currentDiceRoll
     )
 
-    
     const { sendPlayerAction, endTurn, isMyTurn, returnMyPlayerId } =
         useGameSocketContext()
 
@@ -223,7 +222,7 @@ const RollDice = () => {
                             </Box>
                         </Center>
                         <Center>
-                            {showDiceTotal && (
+                            
                                 <Tag
                                     size="md"
                                     variant="solid"
@@ -233,7 +232,7 @@ const RollDice = () => {
                                 >
                                     Dice total: {totalDiceValue(selectedDice)}
                                 </Tag>
-                            )}
+                            
                         </Center>
                     </Box>
 
