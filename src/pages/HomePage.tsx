@@ -1,12 +1,13 @@
 import {
     Heading,
     SimpleGrid,
-    VStack,
+    
     Button,
     Box,
     Image,
     Flex,
 } from "@chakra-ui/react"
+import { NavBar } from "../components"
 import { motion, useIsPresent } from "framer-motion"
 
 import { Link } from "react-router-dom"
@@ -15,6 +16,7 @@ const HomePage = () => {
     const isPresent = useIsPresent()
     return (
         <>
+            <NavBar game={false}/>
             <Flex
                 height="calc(100vh - 56px - 40px)"
                 position="relative"

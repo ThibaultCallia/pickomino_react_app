@@ -1,4 +1,6 @@
 import { useState } from "react"
+import { useLocation } from 'react-router-dom';
+
 import {
     Box,
     Flex,
@@ -9,21 +11,21 @@ import {
     useColorMode,
     Tooltip,
     Image,
+    
     useDisclosure,
 } from "@chakra-ui/react"
 import {
-    HamburgerIcon,
-    CloseIcon,
-    SearchIcon,
+    
     QuestionOutlineIcon,
-    QuestionIcon,
+    
     DeleteIcon,
 } from "@chakra-ui/icons"
 import { SettingsMenu } from "../SettingsMenu"
 import { GameRulesDrawer } from "../GameRulesDrawer"
 import Cookies from "js-cookie"
+import { NavbarProps } from "./";
 
-const Navbar = () => {
+const Navbar = ({ game }: NavbarProps) => {
     // HOOKS
     const { colorMode } = useColorMode()
     const [displayMenu, setDisplayMenu] = useState(false)
@@ -32,7 +34,9 @@ const Navbar = () => {
     const toggleMenu = () => {
         setDisplayMenu(!displayMenu)
     }
+    const location = useLocation();
 
+    // FUNCTIONS
     const deleteCookie = () => {
         Cookies.remove("PP_playerData")
     }
@@ -66,8 +70,8 @@ const Navbar = () => {
             </Box>
             <Spacer />
 
-            <Flex alignItems="center">
-                {/* <SettingsMenu /> */}
+            {game && (<Flex alignItems="center">
+                
 
                 <Button
                     bg="transparent"
@@ -115,7 +119,7 @@ const Navbar = () => {
                     isOpen={isOpen}
                     onClose={onClose}
                 />
-            </Flex>
+            </Flex>)}
             {/* <IconButton
                 display={{ base: "flex", md: "none" }}
                 onClick={toggleMenu}

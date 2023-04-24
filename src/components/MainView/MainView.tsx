@@ -18,6 +18,7 @@ import { CreateJoinRoom } from "../CreateJoinRoom"
 import { useGameSocketContext } from "../../contexts"
 import { setRoomId } from "../../store/Room/roomSlice"
 import Cookies from "js-cookie"
+import { NavBar } from "../NavBar"
 
 const MainView = () => {
     // USE STATES
@@ -83,6 +84,7 @@ const MainView = () => {
 
     return (
         <>
+            <NavBar game={true}/>
             <Box
                 py={2}
                 minHeight="calc(100vh - 56px - 40px)"

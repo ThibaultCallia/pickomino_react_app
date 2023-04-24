@@ -41,7 +41,7 @@ function App() {
         <>
             <DisconnectedPlayerProvider>
                 <GameSocketProvider dispatch={dispatch}>
-                    <NavBar />
+                    {/* <NavBar /> */}
                     <AnimatePresence mode="wait" initial={false}>
                         {React.cloneElement(element, {
                             key: location.pathname,
