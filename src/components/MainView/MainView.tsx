@@ -84,7 +84,7 @@ const MainView = () => {
 
     return (
         <>
-            <NavBar game={true}/>
+            <NavBar game={true} />
             <Box
                 py={2}
                 minHeight="calc(100vh - 56px - 40px)"

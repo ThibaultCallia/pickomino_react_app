@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom"
 
 import {
     Box,
@@ -11,19 +11,13 @@ import {
     useColorMode,
     Tooltip,
     Image,
-    
     useDisclosure,
 } from "@chakra-ui/react"
-import {
-    
-    QuestionOutlineIcon,
-    
-    DeleteIcon,
-} from "@chakra-ui/icons"
+import { QuestionOutlineIcon, DeleteIcon } from "@chakra-ui/icons"
 import { SettingsMenu } from "../SettingsMenu"
 import { GameRulesDrawer } from "../GameRulesDrawer"
 import Cookies from "js-cookie"
-import { NavbarProps } from "./";
+import { NavbarProps } from "./"
 
 const Navbar = ({ game }: NavbarProps) => {
     // HOOKS
@@ -34,7 +28,7 @@ const Navbar = ({ game }: NavbarProps) => {
     const toggleMenu = () => {
         setDisplayMenu(!displayMenu)
     }
-    const location = useLocation();
+    const location = useLocation()
 
     // FUNCTIONS
     const deleteCookie = () => {
@@ -51,12 +45,14 @@ const Navbar = ({ game }: NavbarProps) => {
             px={4}
             py={2}
             alignItems="center"
+            minH={"58px"}
+            
         >
             <Box>
                 <Link href="/" fontWeight="bold" fontSize="xl">
                     <Flex alignItems="center">
                         <Image
-                            src="./PP_mini_logo.png"
+                            src="./PP_mini_logo.svg"
                             alt="Planetary Pirates Logo"
                             width="30px"
                             height="30px"
@@ -70,56 +66,55 @@ const Navbar = ({ game }: NavbarProps) => {
             </Box>
             <Spacer />
 
-            {game && (<Flex alignItems="center">
-                
-
-                <Button
-                    bg="transparent"
-                    onClick={onOpen}
-                    display={{ base: "none", md: "flex" }}
-                    alignItems={"center"}
-                >
-                    Game Rules
-                </Button>
-                <Link href="/" display={{ base: "none", md: "flex" }}>
-                    <Button bg="transparent" onClick={deleteCookie}>
-                        Quit Game
+            {game && (
+                <Flex alignItems="center">
+                    <Button
+                        bg="transparent"
+                        onClick={onOpen}
+                        display={{ base: "none", md: "flex" }}
+                        alignItems={"center"}
+                    >
+                        Game Rules
                     </Button>
-                </Link>
-                <Flex display={{ base: "flex", md: "none" }} gap={4}>
-                    <Tooltip label="Game rules" >
-                        <IconButton
-                            colorScheme="yellow"
-                            aria-label="Search database"
-                            icon={<QuestionOutlineIcon />}
-                            rounded={"sm"}
-                            onClick={onOpen}
-                            border={"1px solid black"}
-                            boxShadow="2px 2px 0 black"
-                        />
-                    </Tooltip>
-                    <Tooltip label="Quit game">
-                        <Link href="/">
-                        <IconButton
-                            
-                            border={"1px solid black"}
-                            boxShadow="2px 2px 0 black"
-                            colorScheme="yellow"
-                            aria-label="Search database"
-                            icon={<DeleteIcon />}
-                            rounded={"sm"}
-                            onClick={deleteCookie}
-                        />
-                        </Link>
-                    </Tooltip>
-                </Flex>
+                    <Link href="/" display={{ base: "none", md: "flex" }}>
+                        <Button bg="transparent" onClick={deleteCookie}>
+                            Quit Game
+                        </Button>
+                    </Link>
+                    <Flex display={{ base: "flex", md: "none" }} gap={4}>
+                        <Tooltip label="Game rules">
+                            <IconButton
+                                colorScheme="yellow"
+                                aria-label="Search database"
+                                icon={<QuestionOutlineIcon />}
+                                rounded={"sm"}
+                                onClick={onOpen}
+                                border={"1px solid black"}
+                                boxShadow="2px 2px 0 black"
+                            />
+                        </Tooltip>
+                        <Tooltip label="Quit game">
+                            <Link href="/">
+                                <IconButton
+                                    border={"1px solid black"}
+                                    boxShadow="2px 2px 0 black"
+                                    colorScheme="yellow"
+                                    aria-label="Search database"
+                                    icon={<DeleteIcon />}
+                                    rounded={"sm"}
+                                    onClick={deleteCookie}
+                                />
+                            </Link>
+                        </Tooltip>
+                    </Flex>
 
-                <GameRulesDrawer
-                    onOpen={onOpen}
-                    isOpen={isOpen}
-                    onClose={onClose}
-                />
-            </Flex>)}
+                    <GameRulesDrawer
+                        onOpen={onOpen}
+                        isOpen={isOpen}
+                        onClose={onClose}
+                    />
+                </Flex>
+            )}
             {/* <IconButton
                 display={{ base: "flex", md: "none" }}
                 onClick={toggleMenu}

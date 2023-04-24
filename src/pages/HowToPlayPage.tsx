@@ -20,11 +20,13 @@ import {
     Link,
 } from "@chakra-ui/react"
 import { useIsPresent, motion } from "framer-motion"
+import { NavBar } from "../components"
 
 const HowToPlayPage = () => {
     const isPresent = useIsPresent()
     return (
         <>
+            <NavBar game={false} />
             <Container mt={9} maxW={"900px"} p={8}>
                 <Flex direction={"column"} gap={5}>
                     <Heading>How to Play</Heading>

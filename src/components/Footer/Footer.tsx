@@ -14,8 +14,9 @@ const Footer = () => {
             px={4}
             py={2}
             fontSize={"sm"}
+            
         >
-            <Flex alignItems="center" justifyContent="space-between">
+            <Flex alignItems="center" justifyContent="space-between" >
                 <Text noOfLines={1}>
                     <Link href="/privacy" mx={2}>
                         Based on" Regenwormen" by 999 Games

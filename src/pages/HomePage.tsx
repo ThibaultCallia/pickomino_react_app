@@ -1,12 +1,4 @@
-import {
-    Heading,
-    SimpleGrid,
-    
-    Button,
-    Box,
-    Image,
-    Flex,
-} from "@chakra-ui/react"
+import { Heading, SimpleGrid, Button, Box, Image, Flex } from "@chakra-ui/react"
 import { NavBar } from "../components"
 import { motion, useIsPresent } from "framer-motion"
 
@@ -16,7 +8,7 @@ const HomePage = () => {
     const isPresent = useIsPresent()
     return (
         <>
-            <NavBar game={false}/>
+            <NavBar game={false} />
             <Flex
                 height="calc(100vh - 56px - 40px)"
                 position="relative"
@@ -27,9 +19,15 @@ const HomePage = () => {
                 gap={10}
             >
                 <Box pos={"relative"} zIndex={1}>
-                    <Heading mb={8} color="white" textAlign={"center"}>
+                    <Heading
+                        size={"xl"}
+                        mb={{ base: 8, md: "90px" }}
+                        color="hsl(47, 80%, 61%)"
+                        textAlign={"center"}
+                    >
                         Planetary Pirates
                     </Heading>
+
                     <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
                         <Button
                             as={Link}
