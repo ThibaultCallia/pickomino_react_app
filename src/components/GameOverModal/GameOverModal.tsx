@@ -7,11 +7,15 @@ import {
     ModalHeader,
     ModalOverlay,
     Image,
+    ModalFooter,
+    Button,
+    Link,
 } from "@chakra-ui/react"
 import { useSelector } from "react-redux"
 import { RootState } from "../../store"
 import { GameOverModalProps } from "./"
 import { totalPlanetsCollected } from "../../helpers"
+import Cookies from "js-cookie"
 
 const GameOverModal = ({ isOpen, onClose }: GameOverModalProps) => {
     const playerArray = useSelector(
@@ -67,6 +71,22 @@ const GameOverModal = ({ isOpen, onClose }: GameOverModalProps) => {
                         </Box>
                     ))}
                 </ModalBody>
+                <ModalFooter>
+                    <Link href="/">
+                        <Button
+                            colorScheme="yellow"
+                            mr={3}
+                            onClick={() => {
+                                Cookies.remove("PP_playerData")
+                            }}
+                            borderRadius={2}
+                            border={"1px solid black"}
+                            boxShadow="2px 2px 0 black"
+                        >
+                            Leave Game
+                        </Button>
+                    </Link>
+                </ModalFooter>
             </ModalContent>
         </Modal>
     )

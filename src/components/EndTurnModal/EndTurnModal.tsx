@@ -60,14 +60,14 @@ const EndTurnModal: React.FC<EndTurnModalProps> = ({
                 </Box>
 
                 <ModalFooter>
-                    <Button 
-                        colorScheme="yellow" 
-                        mr={3} 
-                        onClick={onClose} 
-                        borderRadius={2} 
-                        border={"1px solid black"} 
+                    <Button
+                        colorScheme="yellow"
+                        mr={3}
+                        onClick={onClose}
+                        borderRadius={2}
+                        border={"1px solid black"}
                         boxShadow="2px 2px 0 black"
-                        >
+                    >
                         End Turn
                     </Button>
                 </ModalFooter>

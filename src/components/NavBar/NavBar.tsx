@@ -82,13 +82,6 @@ const Navbar = () => {
                 icon={displayMenu ? <CloseIcon /> : <HamburgerIcon />}
                 aria-label={displayMenu ? "Close menu" : "Open menu"}
             />
-            {/* <Button
-          onClick={toggleColorMode}
-          ml={2}
-          colorScheme={colorMode === 'dark' ? 'yellow' : 'gray'}
-        >
-          {colorMode === 'dark' ? 'Light Mode' : 'Dark Mode'}
-        </Button> */}
 
             <Collapse in={displayMenu} animateOpacity>
                 <Box
@@ -100,7 +93,7 @@ const Navbar = () => {
                     p={4}
                     display={{ base: "block", md: "none" }}
                     bg={colorMode === "dark" ? "gray.700" : "gray.100"}
-                    rounded="md"
+                    
                 >
                     <Link
                         href="/gameRules"

@@ -9,10 +9,11 @@ const Footer = () => {
     return (
         <Box
             as="footer"
-            bg={colorMode === "dark" ? "gray.800" : "white"}
+            bg={colorMode === "dark" ? "gray.800" : "gray.100"}
             boxShadow="md"
             px={4}
             py={2}
+            fontSize={"sm"}
         >
             <Flex alignItems="center" justifyContent="space-between">
                 <Text noOfLines={1}>

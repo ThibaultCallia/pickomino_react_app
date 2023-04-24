@@ -62,13 +62,7 @@ const RollDice = () => {
         (state: RootState) => state.game.dice.currentDiceRoll
     )
 
-    const currentPlayerId = useSelector(
-        (state: RootState) => state.game.currentPlayerId
-    )
-
-    const gameStatus = useSelector((state: RootState) => state.game.gameStatus)
-    // const isCurrentUserPlaying =
-    //     socket.id === currentPlayerId && gameStatus === "playing"
+    
     const { sendPlayerAction, endTurn, isMyTurn, returnMyPlayerId } =
         useGameSocketContext()
 

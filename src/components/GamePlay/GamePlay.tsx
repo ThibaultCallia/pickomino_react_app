@@ -1,4 +1,4 @@
-import { Stack, Text, useDisclosure, Box } from "@chakra-ui/react"
+import { Stack, Text, useDisclosure, Box, Flex } from "@chakra-ui/react"
 import { Board } from "../Board"
 import { GameOverModal } from "../GameOverModal"
 import { PlayerInfo } from "../PlayerInfo"
@@ -29,11 +29,15 @@ function GamePlay() {
 
     // RENDER
     return (
-        <>
+        <Flex flexDirection={"column"} gap={"5rem"}>
             <PlayerInfo />
             <Board />
             <Stack spacing={2}>
-                <Box backgroundColor={"hsl(46, 83%, 61%)"} mb={3} borderRadius={2}>
+                <Box
+                    backgroundColor={"hsl(46, 83%, 61%)"}
+                    mb={3}
+                    borderRadius={2}
+                >
                     <Text
                         fontWeight={"bolder"}
                         textAlign="center"
@@ -52,7 +56,7 @@ function GamePlay() {
                 </Box>
                 <RollDice />
             </Stack>
-        </>
+        </Flex>
     )
 }
 
