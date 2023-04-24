@@ -137,6 +137,11 @@ const GameRulesDrawer: React.FC<GameRulesDrawerProps> = ({
                         </TabPanels>
                     </Tabs>
                 </DrawerBody>
+                <DrawerFooter>
+                    <Button colorScheme="yellow" mr={3} onClick={onClose}>
+                        Close
+                    </Button>
+                </DrawerFooter>
             </DrawerContent>
         </Drawer>
     )

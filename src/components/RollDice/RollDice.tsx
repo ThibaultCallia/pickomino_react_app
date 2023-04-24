@@ -222,17 +222,15 @@ const RollDice = () => {
                             </Box>
                         </Center>
                         <Center>
-                            
-                                <Tag
-                                    size="md"
-                                    variant="solid"
-                                    color="black"
-                                    bgColor="yellow.400"
-                                    mb="1rem"
-                                >
-                                    Dice total: {totalDiceValue(selectedDice)}
-                                </Tag>
-                            
+                            <Tag
+                                size="md"
+                                variant="solid"
+                                color="black"
+                                bgColor="yellow.400"
+                                mb="1rem"
+                            >
+                                Dice total: {totalDiceValue(selectedDice)}
+                            </Tag>
                         </Center>
                     </Box>
 

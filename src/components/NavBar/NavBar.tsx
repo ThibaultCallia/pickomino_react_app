@@ -7,11 +7,18 @@ import {
     Link,
     IconButton,
     useColorMode,
-    Collapse,
+    Tooltip,
     Image,
     useDisclosure,
 } from "@chakra-ui/react"
-import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons"
+import {
+    HamburgerIcon,
+    CloseIcon,
+    SearchIcon,
+    QuestionOutlineIcon,
+    QuestionIcon,
+    DeleteIcon,
+} from "@chakra-ui/icons"
 import { SettingsMenu } from "../SettingsMenu"
 import { GameRulesDrawer } from "../GameRulesDrawer"
 import Cookies from "js-cookie"
@@ -59,31 +66,64 @@ const Navbar = () => {
             </Box>
             <Spacer />
 
-            <Box alignItems="center" display={{ base: "none", md: "flex" }}>
+            <Flex alignItems="center">
                 {/* <SettingsMenu /> */}
 
-                <Button bg="transparent" onClick={onOpen}>
+                <Button
+                    bg="transparent"
+                    onClick={onOpen}
+                    display={{ base: "none", md: "flex" }}
+                    alignItems={"center"}
+                >
                     Game Rules
                 </Button>
-                <Link href="/">
+                <Link href="/" display={{ base: "none", md: "flex" }}>
                     <Button bg="transparent" onClick={deleteCookie}>
-                        Leave Game
+                        Quit Game
                     </Button>
                 </Link>
+                <Flex display={{ base: "flex", md: "none" }} gap={4}>
+                    <Tooltip label="Game rules" >
+                        <IconButton
+                            colorScheme="yellow"
+                            aria-label="Search database"
+                            icon={<QuestionOutlineIcon />}
+                            rounded={"sm"}
+                            onClick={onOpen}
+                            border={"1px solid black"}
+                            boxShadow="2px 2px 0 black"
+                        />
+                    </Tooltip>
+                    <Tooltip label="Quit game">
+                        <Link href="/">
+                        <IconButton
+                            
+                            border={"1px solid black"}
+                            boxShadow="2px 2px 0 black"
+                            colorScheme="yellow"
+                            aria-label="Search database"
+                            icon={<DeleteIcon />}
+                            rounded={"sm"}
+                            onClick={deleteCookie}
+                        />
+                        </Link>
+                    </Tooltip>
+                </Flex>
+
                 <GameRulesDrawer
                     onOpen={onOpen}
                     isOpen={isOpen}
                     onClose={onClose}
                 />
-            </Box>
-            <IconButton
+            </Flex>
+            {/* <IconButton
                 display={{ base: "flex", md: "none" }}
                 onClick={toggleMenu}
                 icon={displayMenu ? <CloseIcon /> : <HamburgerIcon />}
                 aria-label={displayMenu ? "Close menu" : "Open menu"}
-            />
+            /> */}
 
-            <Collapse in={displayMenu}>
+            {/* <Collapse in={displayMenu}>
                 <Box
                     position="absolute"
                     top="100%"
@@ -103,7 +143,7 @@ const Navbar = () => {
                         Game Rules
                     </Link>
                 </Box>
-            </Collapse>
+            </Collapse> */}
         </Flex>
     )
 }
