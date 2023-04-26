@@ -51,7 +51,7 @@ const GameOverModal = ({ isOpen, onClose }: GameOverModalProps) => {
                                         {player.name}
                                     </Text>
                                     <Image
-                                        src="./game_art/planetary_pirates_art.jpg"
+                                        src={`./game_art/characters/character_${player.image}.png`}
                                         alt="Winner"
                                         height="100px"
                                         mx="auto"

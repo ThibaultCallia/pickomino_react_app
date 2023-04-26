@@ -176,14 +176,14 @@ const HowToPlayPage = () => {
                                         five points. <br />
                                         If the planet tile with the number
                                         exactly equal to the point total is open
-                                        in the row on the table or on top of
-                                        another player's stack, they may claim
-                                        it. If this is not the case (or if the
-                                        player does not see that the relevant
-                                        tile is on the stack of another player),
-                                        they may claim the planet with the next
-                                        lower number from the open row on the
-                                        table. <br />
+                                        in the row on the board or available on
+                                        a opponents' card, they may claim it. If
+                                        this is not the case (or if the player
+                                        does not see that the relevant tile is
+                                        available on an opponent), they may
+                                        claim the planet with the next lower
+                                        number from the open row on the board.{" "}
+                                        <br />
                                         <br />
                                         The tile will be placed on top of the
                                         players’ stack: only the top planet tile

@@ -40,9 +40,30 @@ const MainView = () => {
 
     const storedRoomCode: string | null = parsedPlayerData?.roomCode ?? null
     const storedPlayerId: string | null = parsedPlayerData?.playerId ?? null
-    console.log(storedRoomCode, storedPlayerId)
     const [hasCheckedCookie, setHasCheckedCookie] = useState(false)
     const { rejoinRoom } = useGameSocketContext()
+    const imageUrls = [
+        '/diceFaces/die1.svg',
+        '/diceFaces/die2.svg',
+        '/diceFaces/die3.svg',
+        '/diceFaces/die4.svg',
+        '/diceFaces/die5.svg',
+        '/diceFaces/dieR.svg',
+        
+      ];
+      
+
+    // USE EFFECTS
+    useEffect(() => {
+        const preloadImages = () => {
+          imageUrls.forEach((url) => {
+            const img = new Image();
+            img.src = url;
+          });
+        };
+    
+        preloadImages();
+      }, []);
 
     useEffect(() => {
         if (board.filter((tile) => !tile.disabled).length === 0) {
@@ -64,7 +85,7 @@ const MainView = () => {
     // RENDER
 
     if (!hasCheckedCookie && storedPlayerId && storedRoomCode && !roomCode) {
-        console.log("rejoining room accessed")
+        
         setHasCheckedCookie(true)
         ;(async () => {
             try {
@@ -72,7 +93,7 @@ const MainView = () => {
                     storedPlayerId,
                     storedRoomCode
                 )
-                console.log(roomData)
+                
                 dispatch(setInitialState(roomData.gameState))
                 dispatch(setRoomId(roomData.roomName))
                 // PLAYER ID IS NOW NO LONGER SAME AS SOCKET ID -> CHANGE IT IN BACKEND
@@ -121,7 +142,7 @@ const MainView = () => {
             </Box>
             <DisconnectedPlayer />
             <GameOverModal isOpen={isOpen} onClose={onClose} />
-            {/* <button onClick={onOpen}>winner modal test</button> */}
+            <button onClick={onOpen}>winner modal test</button>
         </>
     )
 }

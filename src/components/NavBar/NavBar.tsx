@@ -46,7 +46,6 @@ const Navbar = ({ game }: NavbarProps) => {
             py={2}
             alignItems="center"
             minH={"58px"}
-            
         >
             <Box>
                 <Link href="/" fontWeight="bold" fontSize="xl">

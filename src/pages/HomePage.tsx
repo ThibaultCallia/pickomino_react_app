@@ -1,5 +1,5 @@
 import { Heading, SimpleGrid, Button, Box, Image, Flex } from "@chakra-ui/react"
-import { NavBar } from "../components"
+import { NavBar, Loader } from "../components"
 import { motion, useIsPresent } from "framer-motion"
 
 import { Link } from "react-router-dom"
@@ -27,7 +27,7 @@ const HomePage = () => {
                     >
                         Planetary Pirates
                     </Heading>
-
+                    
                     <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
                         <Button
                             as={Link}
@@ -35,6 +35,9 @@ const HomePage = () => {
                             borderRadius={2}
                             colorScheme="yellow"
                             to="/about"
+                            backdropBlur={3}
+                            backgroundBlendMode={"overlay"}
+                            background={"hsl(224, 49%, 21%)"}
                         >
                             ABOUT
                         </Button>

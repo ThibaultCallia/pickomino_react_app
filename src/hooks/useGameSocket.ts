@@ -147,7 +147,7 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
         }
 
         const handleSyncGameState = (gameState: PlainGameState) => {
-            console.log("syncing game state")
+            
             dispatch(setInitialState(gameState))
         }
 
@@ -165,7 +165,7 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
             handleGameAction(type, payload)
         })
         socket.on("sync-game-state", ({ gameState }) => {
-            console.log("syncing game state")
+            
             handleSyncGameState(gameState)
         })
         socket.on("player-disconnected", () => {
@@ -187,7 +187,7 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
     useEffect(() => {
         if (!isMyTurn()) return
         socket.emit("update-game-state", { roomCode, newGameState: gameState })
-        console.log("game state updated", `on room ${roomCode}`)
+        
     }, [gameState])
 
     const createRoom = (
@@ -251,8 +251,8 @@ const useGameSocket = (dispatch: Dispatch<PayloadAction<any>>) => {
     }
 
     const sendPlayerAction = (type: string, payload: any) => {
-        console.log("send player action called")
-        console.log(`my player id is now ${myPlayerId}`)
+        
+        
         socket.emit("game-action", { type, payload }, myPlayerId)
     }
     const endTurn = () => {
