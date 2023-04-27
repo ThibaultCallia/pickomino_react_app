@@ -17,7 +17,7 @@ const Footer = () => {
         >
             <Flex alignItems="center" justifyContent="space-between">
                 <Text noOfLines={1}>
-                    <Link href="/privacy" mx={2}>
+                    <Link href="https://www.999games.nl/regenwormen.html" mx={2}>
                         Based on" Regenwormen" by 999 Games
                     </Link>
                 </Text>
