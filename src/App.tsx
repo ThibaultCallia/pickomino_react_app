@@ -35,6 +35,7 @@ function App() {
 
     const location = useLocation()
 
+    // Create 404 page?
     if (!element) return null
 
     return (
