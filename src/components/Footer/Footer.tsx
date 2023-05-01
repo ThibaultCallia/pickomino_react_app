@@ -1,24 +1,22 @@
-// Footer.js
+import { Box, Flex, Text, Link, useColorMode } from '@chakra-ui/react'
 
-import { Box, Flex, Text, Link, useColorMode } from "@chakra-ui/react"
+const Footer = (): JSX.Element => {
+  const { colorMode } = useColorMode()
 
-const Footer = () => {
-    const { colorMode } = useColorMode()
-
-    // RENDER
-    return (
+  // RENDER
+  return (
         <Box
             as="footer"
-            bg={colorMode === "dark" ? "gray.800" : "gray.100"}
+            bg={colorMode === 'dark' ? 'gray.800' : 'gray.100'}
             boxShadow="md"
             px={4}
             py={2}
-            fontSize={"sm"}
+            fontSize={'sm'}
         >
             <Flex alignItems="center" justifyContent="space-between">
                 <Text noOfLines={1}>
                     <Link href="https://www.999games.nl/regenwormen.html" mx={2}>
-                        Based on" Regenwormen" by 999 Games
+                        Based on "Regenwormen" by 999 Games
                     </Link>
                 </Text>
                 <Box>
@@ -32,7 +30,7 @@ const Footer = () => {
                 </Box>
             </Flex>
         </Box>
-    )
+  )
 }
 
 export default Footer

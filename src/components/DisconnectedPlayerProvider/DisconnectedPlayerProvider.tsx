@@ -1,20 +1,21 @@
-import React, { useState } from "react"
-import { DisconnectedPlayerContext } from "../../contexts"
+import React, { useState } from 'react'
+
+import { DisconnectedPlayerContext } from '../../contexts'
 
 interface WaitingScreenProviderProps {
-    children: React.ReactNode
+  children: React.ReactNode
 }
 
 export const DisconnectedPlayerProvider: React.FC<
-    WaitingScreenProviderProps
+WaitingScreenProviderProps
 > = ({ children }) => {
-    const [showWaitingScreen, setShowWaitingScreen] = useState(false)
+  const [showWaitingScreen, setShowWaitingScreen] = useState(false)
 
-    return (
+  return (
         <DisconnectedPlayerContext.Provider
             value={{ showWaitingScreen, setShowWaitingScreen }}
         >
             {children}
         </DisconnectedPlayerContext.Provider>
-    )
+  )
 }

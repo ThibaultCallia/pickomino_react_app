@@ -1,33 +1,35 @@
 import {
-    Text,
-    Box,
-    Modal,
-    ModalBody,
-    ModalContent,
-    ModalHeader,
-    ModalOverlay,
-    Image,
-    ModalFooter,
-    Button,
-    Link,
-} from "@chakra-ui/react"
-import { useSelector } from "react-redux"
-import { RootState } from "../../store"
-import { GameOverModalProps } from "./"
-import { totalPlanetsCollected } from "../../helpers"
-import Cookies from "js-cookie"
+  Text,
+  Box,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  Image,
+  ModalFooter,
+  Button,
+  Link
+} from '@chakra-ui/react'
+import Cookies from 'js-cookie'
+import { useSelector } from 'react-redux'
 
-const GameOverModal = ({ isOpen, onClose }: GameOverModalProps) => {
-    const playerArray = useSelector(
-        (state: RootState) => state.game.playerArray
-    )
-    const sortedPlayers = [...playerArray].sort(
-        (a, b) =>
-            totalPlanetsCollected(b.collectedTiles) -
+import { totalPlanetsCollected } from '../../helpers'
+import { type RootState } from '../../store'
+
+import { type GameOverModalProps } from './'
+
+const GameOverModal = ({ isOpen, onClose }: GameOverModalProps): JSX.Element => {
+  const playerArray = useSelector(
+    (state: RootState) => state.game.playerArray
+  )
+  const sortedPlayers = [...playerArray].sort(
+    (a, b) =>
+      totalPlanetsCollected(b.collectedTiles) -
             totalPlanetsCollected(a.collectedTiles)
-    )
+  )
 
-    return (
+  return (
         <Modal isCentered isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
@@ -65,7 +67,7 @@ const GameOverModal = ({ isOpen, onClose }: GameOverModalProps) => {
                                 </Text>
                             )}
                             <Text fontSize="md" fontStyle="italic">
-                                Points:{" "}
+                                Points:{' '}
                                 {totalPlanetsCollected(player.collectedTiles)}
                             </Text>
                         </Box>
@@ -77,10 +79,10 @@ const GameOverModal = ({ isOpen, onClose }: GameOverModalProps) => {
                             colorScheme="yellow"
                             mr={3}
                             onClick={() => {
-                                Cookies.remove("PP_playerData")
+                              Cookies.remove('PP_playerData')
                             }}
                             borderRadius={2}
-                            border={"1px solid black"}
+                            border={'1px solid black'}
                             boxShadow="2px 2px 0 black"
                         >
                             Leave Game
@@ -89,7 +91,7 @@ const GameOverModal = ({ isOpen, onClose }: GameOverModalProps) => {
                 </ModalFooter>
             </ModalContent>
         </Modal>
-    )
+  )
 }
 
 export default GameOverModal
