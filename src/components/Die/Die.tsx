@@ -1,30 +1,31 @@
-import { Box, Image } from "@chakra-ui/react"
-import { DieProps } from "./"
+import { Box, Image } from '@chakra-ui/react'
 
-function Die({ die, onClick, selected }: DieProps) {
-    // FUNCTIONS
-    const handleClick = () => {
-        if (onClick) {
-            onClick(die)
-        }
+import { type DieProps } from './'
+
+function Die ({ die, onClick, selected }: DieProps): JSX.Element {
+  // FUNCTIONS
+  const handleClick = ():void => {
+    if (onClick != null) {
+      onClick(die)
     }
+  }
 
-    // RENDER
-    return (
+  // RENDER
+  return (
         <Box
             onClick={handleClick}
-            borderWidth={selected ? "2px" : "1px"}
-            borderColor={selected ? "red" : "black"}
+            borderWidth={selected ? '2px' : '1px'}
+            borderColor={selected ? 'red' : 'black'}
             // boxShadow={selected ? "dark-lg" : "none"}
             borderRadius="lg"
             overflow="hidden"
             width="40px"
             height="40px"
-            cursor={onClick ? "pointer" : "default"}
+            cursor={(onClick != null) ? 'pointer' : 'default'}
         >
             <Image objectFit="cover" src={`/diceFaces/die${die}.svg`} />
         </Box>
-    )
+  )
 }
 
 export default Die

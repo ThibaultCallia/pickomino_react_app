@@ -1,27 +1,29 @@
-import { useContext } from "react"
-import { DisconnectedPlayerContext } from "../../contexts"
+import { useContext } from 'react'
+
 import {
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-    Center,
-    Box,
-    Text,
-    Button,
-    Link,
-    ModalFooter,
-} from "@chakra-ui/react"
-import Cookies from "js-cookie"
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  Center,
+  Box,
+  Text,
+  Button,
+  Link,
+  ModalFooter
+} from '@chakra-ui/react'
+import Cookies from 'js-cookie'
 
-const DisconnectedPlayer = () => {
-    const { showWaitingScreen } = useContext(DisconnectedPlayerContext)
-    const deleteCookie = () => {
-        Cookies.remove("PP_playerData")
-    }
+import { DisconnectedPlayerContext } from '../../contexts'
 
-    return (
+const DisconnectedPlayer = (): JSX.Element => {
+  const { showWaitingScreen } = useContext(DisconnectedPlayerContext)
+  const deleteCookie = (): void => {
+    Cookies.remove('PP_playerData')
+  }
+
+  return (
         <>
             <Modal
                 isOpen={showWaitingScreen}
@@ -49,7 +51,7 @@ const DisconnectedPlayer = () => {
                                 mr={3}
                                 onClick={deleteCookie}
                                 borderRadius={2}
-                                border={"1px solid black"}
+                                border={'1px solid black'}
                                 boxShadow="2px 2px 0 black"
                             >
                                 Leave Game
@@ -59,7 +61,7 @@ const DisconnectedPlayer = () => {
                 </ModalContent>
             </Modal>
         </>
-    )
+  )
 }
 
 export default DisconnectedPlayer
