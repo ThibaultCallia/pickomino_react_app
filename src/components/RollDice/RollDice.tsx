@@ -56,7 +56,6 @@ const RollDice = () => {
     const selectedDice = useSelector(
         (state: RootState) => state.game.dice.currentlySelectedDice
     )
-    
 
     const currentDiceRoll = useSelector(
         (state: RootState) => state.game.dice.currentDiceRoll

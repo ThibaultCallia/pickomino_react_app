@@ -1,26 +1,26 @@
 import {
-  Button,
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  Tab,
-  TabIndicator,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs
-} from '@chakra-ui/react'
+    Button,
+    Drawer,
+    DrawerBody,
+    DrawerContent,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerOverlay,
+    Tab,
+    TabIndicator,
+    TabList,
+    TabPanel,
+    TabPanels,
+    Tabs,
+} from "@chakra-ui/react"
 
-import { type GameRulesDrawerProps } from './'
+import { type GameRulesDrawerProps } from "./"
 
 const GameRulesDrawer: React.FC<GameRulesDrawerProps> = ({
-  isOpen,
-  onClose
-}):JSX.Element => {
-  return (
+    isOpen,
+    onClose,
+}): JSX.Element => {
+    return (
         <Drawer
             isOpen={isOpen}
             placement="right"
@@ -50,7 +50,7 @@ const GameRulesDrawer: React.FC<GameRulesDrawerProps> = ({
                                     <li>The player rolls all eight dice.</li>
                                     <li>
                                         The player selects one of the rolled
-                                        symbols and sets aside{' '}
+                                        symbols and sets aside{" "}
                                         <strong>all</strong> dice with this
                                         symbol.
                                     </li>
@@ -143,7 +143,7 @@ const GameRulesDrawer: React.FC<GameRulesDrawerProps> = ({
                 </DrawerFooter>
             </DrawerContent>
         </Drawer>
-  )
+    )
 }
 
 export default GameRulesDrawer

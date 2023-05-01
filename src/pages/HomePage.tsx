@@ -27,7 +27,7 @@ const HomePage = () => {
                     >
                         Planetary Pirates
                     </Heading>
-                    
+
                     <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
                         <Button
                             as={Link}

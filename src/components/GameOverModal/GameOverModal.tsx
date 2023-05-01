@@ -1,35 +1,38 @@
 import {
-  Text,
-  Box,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-  Image,
-  ModalFooter,
-  Button,
-  Link
-} from '@chakra-ui/react'
-import Cookies from 'js-cookie'
-import { useSelector } from 'react-redux'
+    Text,
+    Box,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalHeader,
+    ModalOverlay,
+    Image,
+    ModalFooter,
+    Button,
+    Link,
+} from "@chakra-ui/react"
+import Cookies from "js-cookie"
+import { useSelector } from "react-redux"
 
-import { totalPlanetsCollected } from '../../helpers'
-import { type RootState } from '../../store'
+import { totalPlanetsCollected } from "../../helpers"
+import { type RootState } from "../../store"
 
-import { type GameOverModalProps } from './'
+import { type GameOverModalProps } from "./"
 
-const GameOverModal = ({ isOpen, onClose }: GameOverModalProps): JSX.Element => {
-  const playerArray = useSelector(
-    (state: RootState) => state.game.playerArray
-  )
-  const sortedPlayers = [...playerArray].sort(
-    (a, b) =>
-      totalPlanetsCollected(b.collectedTiles) -
+const GameOverModal = ({
+    isOpen,
+    onClose,
+}: GameOverModalProps): JSX.Element => {
+    const playerArray = useSelector(
+        (state: RootState) => state.game.playerArray
+    )
+    const sortedPlayers = [...playerArray].sort(
+        (a, b) =>
+            totalPlanetsCollected(b.collectedTiles) -
             totalPlanetsCollected(a.collectedTiles)
-  )
+    )
 
-  return (
+    return (
         <Modal isCentered isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
@@ -53,7 +56,7 @@ const GameOverModal = ({ isOpen, onClose }: GameOverModalProps): JSX.Element => 
                                         {player.name}
                                     </Text>
                                     <Image
-                                        src={`./game_art/characters/character_${player.image}.png`}
+                                        src={`./game_art/characters/character_${player.image}.jpg`}
                                         alt="Winner"
                                         height="100px"
                                         mx="auto"
@@ -67,7 +70,7 @@ const GameOverModal = ({ isOpen, onClose }: GameOverModalProps): JSX.Element => 
                                 </Text>
                             )}
                             <Text fontSize="md" fontStyle="italic">
-                                Points:{' '}
+                                Points:{" "}
                                 {totalPlanetsCollected(player.collectedTiles)}
                             </Text>
                         </Box>
@@ -79,10 +82,10 @@ const GameOverModal = ({ isOpen, onClose }: GameOverModalProps): JSX.Element => 
                             colorScheme="yellow"
                             mr={3}
                             onClick={() => {
-                              Cookies.remove('PP_playerData')
+                                Cookies.remove("PP_playerData")
                             }}
                             borderRadius={2}
-                            border={'1px solid black'}
+                            border={"1px solid black"}
                             boxShadow="2px 2px 0 black"
                         >
                             Leave Game
@@ -91,7 +94,7 @@ const GameOverModal = ({ isOpen, onClose }: GameOverModalProps): JSX.Element => 
                 </ModalFooter>
             </ModalContent>
         </Modal>
-  )
+    )
 }
 
 export default GameOverModal

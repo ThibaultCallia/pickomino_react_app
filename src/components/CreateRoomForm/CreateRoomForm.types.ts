@@ -1,3 +1,3 @@
 export interface CreateRoomFormProps {
-  setNumOfPlayers: (num: number | null) => void
+    setNumOfPlayers: (num: number | null) => void
 }

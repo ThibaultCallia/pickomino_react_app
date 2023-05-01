@@ -1,2 +1,2 @@
-export { default as EndTurnModal } from './EndTurnModal'
-export * from './EndTurnModal.types'
+export { default as EndTurnModal } from "./EndTurnModal"
+export * from "./EndTurnModal.types"

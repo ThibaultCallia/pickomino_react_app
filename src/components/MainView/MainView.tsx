@@ -1,26 +1,22 @@
 import { useEffect, useState } from "react"
-import { Box, useDisclosure } from "@chakra-ui/react"
 
+import { Box, useDisclosure } from "@chakra-ui/react"
+import { motion, useIsPresent } from "framer-motion"
+import Cookies from "js-cookie"
 import { useDispatch, useSelector } from "react-redux"
 
-import { RootState } from "../../store"
-
-import { motion, useIsPresent } from "framer-motion"
-
-import { JoinRoomForm } from "../JoinRoomForm"
-import { CreateRoomForm } from "../CreateRoomForm"
+import { useGameSocketContext } from "../../contexts"
+import { type RootState } from "../../store"
 import { setInitialState, startGame } from "../../store/Game/gameSlice"
-import { WaitingForPlayers } from "../WaitingForPlayers"
-import { GamePlay } from "../GamePlay"
+import { setRoomId } from "../../store/Room/roomSlice"
+import { CreateJoinRoom } from "../CreateJoinRoom"
 import { DisconnectedPlayer } from "../DisconnectedPlayer"
 import { GameOverModal } from "../GameOverModal"
-import { CreateJoinRoom } from "../CreateJoinRoom"
-import { useGameSocketContext } from "../../contexts"
-import { setRoomId } from "../../store/Room/roomSlice"
-import Cookies from "js-cookie"
+import { GamePlay } from "../GamePlay"
 import { NavBar } from "../NavBar"
+import { WaitingForPlayers } from "../WaitingForPlayers"
 
-const MainView = () => {
+const MainView = (): JSX.Element => {
     // USE STATES
 
     const board = useSelector((state: RootState) => state.game.tilesArray)
@@ -31,7 +27,7 @@ const MainView = () => {
     const playersJoined = useSelector(
         (state: RootState) => state.room.playersJoined
     )
-    const gameStatus = useSelector((state: RootState) => state.game.gameStatus)
+
     const dispatch = useDispatch()
     const storedPlayerData: string | null = Cookies.get("PP_playerData") ?? null
     const parsedPlayerData = storedPlayerData
@@ -43,27 +39,25 @@ const MainView = () => {
     const [hasCheckedCookie, setHasCheckedCookie] = useState(false)
     const { rejoinRoom } = useGameSocketContext()
     const imageUrls = [
-        '/diceFaces/die1.svg',
-        '/diceFaces/die2.svg',
-        '/diceFaces/die3.svg',
-        '/diceFaces/die4.svg',
-        '/diceFaces/die5.svg',
-        '/diceFaces/dieR.svg',
-        
-      ];
-      
+        "/diceFaces/die1.svg",
+        "/diceFaces/die2.svg",
+        "/diceFaces/die3.svg",
+        "/diceFaces/die4.svg",
+        "/diceFaces/die5.svg",
+        "/diceFaces/dieR.svg",
+    ]
 
     // USE EFFECTS
     useEffect(() => {
         const preloadImages = () => {
-          imageUrls.forEach((url) => {
-            const img = new Image();
-            img.src = url;
-          });
-        };
-    
-        preloadImages();
-      }, []);
+            imageUrls.forEach((url) => {
+                const img = new Image()
+                img.src = url
+            })
+        }
+
+        preloadImages()
+    }, [])
 
     useEffect(() => {
         if (board.filter((tile) => !tile.disabled).length === 0) {
@@ -77,15 +71,9 @@ const MainView = () => {
         }
     }, [playersJoined])
 
-    useEffect(() => {
-        if (gameStatus === "playing") {
-        }
-    }, [gameStatus])
-
     // RENDER
 
     if (!hasCheckedCookie && storedPlayerId && storedRoomCode && !roomCode) {
-        
         setHasCheckedCookie(true)
         ;(async () => {
             try {
@@ -93,7 +81,7 @@ const MainView = () => {
                     storedPlayerId,
                     storedRoomCode
                 )
-                
+
                 dispatch(setInitialState(roomData.gameState))
                 dispatch(setRoomId(roomData.roomName))
                 // PLAYER ID IS NOW NO LONGER SAME AS SOCKET ID -> CHANGE IT IN BACKEND

@@ -9,17 +9,21 @@ function WaitingForPlayers() {
     )
     const maxPlayers = useSelector((state: RootState) => state.room.maxPlayers)
     return (
-        <Flex flexDirection={{ base: "column", md: "row" }} alignItems={"center"} gap={5} justifyContent={"center"}>
-            
-        <Box>
-            <Text fontSize="xl" fontWeight="bold">
-                Waiting for players...
-            </Text>
-            <Text fontSize="lg">
-                {playersJoined}/{maxPlayers} players joined
-            </Text>
-        </Box>
-        <Loader/>
+        <Flex
+            flexDirection={{ base: "column", md: "row" }}
+            alignItems={"center"}
+            gap={5}
+            justifyContent={"center"}
+        >
+            <Box>
+                <Text fontSize="xl" fontWeight="bold">
+                    Waiting for players...
+                </Text>
+                <Text fontSize="lg">
+                    {playersJoined}/{maxPlayers} players joined
+                </Text>
+            </Box>
+            <Loader />
         </Flex>
     )
 }

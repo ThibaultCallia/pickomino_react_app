@@ -1,2 +1,2 @@
-export { default as PlayerCard } from "./PlayerCard"
-export * from "./PlayerCard.types"
+export { default as PlayerCard } from './PlayerCard'
+export * from './PlayerCard.types'
