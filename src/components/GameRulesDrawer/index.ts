@@ -1,2 +1,2 @@
-export { default as GameRulesDrawer } from "./GameRulesDrawer"
-export * from "./GameRulesDrawer.types"
+export { default as GameRulesDrawer } from './GameRulesDrawer'
+export * from './GameRulesDrawer.types'

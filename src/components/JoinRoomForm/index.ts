@@ -1,1 +1,1 @@
-export { default as JoinRoomForm } from "./JoinRoomForm"
+export { default as JoinRoomForm } from './JoinRoomForm'
