@@ -1,34 +1,28 @@
-import { CheckCircleIcon } from "@chakra-ui/icons"
+
 import {
-    Text,
-    Container,
-    VStack,
-    Heading,
-    Image,
-    List,
-    ListItem,
-    ListIcon,
-    Box,
-    Flex,
-    Icon,
-    SimpleGrid,
-    Stack,
-    StackDivider,
-    useColorModeValue,
-    Button,
-    UnorderedList,
-    Link,
-} from "@chakra-ui/react"
-import { useIsPresent, motion } from "framer-motion"
-import { NavBar } from "../components"
+  Text,
+  Container,
+  Heading,
+  ListItem,
+  Box,
+  Flex,
+  Stack,
+  StackDivider,
+  Button,
+  UnorderedList,
+  Link
+} from '@chakra-ui/react'
+import { useIsPresent, motion } from 'framer-motion'
+
+import { NavBar } from '../components'
 
 const HowToPlayPage = () => {
-    const isPresent = useIsPresent()
-    return (
+  const isPresent = useIsPresent()
+  return (
         <>
             <NavBar game={false} />
-            <Container mt={9} maxW={"900px"} p={8}>
-                <Flex direction={"column"} gap={5}>
+            <Container mt={9} maxW={'900px'} p={8}>
+                <Flex direction={'column'} gap={5}>
                     <Heading>How to Play</Heading>
                     <Text>
                         Arrrr, Welcome to Planetary Pirates, the thrilling
@@ -50,7 +44,7 @@ const HowToPlayPage = () => {
                             <Button
                                 mt={4}
                                 colorScheme="yellow"
-                                border={"1px solid black"}
+                                border={'1px solid black'}
                                 borderRadius={2}
                                 boxShadow="3px 3px 0 black"
                             >
@@ -61,7 +55,7 @@ const HowToPlayPage = () => {
                             <Button
                                 mt={4}
                                 colorScheme="yellow"
-                                border={"1px solid black"}
+                                border={'1px solid black'}
                                 borderRadius={2}
                                 boxShadow="3px 3px 0 black"
                             >
@@ -71,7 +65,7 @@ const HowToPlayPage = () => {
                     </Flex>
                     <Box
                         p={5}
-                        border={"1px solid black"}
+                        border={'1px solid black'}
                         boxShadow="3px 3px 0 black"
                     >
                         <Heading mb={2} size="md">
@@ -86,7 +80,7 @@ const HowToPlayPage = () => {
                     </Box>
                     <Box
                         p={5}
-                        border={"1px solid black"}
+                        border={'1px solid black'}
                         boxShadow="3px 3px 0 black"
                     >
                         <Heading mb={2} size="md">
@@ -96,16 +90,16 @@ const HowToPlayPage = () => {
                             divider={<StackDivider borderColor="gray.200" />}
                         >
                             <Box mb={4}>
-                                <Heading size={"s"}>Play a Turn</Heading>
+                                <Heading size={'s'}>Play a Turn</Heading>
                                 <UnorderedList>
                                     <ListItem>
                                         The player rolls all eight dice by
-                                        clicking{" "}
+                                        clicking{' '}
                                         <Button
                                             colorScheme="yellow"
                                             borderRadius={1}
-                                            fontSize={"xs"}
-                                            size={"xs"}
+                                            fontSize={'xs'}
+                                            size={'xs'}
                                             mr={1}
                                         >
                                             Roll
@@ -118,12 +112,12 @@ const HowToPlayPage = () => {
                                         sets aside all dice with this symbol.
                                         This is done by clicking on the desired
                                         die which will be highlighted. If you
-                                        click{" "}
+                                        click{' '}
                                         <Button
                                             colorScheme="yellow"
                                             borderRadius={1}
-                                            fontSize={"xs"}
-                                            size={"xs"}
+                                            fontSize={'xs'}
+                                            size={'xs'}
                                             mr={1}
                                         >
                                             Select
@@ -159,7 +153,7 @@ const HowToPlayPage = () => {
                             </Box>
 
                             <Box>
-                                <Heading size={"s"}>End of a Turn</Heading>
+                                <Heading size={'s'}>End of a Turn</Heading>
 
                                 <UnorderedList>
                                     <ListItem>
@@ -182,7 +176,7 @@ const HowToPlayPage = () => {
                                         does not see that the relevant tile is
                                         available on an opponent), they may
                                         claim the planet with the next lower
-                                        number from the open row on the board.{" "}
+                                        number from the open row on the board.{' '}
                                         <br />
                                         <br />
                                         The tile will be placed on top of the
@@ -213,7 +207,7 @@ const HowToPlayPage = () => {
                                 </UnorderedList>
                             </Box>
                             <Box>
-                                <Heading size={"s"}>Winning</Heading>
+                                <Heading size={'s'}>Winning</Heading>
 
                                 <Text>
                                     The game ends when all planet tiles have
@@ -229,18 +223,18 @@ const HowToPlayPage = () => {
             <motion.div
                 initial={{ scaleX: 1 }}
                 animate={{
-                    scaleX: 0,
-                    transition: { duration: 0.5, ease: "circOut" },
+                  scaleX: 0,
+                  transition: { duration: 0.5, ease: 'circOut' }
                 }}
                 exit={{
-                    scaleX: 1,
-                    transition: { duration: 0.5, ease: "circIn" },
+                  scaleX: 1,
+                  transition: { duration: 0.5, ease: 'circIn' }
                 }}
                 style={{ originX: isPresent ? 0 : 1 }}
                 className="privacy-screen"
             />
         </>
-    )
+  )
 }
 
 export default HowToPlayPage
