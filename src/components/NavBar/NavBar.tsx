@@ -1,6 +1,4 @@
-import { useState } from "react"
-import { useLocation } from "react-router-dom"
-
+import { QuestionOutlineIcon, DeleteIcon } from "@chakra-ui/icons"
 import {
     Box,
     Flex,
@@ -8,30 +6,23 @@ import {
     Button,
     Link,
     IconButton,
-    useColorMode,
     Tooltip,
     Image,
     useDisclosure,
 } from "@chakra-ui/react"
-import { QuestionOutlineIcon, DeleteIcon } from "@chakra-ui/icons"
-import { SettingsMenu } from "../SettingsMenu"
-import { GameRulesDrawer } from "../GameRulesDrawer"
 import Cookies from "js-cookie"
-import { NavbarProps } from "./"
 
-const Navbar = ({ game }: NavbarProps) => {
+import { GameRulesDrawer } from "../GameRulesDrawer"
+
+import { type NavbarProps } from "./"
+
+const Navbar = ({ game }: NavbarProps): JSX.Element => {
     // HOOKS
-    const { colorMode } = useColorMode()
-    const [displayMenu, setDisplayMenu] = useState(false)
+
     const { isOpen, onOpen, onClose } = useDisclosure()
 
-    const toggleMenu = () => {
-        setDisplayMenu(!displayMenu)
-    }
-    const location = useLocation()
-
     // FUNCTIONS
-    const deleteCookie = () => {
+    const deleteCookie = (): void => {
         Cookies.remove("PP_playerData")
     }
 
@@ -40,7 +31,6 @@ const Navbar = ({ game }: NavbarProps) => {
         <Flex
             as="nav"
             position="relative"
-            // bg={colorMode === 'dark' ? 'gray.800' : 'white'}
             boxShadow="md"
             px={4}
             py={2}
@@ -114,34 +104,6 @@ const Navbar = ({ game }: NavbarProps) => {
                     />
                 </Flex>
             )}
-            {/* <IconButton
-                display={{ base: "flex", md: "none" }}
-                onClick={toggleMenu}
-                icon={displayMenu ? <CloseIcon /> : <HamburgerIcon />}
-                aria-label={displayMenu ? "Close menu" : "Open menu"}
-            /> */}
-
-            {/* <Collapse in={displayMenu}>
-                <Box
-                    position="absolute"
-                    top="100%"
-                    left={0}
-                    right={0}
-                    zIndex={10}
-                    p={4}
-                    display={{ base: "block", md: "none" }}
-                    bg={colorMode === "dark" ? "gray.700" : "gray.100"}
-                >
-                    <Link
-                        href="/gameRules"
-                        display="block"
-                        my={2}
-                        onClick={toggleMenu}
-                    >
-                        Game Rules
-                    </Link>
-                </Box>
-            </Collapse> */}
         </Flex>
     )
 }

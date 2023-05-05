@@ -1,8 +1,6 @@
-// Footer.js
-
 import { Box, Flex, Text, Link, useColorMode } from "@chakra-ui/react"
 
-const Footer = () => {
+const Footer = (): JSX.Element => {
     const { colorMode } = useColorMode()
 
     // RENDER
@@ -17,8 +15,11 @@ const Footer = () => {
         >
             <Flex alignItems="center" justifyContent="space-between">
                 <Text noOfLines={1}>
-                    <Link href="https://www.999games.nl/regenwormen.html" mx={2}>
-                        Based on" Regenwormen" by 999 Games
+                    <Link
+                        href="https://www.999games.nl/regenwormen.html"
+                        mx={2}
+                    >
+                        Based on "Regenwormen" by 999 Games
                     </Link>
                 </Text>
                 <Box>

@@ -1,5 +1,5 @@
 // Import necessary components and hooks
-import { FormEvent, useState, ChangeEvent, useEffect } from "react"
+import { type FormEvent, useState, type ChangeEvent, useEffect } from "react"
 import {
     Box,
     FormControl,
@@ -7,22 +7,16 @@ import {
     Select,
     Flex,
     Input,
-    Text,
-    FormErrorMessage,
     useToast,
 } from "@chakra-ui/react"
-import { CreateRoomFormProps } from "."
-
-import { useDispatch } from "react-redux"
 import { useGameSocketContext } from "../../contexts"
-import { TriangleDownIcon } from "@chakra-ui/icons"
 
 const CreateRoomForm = () => {
     // HOOKS
     const [num, setNum] = useState<string>("")
     const [roomPass, setRoomPass] = useState<string>("")
     const [roomName, setRoomName] = useState<string>("")
-    const dispatch = useDispatch()
+
     const { createRoom } = useGameSocketContext()
 
     const [validation, setValidation] = useState<string>("")
@@ -31,12 +25,12 @@ const CreateRoomForm = () => {
     const roomCreateError = "roomCreateError"
 
     // FUNCTIONS
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = (e: FormEvent): void => {
         e.preventDefault()
         if (num && roomName && roomPass) {
             ;(async () => {
+                setValidation("")
                 try {
-                    setValidation("")
                     const response: any = await createRoom(
                         roomName,
                         roomPass,

@@ -1,12 +1,13 @@
 import { Button, Box } from "@chakra-ui/react"
-import { CustomButtonProps } from "./"
+
+import { type CustomButtonProps } from "./"
 
 const CustomButton: React.FC<CustomButtonProps> = ({
     isDisabled,
     children,
     onClick,
     ...rest
-}) => {
+}): JSX.Element => {
     return (
         <Box
             borderRadius={3}

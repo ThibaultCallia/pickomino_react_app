@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { DisconnectedPlayerContext } from "../../contexts"
+
 import {
     Modal,
     ModalOverlay,
@@ -15,9 +15,11 @@ import {
 } from "@chakra-ui/react"
 import Cookies from "js-cookie"
 
-const DisconnectedPlayer = () => {
+import { DisconnectedPlayerContext } from "../../contexts"
+
+const DisconnectedPlayer = (): JSX.Element => {
     const { showWaitingScreen } = useContext(DisconnectedPlayerContext)
-    const deleteCookie = () => {
+    const deleteCookie = (): void => {
         Cookies.remove("PP_playerData")
     }
 

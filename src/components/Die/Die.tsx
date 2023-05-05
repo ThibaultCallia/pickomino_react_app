@@ -1,10 +1,11 @@
 import { Box, Image } from "@chakra-ui/react"
-import { DieProps } from "./"
 
-function Die({ die, onClick, selected }: DieProps) {
+import { type DieProps } from "./"
+
+function Die({ die, onClick, selected }: DieProps): JSX.Element {
     // FUNCTIONS
-    const handleClick = () => {
-        if (onClick) {
+    const handleClick = (): void => {
+        if (onClick != null) {
             onClick(die)
         }
     }
@@ -20,7 +21,7 @@ function Die({ die, onClick, selected }: DieProps) {
             overflow="hidden"
             width="40px"
             height="40px"
-            cursor={onClick ? "pointer" : "default"}
+            cursor={onClick != null ? "pointer" : "default"}
         >
             <Image objectFit="cover" src={`/diceFaces/die${die}.svg`} />
         </Box>

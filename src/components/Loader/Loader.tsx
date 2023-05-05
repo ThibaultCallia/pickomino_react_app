@@ -1,7 +1,7 @@
-import { Box, Image } from "@chakra-ui/react"
+import { Box } from "@chakra-ui/react"
 import "./loader.css"
 
-const Loader = () => {
+const Loader = (): JSX.Element => {
     // RENDER
     return (
         <>
@@ -9,7 +9,6 @@ const Loader = () => {
                 className="sprite-animation"
                 h={"100px"}
                 w={"100px"}
-                
                 m={3}
                 backgroundImage={"url(./pp_loader.png)"}
                 backgroundSize={"auto 100%"}

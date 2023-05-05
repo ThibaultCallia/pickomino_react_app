@@ -1,1 +1,1 @@
-export { default as WaitingForPlayers } from "./WaitingForPlayers"
+export { default as WaitingForPlayers } from './WaitingForPlayers'

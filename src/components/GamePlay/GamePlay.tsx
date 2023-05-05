@@ -1,23 +1,19 @@
-import { Stack, Text, useDisclosure, Box, Flex } from "@chakra-ui/react"
+import { Stack, Text, Box, Flex } from "@chakra-ui/react"
+import { useSelector } from "react-redux"
+
+import { useGameSocketContext } from "../../contexts"
+import { type RootState } from "../../store"
 import { Board } from "../Board"
-import { GameOverModal } from "../GameOverModal"
 import { PlayerInfo } from "../PlayerInfo"
 import { RollDice } from "../RollDice"
-import socket from "../../socket"
-import { RootState } from "../../store"
-import { useSelector } from "react-redux"
-import { useGameSocketContext } from "../../contexts"
 
-function GamePlay() {
+function GamePlay(): JSX.Element {
     // HOOKS
-    const { isOpen, onClose } = useDisclosure()
 
     const currentPlayerId = useSelector(
         (state: RootState) => state.game.currentPlayerId
     )
-    const gameStatus = useSelector((state: RootState) => state.game.gameStatus)
-    const isCurrentUserPlaying =
-        socket.id === currentPlayerId && gameStatus === "playing"
+
     const currentPlayerName = useSelector(
         (state: RootState) =>
             state.game.playerArray.find(

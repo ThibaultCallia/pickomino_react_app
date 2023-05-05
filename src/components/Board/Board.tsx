@@ -1,36 +1,24 @@
-import { Tile } from "../Tile"
-import { useDispatch, useSelector } from "react-redux"
-import { RootState } from "../../store"
 import {
     SimpleGrid,
     useDisclosure,
     useMediaQuery,
     useToast,
 } from "@chakra-ui/react"
-import {
-    takeTile,
-    nextPlayerTurn,
-    resetCurrentDiceRoll,
-} from "../../store/Game/gameSlice"
-import { totalDiceValue, includesRocket } from "../../helpers"
-import { EndTurnModal } from "../EndTurnModal"
-import socket from "../../socket"
+import { useDispatch, useSelector } from "react-redux"
+
 import { useGameSocketContext } from "../../contexts"
+import { totalDiceValue, includesRocket } from "../../helpers"
+import { type RootState } from "../../store"
+import { takeTile, nextPlayerTurn } from "../../store/Game/gameSlice"
+import { EndTurnModal } from "../EndTurnModal"
+import { Tile } from "../Tile"
 
 const Board = () => {
     // HOOKS
     const gameState = useSelector((state: RootState) => state.game)
     const dispatch = useDispatch()
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const currentPlayer = useSelector(
-        (state: RootState) => state.game.currentPlayersTurn
-    )
-    const currentPlayerId = useSelector(
-        (state: RootState) => state.game.currentPlayerId
-    )
-    const gameStatus = useSelector((state: RootState) => state.game.gameStatus)
-    const isCurrentUserPlaying =
-        socket.id === currentPlayerId && gameStatus === "playing"
+
     const selectedDice =
         useSelector(
             (state: RootState) => state.game.dice.currentlySelectedDice
@@ -45,7 +33,7 @@ const Board = () => {
     const [isMobile] = useMediaQuery("(max-width: 560px)")
 
     //   FUNCTIONS
-    const onTileClick = (tileValue: number) => {
+    const onTileClick = (tileValue: number): void => {
         if (!isMyTurn()) {
             if (!toast.isActive(rocketToastId)) {
                 toast({
@@ -122,7 +110,9 @@ const Board = () => {
                 {gameState.tilesArray.map((tile, index) => {
                     return (
                         <Tile
-                            onTileClick={() => onTileClick(tile.value)}
+                            onTileClick={() => {
+                                onTileClick(tile.value)
+                            }}
                             key={index}
                             {...tile}
                         />

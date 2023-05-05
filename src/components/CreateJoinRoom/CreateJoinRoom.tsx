@@ -1,4 +1,5 @@
-import { Box, Text, Flex } from "@chakra-ui/react"
+import { Flex } from "@chakra-ui/react"
+
 import { CreateRoomForm } from "../CreateRoomForm"
 import { JoinRoomForm } from "../JoinRoomForm"
 

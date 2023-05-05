@@ -1,22 +1,21 @@
 // Import necessary components and hooks
-import { FormEvent, useState, ChangeEvent, useEffect } from "react"
+import { type FormEvent, useState, type ChangeEvent, useEffect } from "react"
+
 import {
     Box,
     FormControl,
     Button,
-    Select,
     Flex,
     Input,
     useToast,
 } from "@chakra-ui/react"
-import { useDispatch } from "react-redux"
+
 import { useGameSocketContext } from "../../contexts"
 
-const JoinRoomForm = () => {
+const JoinRoomForm = (): JSX.Element => {
     // HOOKS
     const [roomName, setRoomName] = useState<string>("")
     const [roomPass, setRoomPass] = useState<string>("")
-    const dispatch = useDispatch()
     const { joinRoom } = useGameSocketContext()
 
     const [validation, setValidation] = useState<string>("")
@@ -29,8 +28,8 @@ const JoinRoomForm = () => {
         e.preventDefault()
         if (roomName && roomPass) {
             ;(async () => {
+                setValidation("")
                 try {
-                    setValidation("")
                     const response: any = await joinRoom(roomName, roomPass)
                 } catch (error: any) {
                     setValidation(error.message)

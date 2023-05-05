@@ -11,13 +11,18 @@ import {
     Button,
     Link,
 } from "@chakra-ui/react"
-import { useSelector } from "react-redux"
-import { RootState } from "../../store"
-import { GameOverModalProps } from "./"
-import { totalPlanetsCollected } from "../../helpers"
 import Cookies from "js-cookie"
+import { useSelector } from "react-redux"
 
-const GameOverModal = ({ isOpen, onClose }: GameOverModalProps) => {
+import { totalPlanetsCollected } from "../../helpers"
+import { type RootState } from "../../store"
+
+import { type GameOverModalProps } from "./"
+
+const GameOverModal = ({
+    isOpen,
+    onClose,
+}: GameOverModalProps): JSX.Element => {
     const playerArray = useSelector(
         (state: RootState) => state.game.playerArray
     )
@@ -51,7 +56,7 @@ const GameOverModal = ({ isOpen, onClose }: GameOverModalProps) => {
                                         {player.name}
                                     </Text>
                                     <Image
-                                        src={`./game_art/characters/character_${player.image}.png`}
+                                        src={`./game_art/characters/character_${player.image}.jpg`}
                                         alt="Winner"
                                         height="100px"
                                         mx="auto"

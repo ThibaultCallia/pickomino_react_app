@@ -1,96 +1,102 @@
+import { useState } from 'react'
+
 import {
-    Box,
-    Collapse,
-    Text,
-    Image,
-    Tooltip,
-    useToast,
-    useDisclosure,
-    Center,
-    Flex,
-    Heading,
-    HStack,
-    Img,
-    useColorModeValue,
-} from "@chakra-ui/react"
-import { useState } from "react"
-import { useSelector, useDispatch } from "react-redux"
-import { RootState } from "../../store"
-import { PlainPlayer } from "../../store/Players/Player.types"
-import { Tile } from "../Tile"
-import { EndTurnModal } from "../EndTurnModal"
-import { totalDiceValue } from "../../helpers"
-import { stealTile, nextPlayerTurn } from "../../store/Game/gameSlice"
-import { useGameSocketContext } from "../../contexts"
+  Box,
+  Collapse,
+  Text,
+  Image,
+  Tooltip,
+  useToast,
+  useDisclosure,
+  Center,
+  Flex,
+  Heading,
+  HStack,
+  Img,
+  useColorModeValue
+} from '@chakra-ui/react'
+import { useSelector, useDispatch } from 'react-redux'
 
-function PlayerCard({ name, collectedTiles, id }: PlainPlayer) {
-    // USE STATES
-    const [isHovered, setIsHovered] = useState<boolean>(false)
-    const selectedDice =
+import { useGameSocketContext } from '../../contexts'
+import { totalDiceValue } from '../../helpers'
+import { type RootState } from '../../store'
+import { stealTile, nextPlayerTurn } from '../../store/Game/gameSlice'
+import { type PlainPlayer } from '../../store/Players/Player.types'
+import { EndTurnModal } from '../EndTurnModal'
+import { Tile } from '../Tile'
+
+function PlayerCard ({ name, collectedTiles, id }: PlainPlayer) {
+  // USE STATES
+  const [isHovered, setIsHovered] = useState<boolean>(false)
+  const selectedDice =
         useSelector(
-            (state: RootState) => state.game.dice.currentlySelectedDice
+          (state: RootState) => state.game.dice.currentlySelectedDice
         ) || []
-    const currentPlayerId = useSelector(
-        (state: RootState) => state.game.currentPlayerId
-    )
-    const currentDiceRoll =
+  const currentPlayerId = useSelector(
+    (state: RootState) => state.game.currentPlayerId
+  )
+  const currentDiceRoll =
         useSelector((state: RootState) => state.game.dice.currentDiceRoll) || []
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const dispatch = useDispatch()
-    const toast = useToast()
-    const toastId = "stealError"
-    const { sendPlayerAction } = useGameSocketContext()
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const dispatch = useDispatch()
+  const toast = useToast()
+  const toastId = 'stealError'
+  const { sendPlayerAction } = useGameSocketContext()
 
-    // FUNCTIONS
-    const stealPlayerTile = (toStealPlayerId: string, tileValue: number) => {
-        if (toStealPlayerId !== currentPlayerId) {
-            if (currentDiceRoll.length !== 0) {
-                if (!toast.isActive(toastId)) {
-                    toast({
-                        title: "You must choose a die ",
-                        status: "error",
-                        duration: 5000,
-                        isClosable: true,
-                        id: toastId,
-                        variant: "subtle",
-                    })
-                }
-                return
-            }
-
-            if (totalDiceValue(selectedDice) !== tileValue) {
-                if (!toast.isActive(toastId)) {
-                    toast({
-                        title: "You can't steal that tile",
-                        description:
-                            "You need to roll the exact same value to steal that tile",
-                        status: "error",
-                        duration: 5000,
-                        isClosable: true,
-                        id: toastId,
-                        variant: "subtle",
-                    })
-                }
-                return
-            }
-            toast.close(toastId)
-            dispatch(stealTile(toStealPlayerId))
-            sendPlayerAction("stealTile", toStealPlayerId)
-            onOpen()
+  // FUNCTIONS
+  const stealPlayerTile = (toStealPlayerId: string, tileValue: number) => {
+    if (toStealPlayerId !== currentPlayerId) {
+      if (currentDiceRoll.length !== 0) {
+        if (!toast.isActive(toastId)) {
+          toast({
+            title: 'You must choose a die ',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+            id: toastId,
+            variant: 'subtle'
+          })
         }
+        return
+      }
 
-        // small error message next to tile if no
+      if (totalDiceValue(selectedDice) !== tileValue) {
+        if (!toast.isActive(toastId)) {
+          toast({
+            title: "You can't steal that tile",
+            description:
+                            'You need to roll the exact same value to steal that tile',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+            id: toastId,
+            variant: 'subtle'
+          })
+        }
+        return
+      }
+      toast.close(toastId)
+      dispatch(stealTile(toStealPlayerId))
+      sendPlayerAction('stealTile', toStealPlayerId)
+      onOpen()
     }
-    // RENDER
-    return (
+
+    // small error message next to tile if no
+  }
+  // RENDER
+  return (
         <>
             <Center
-                flexDir={"column"}
+                flexDir={'column'}
                 borderWidth="1px"
                 borderRadius="lg"
                 p={4}
-                onMouseOver={() => setIsHovered(true)}
-                onMouseOut={() => setIsHovered(false)}
+                onMouseOver={() => {
+                  setIsHovered(true)
+                }}
+                onMouseOut={() => {
+                  setIsHovered(false)
+                }}
                 textAlign="center"
                 position="relative"
             >
@@ -101,10 +107,10 @@ function PlayerCard({ name, collectedTiles, id }: PlainPlayer) {
                     top={-2}
                     right={-2}
                     borderRadius="100%"
-                    display={"grid"}
+                    display={'grid'}
                     placeItems="center"
                 >
-                    <Text fontSize="xs" color="white" fontWeight={"bold"}>
+                    <Text fontSize="xs" color="white" fontWeight={'bold'}>
                         {collectedTiles.length}
                     </Text>
                 </Box>
@@ -121,13 +127,13 @@ function PlayerCard({ name, collectedTiles, id }: PlainPlayer) {
                     {collectedTiles.length > 0 && (
                         <Tile
                             {...collectedTiles[collectedTiles.length - 1]}
-                            onTileClick={() =>
-                                stealPlayerTile(
-                                    id,
-                                    collectedTiles[collectedTiles.length - 1]
-                                        .value
-                                )
-                            }
+                            onTileClick={() => {
+                              stealPlayerTile(
+                                id,
+                                collectedTiles[collectedTiles.length - 1]
+                                  .value
+                              )
+                            }}
                         ></Tile>
                     )}
                 </Collapse>
@@ -136,16 +142,16 @@ function PlayerCard({ name, collectedTiles, id }: PlainPlayer) {
             <EndTurnModal
                 isOpen={isOpen}
                 onClose={() => {
-                    onClose()
-                    dispatch(nextPlayerTurn())
-                    sendPlayerAction("nextPlayerTurn", null)
+                  onClose()
+                  dispatch(nextPlayerTurn())
+                  sendPlayerAction('nextPlayerTurn', null)
                 }}
                 title="End of turn"
             >
                 Well done. Next player plays.
             </EndTurnModal>
         </>
-    )
+  )
 }
 
 export default PlayerCard

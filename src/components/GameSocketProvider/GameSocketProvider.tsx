@@ -1,7 +1,8 @@
 // GameSocketProvider.tsx
-import { useGameSocket } from "../../hooks"
 import { GameSocketContext } from "../../contexts"
-import { GameSocketProviderProps } from "./"
+import { useGameSocket } from "../../hooks"
+
+import { type GameSocketProviderProps } from "./"
 
 const GameSocketProvider = ({
     dispatch,

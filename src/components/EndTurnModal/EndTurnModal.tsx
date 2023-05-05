@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from "react"
+
 import {
     Box,
     Button,
     Modal,
     ModalBody,
-    ModalCloseButton,
     ModalContent,
     ModalFooter,
     ModalHeader,
     ModalOverlay,
     Text,
 } from "@chakra-ui/react"
-import { EndTurnModalProps } from "./"
+
+import { type EndTurnModalProps } from "./"
 
 const EndTurnModal: React.FC<EndTurnModalProps> = ({
     isOpen,
     onClose,
     title,
     children,
-}) => {
+}): JSX.Element => {
     const [countdown, setCountdown] = useState(10)
 
     useEffect(() => {

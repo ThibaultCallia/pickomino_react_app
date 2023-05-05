@@ -1,2 +1,2 @@
-export { default as useGameSocket } from "./useGameSocket"
-export * from "./useGameSocket.types"
+export { default as useGameSocket } from './useGameSocket'
+export * from './useGameSocket.types'

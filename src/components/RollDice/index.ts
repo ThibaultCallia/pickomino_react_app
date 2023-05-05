@@ -1,1 +1,1 @@
-export { default as RollDice } from "./RollDice"
+export { default as RollDice } from './RollDice'

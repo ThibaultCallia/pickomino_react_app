@@ -1,38 +1,38 @@
 import {
-    Button,
-    Drawer,
-    DrawerBody,
-    DrawerContent,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerOverlay,
-    SimpleGrid,
-    useDisclosure,
-    useMediaQuery,
-} from "@chakra-ui/react"
-import { PlayerCard } from "../PlayerCard"
+  Button,
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  SimpleGrid,
+  useDisclosure,
+  useMediaQuery
+} from '@chakra-ui/react'
+import { useSelector } from 'react-redux'
 
-import { useSelector } from "react-redux"
-import { RootState } from "../../store"
-import socket from "../../socket"
-import { useGameSocketContext } from "../../contexts"
+import { useGameSocketContext } from '../../contexts'
 
-function PlayerInfo() {
-    // HOOKS
-    const { returnMyPlayerId } = useGameSocketContext()
+import { type RootState } from '../../store'
+import { PlayerCard } from '../PlayerCard'
 
-    const otherPlayers = useSelector(
-        (state: RootState) => state.game
-    ).playerArray.filter((player) => player.id !== returnMyPlayerId())
-    
+function PlayerInfo ():JSX.Element {
+  // HOOKS
+  const { returnMyPlayerId } = useGameSocketContext()
 
-    const [isMobile] = useMediaQuery("(max-width: 715px)")
-    const { isOpen, onOpen, onClose } = useDisclosure()
+  const otherPlayers = useSelector(
+    (state: RootState) => state.game
+  ).playerArray.filter((player) => player.id !== returnMyPlayerId())
 
-    // RENDER
-    return (
+  const [isMobile] = useMediaQuery('(max-width: 715px)')
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  // RENDER
+  return (
         <>
-            {isMobile ? (
+            {isMobile
+              ? (
                 <>
                     <Button mt={3} colorScheme="yellow" onClick={onOpen}>
                         Show Players
@@ -48,19 +48,19 @@ function PlayerInfo() {
                                     alignItems="flex-start"
                                 >
                                     {otherPlayers.map((player, index) => {
-                                        return (
+                                      return (
                                             <PlayerCard
                                                 key={index}
                                                 player={player}
                                             />
-                                        )
+                                      )
                                     })}
                                 </SimpleGrid>
                             </DrawerBody>
                             <DrawerFooter>
                                 <Button
                                     variant="outline"
-                                    colorScheme={"yellow"}
+                                    colorScheme={'yellow'}
                                     mr={3}
                                     onClick={onClose}
                                 >
@@ -70,7 +70,8 @@ function PlayerInfo() {
                         </DrawerContent>
                     </Drawer>
                 </>
-            ) : (
+                )
+              : (
                 <SimpleGrid
                     spacing={1}
                     columns={3}
@@ -78,12 +79,12 @@ function PlayerInfo() {
                     mt={4}
                 >
                     {otherPlayers.map((player, index) => {
-                        return <PlayerCard key={index} player={player} />
+                      return <PlayerCard key={index} player={player} />
                     })}
                 </SimpleGrid>
-            )}
+                )}
         </>
-    )
+  )
 }
 
 export default PlayerInfo

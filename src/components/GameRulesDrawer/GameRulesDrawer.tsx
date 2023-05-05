@@ -2,12 +2,10 @@ import {
     Button,
     Drawer,
     DrawerBody,
-    DrawerCloseButton,
     DrawerContent,
     DrawerFooter,
     DrawerHeader,
     DrawerOverlay,
-    Input,
     Tab,
     TabIndicator,
     TabList,
@@ -15,12 +13,13 @@ import {
     TabPanels,
     Tabs,
 } from "@chakra-ui/react"
-import { GameRulesDrawerProps } from "./"
+
+import { type GameRulesDrawerProps } from "./"
 
 const GameRulesDrawer: React.FC<GameRulesDrawerProps> = ({
     isOpen,
     onClose,
-}) => {
+}): JSX.Element => {
     return (
         <Drawer
             isOpen={isOpen}

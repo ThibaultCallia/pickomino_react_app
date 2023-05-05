@@ -1,13 +1,15 @@
-import { configureStore } from "@reduxjs/toolkit"
-import gameReducer from "./Game/gameSlice"
-import roomReducer from "./Room/roomSlice"
-import socket from "../socket"
+import { configureStore } from '@reduxjs/toolkit'
+
+import socket from '../socket'
+
+import gameReducer from './Game/gameSlice'
+import roomReducer from './Room/roomSlice'
 
 export const store = configureStore({
-    reducer: {
-        game: gameReducer,
-        room: roomReducer,
-    },
+  reducer: {
+    game: gameReducer,
+    room: roomReducer
+  }
 })
 
 // socket.on("game-action", (action) => {
