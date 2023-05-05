@@ -1,0 +1,18 @@
+# Planetary Pirates Project
+
+Hello, welcome to Planetary Pirates.
+
+My name is Thibault Calliauw and I am the creator of this web app.
+
+### Rights
+
+It’s important to note that I did not create the game nor do I own any rights. This game is based on “Regenwormen” by 999 Games. This is merely a student project and not to be used for any commercial ends.
+
+### About me and the project
+
+In September 2022, I quit my job and started a Full Stack Development course. This is my first full stack project.
+
+The libraries used in this project are:
+
+-   Frontend: React, Redux, ChakraUI, Typescript and Socket client
+-   Backend: NodeJS, Express and Socket.io

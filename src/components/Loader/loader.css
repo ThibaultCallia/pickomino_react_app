@@ -1,0 +1,12 @@
+@keyframes sprite-animation {
+    from {
+        background-position: 0;
+    }
+    to {
+        background-position: 102.32%;
+    }
+}
+
+.sprite-animation {
+    animation: sprite-animation 4s steps(43) infinite;
+}

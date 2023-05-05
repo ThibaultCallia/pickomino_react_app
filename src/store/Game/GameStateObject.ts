@@ -1,17 +1,25 @@
-import { nanoid } from "nanoid"
-import defaultTilesSet from "./tiles.const"
-import { PlainGameState } from "./Game.types"
+import { nanoid } from 'nanoid'
 
-export const createInitialGameState = (): PlainGameState => {
-    return {
-        gameId: nanoid(),
-        playerArray: [],
-        tilesArray: defaultTilesSet,
-        currentRound: 0,
-        currentPlayersTurn: 0,
-        gameStatus: "not playing",
-        settings: {
-            selectedDiceTotal: false,
-        },
+import { createPlayerArray } from '../Players/playerState'
+
+import { type PlainGameState } from './Game.types'
+import defaultTilesSet from './tiles.const'
+
+export const createInitialGameState = (noOfPlayers: number): PlainGameState => {
+  return {
+    gameId: nanoid(),
+    playerArray: createPlayerArray(noOfPlayers),
+    tilesArray: defaultTilesSet,
+    currentRound: 0,
+    currentPlayersTurn: 0,
+    currentPlayerId: '',
+    gameStatus: 'not playing',
+    settings: {
+      selectedDiceTotal: false
+    },
+    dice: {
+      currentlySelectedDice: [],
+      currentDiceRoll: []
     }
+  }
 }

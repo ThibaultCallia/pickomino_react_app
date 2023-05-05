@@ -1,13 +1,20 @@
-import { configureStore } from "@reduxjs/toolkit"
-import gameReducer from "./Game/gameSlice"
+import { configureStore } from '@reduxjs/toolkit'
+
+import socket from '../socket'
+
+import gameReducer from './Game/gameSlice'
+import roomReducer from './Room/roomSlice'
 
 export const store = configureStore({
-    reducer: {
-        game: gameReducer,
-    },
+  reducer: {
+    game: gameReducer,
+    room: roomReducer
+  }
 })
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
+// socket.on("game-action", (action) => {
+//     store.dispatch(action)
+// })
+
 export type RootState = ReturnType<typeof store.getState>
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch

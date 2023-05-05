@@ -4,9 +4,10 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "dev": "vite",
+        "dev": "vite --host",
         "build": "tsc && vite build",
         "preview": "vite preview",
+        "deploy": "surge ./dist planetarypirates.surge.sh",
         "format": "prettier --write '**/*.{js,jsx,ts,tsx,json,css,scss,md}'"
     },
     "dependencies": {
@@ -16,18 +17,28 @@
         "@emotion/styled": "^11.10.6",
         "@reduxjs/toolkit": "^1.9.3",
         "framer-motion": "^10.10.0",
+        "js-cookie": "^3.0.4",
         "nanoid": "^4.0.2",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-redux": "^8.0.5",
         "react-router-dom": "^6.10.0",
-        "sass": "^1.60.0"
+        "sass": "^1.60.0",
+        "socket.io-client": "^4.6.1"
     },
     "devDependencies": {
+        "@types/js-cookie": "^3.0.3",
         "@types/react": "^18.0.28",
         "@types/react-dom": "^18.0.11",
+        "@typescript-eslint/eslint-plugin": "^5.58.0",
         "@vitejs/plugin-react": "^3.1.0",
-        "typescript": "^4.9.3",
+        "eslint": "^8.38.0",
+        "eslint-config-standard-with-typescript": "^34.0.1",
+        "eslint-plugin-import": "^2.27.5",
+        "eslint-plugin-n": "^15.7.0",
+        "eslint-plugin-promise": "^6.1.1",
+        "eslint-plugin-react": "^7.32.2",
+        "typescript": "^5.0.4",
         "vite": "^4.2.0"
     }
 }

@@ -1,2 +1,2 @@
-export { default as Tile } from "./Tile"
-export * from "./Tile.types"
+export { default as Tile } from './Tile'
+export * from './Tile.types'

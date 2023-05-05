@@ -1,20 +1,15 @@
-import { NavBar, MainView, Footer } from "./components"
-
-import {
-    BrowserRouter,
-    Routes,
-    Route,
-    useRoutes,
-    useLocation,
-} from "react-router-dom"
-
+import {  MainView, Footer } from "./components"
+import { useRoutes, useLocation } from "react-router-dom"
 import { HomePage, AboutPage, HowToPlayPage } from "./pages"
 import { AnimatePresence } from "framer-motion"
 import React from "react"
 import "./app.css"
+import { useDispatch } from "react-redux"
+import { GameSocketProvider, DisconnectedPlayerProvider } from "./components"
 
 // Routing here?
 function App() {
+    const dispatch = useDispatch()
     const element = useRoutes([
         {
             path: "/",
@@ -40,15 +35,21 @@ function App() {
 
     const location = useLocation()
 
+    // Create 404 page?
     if (!element) return null
 
     return (
         <>
-            <NavBar />
-            <AnimatePresence mode="wait" initial={false}>
-                {React.cloneElement(element, { key: location.pathname })}
-            </AnimatePresence>
-            <Footer />
+            <DisconnectedPlayerProvider>
+                <GameSocketProvider dispatch={dispatch}>
+                    <AnimatePresence mode="wait" initial={false}>
+                        {React.cloneElement(element, {
+                            key: location.pathname,
+                        })}
+                    </AnimatePresence>
+                    <Footer />
+                </GameSocketProvider>
+            </DisconnectedPlayerProvider>
         </>
     )
 }

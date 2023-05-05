@@ -1,162 +1,221 @@
+import { useState, useEffect } from 'react'
+
 import {
-    Box,
-    Button,
-    SimpleGrid,
-    Stack,
-    Tag,
-    useDisclosure,
-    useToast,
-} from "@chakra-ui/react"
-import { useState, useEffect } from "react"
+  Box,
+  Center,
+  Flex,
+  SimpleGrid,
+  Stack,
+  Tag,
+  useDisclosure,
+  useToast,
+  Text,
+  useMediaQuery
+} from '@chakra-ui/react'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { useGameSocketContext } from '../../contexts'
 import {
-    rollDice,
-    canSelect,
-    hasSelectableDice,
-    totalDiceValue,
-    finalRollFailed,
-} from "../../helpers"
-import { Die } from "../Die"
-import { CustomButton } from "../CustomButton"
+  rollDice,
+  canSelect,
+  hasSelectableDice,
+  totalDiceValue,
+  finalRollFailed
+} from '../../helpers'
+import { type RootState } from '../../store'
 import {
-    nextPlayerTurn,
-    addSelectedDice,
-    resetSelectedDice,
-    setCurrentDiceRoll,
-    resetCurrentDiceRoll,
-    returnTile,
-} from "../../store/Game/gameSlice"
-import { useDispatch, useSelector } from "react-redux"
-import { DieInterface } from "../Die"
-import { RootState } from "../../store"
-import EndTurnModal from "../EndTurnModal/EndTurnModal"
+  nextPlayerTurn,
+  addSelectedDice,
+  setCurrentDiceRoll,
+  returnTile
+} from '../../store/Game/gameSlice'
+import { CustomButton } from '../CustomButton'
+import { Die } from '../Die'
+import { type DieInterface } from '../Die'
+import EndTurnModal from '../EndTurnModal/EndTurnModal'
+import { PlayerCard } from '../PlayerCard'
 
-const RollDice = () => {
-    // HOOKS
-    const [rollDisabled, setRollDisabled] = useState<boolean>(false)
-    const [selectDisabled, setSelectDisabled] = useState<boolean>(true)
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const toast = useToast()
-    const toastId = "selectError"
-    const dispatch = useDispatch()
-    const currentPlayer = useSelector(
-        (state: RootState) => state.game.currentPlayersTurn
+const RollDice = (): JSX.Element => {
+  // HOOKS
+  const [rollDisabled, setRollDisabled] = useState<boolean>(false)
+  const [selectDisabled, setSelectDisabled] = useState<boolean>(true)
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const toast = useToast()
+  const toastId = 'selectError'
+  const dispatch = useDispatch()
+
+  // NOT SURE IF LOWEST TILE IS AVAILABLE
+  const lowestTileOnBoard = useSelector(
+    (state: RootState) => state.game.tilesArray[0].value
+  )
+
+  const selectedDice = useSelector(
+    (state: RootState) => state.game.dice.currentlySelectedDice
+  )
+
+  const currentDiceRoll = useSelector(
+    (state: RootState) => state.game.dice.currentDiceRoll
+  )
+
+  const { sendPlayerAction, endTurn, isMyTurn, returnMyPlayerId } =
+        useGameSocketContext()
+
+  const yourInfo = useSelector((state: RootState) =>
+    state.game.playerArray.find(
+      (player) => player.id === returnMyPlayerId()
     )
-    // NOT SURE IF LOWEST TILE IS AVAILABLE
-    const lowestTileOnBoard = useSelector(
-        (state: RootState) => state.game.tilesArray[0].value
-    )
-    const showDiceTotal = useSelector(
-        (state: RootState) => state.game.settings.selectedDiceTotal
-    )
-    const selectedDice =
-        useSelector(
-            (state: RootState) =>
-                state.game.playerArray[currentPlayer]?.currentlySelectedDice
-        ) || []
-    const currentDiceRoll =
-        useSelector(
-            (state: RootState) =>
-                state.game.playerArray[currentPlayer]?.currentDiceRoll
-        ) || []
-    const playerArray = useSelector(
-        (state: RootState) => state.game.playerArray
-    )
+  )
+  const [isMobile] = useMediaQuery('(max-width: 715px)')
 
-    // USE EFFECTS
-    useEffect(() => {
-        if (
-            currentDiceRoll.length > 0 &&
-            !hasSelectableDice(selectedDice, currentDiceRoll)
-        ) {
-            dispatch(returnTile())
-            onOpen()
-            return
-        }
-        // ADD CHECK WHETHER OTHER PLAYERS TILES ARE AVAILABLE TO STEAL
-        if (
-            currentDiceRoll.length > 0 &&
-            finalRollFailed(selectedDice, currentDiceRoll, lowestTileOnBoard)
-        ) {
-            dispatch(returnTile())
-            onOpen()
-            return
-        }
-    }, [currentDiceRoll])
+  const diceAreaWidth = '190px'
+  const diceAreaHeight = '95px'
 
-    useEffect(() => {
-        dispatch(resetCurrentDiceRoll())
-        dispatch(resetSelectedDice())
-        setRollDisabled(false)
-        setSelectDisabled(true)
-    }, [currentPlayer])
+  // USE EFFECTS
+  useEffect((): void => {
+    if (
+      currentDiceRoll.length > 0 &&
+            !hasSelectableDice(selectedDice, currentDiceRoll) &&
+            isMyTurn()
+    ) {
+      dispatch(returnTile())
+      sendPlayerAction('returnTile', null)
+      onOpen()
 
-    useEffect(() => {
-        if (selectedDice.length > 0 && selectedDice.length < 8) {
-            setRollDisabled(false)
-        }
-    }, [selectedDice])
-
-    // FUNCTIONS
-    const onRollClick = () => {
-        setRollDisabled(true)
-        // if there are no selected dice, roll all dice
-        // Roll dice should not be able to be clicked if there are no selected dice atm
-        dispatch(setCurrentDiceRoll(rollDice(8 - selectedDice.length)))
+      return
     }
-
-    const highlightDice = (value: string) => {
-        setSelectDisabled(false)
-        dispatch(
-            setCurrentDiceRoll(
-                currentDiceRoll.map((die) => {
-                    if (die.face === value) {
-                        return { ...die, selected: true }
-                    }
-                    return { ...die, selected: false }
-                })
-            )
-        )
+    // ADD CHECK WHETHER OTHER PLAYERS TILES ARE AVAILABLE TO STEAL
+    if (
+      currentDiceRoll.length > 0 &&
+            finalRollFailed(selectedDice, currentDiceRoll, lowestTileOnBoard) &&
+            isMyTurn()
+    ) {
+      dispatch(returnTile())
+      sendPlayerAction('returnTile', null)
+      onOpen()
     }
+  }, [currentDiceRoll])
 
-    const selectDice = () => {
-        if (canSelect(selectedDice, currentDiceRoll)) {
-            toast.close(toastId)
-            setSelectDisabled(true)
-            dispatch(
-                addSelectedDice(
-                    currentDiceRoll
-                        .filter((die) => die.selected)
-                        .map((die) => ({ ...die, selected: false }))
-                )
-            )
-            dispatch(setCurrentDiceRoll([]))
-        } else {
-            if (!toast.isActive(toastId)) {
-                toast({
-                    id: toastId,
-                    title: "You can't select that die",
-                    description: "You already have a die with that value",
-                    status: "error",
-                    duration: 5000,
-                    isClosable: true,
-                    variant: "subtle",
-                })
-            }
+  useEffect(() => {
+    if (selectedDice.length > 0 && selectedDice.length < 8) {
+      setRollDisabled(false)
+    }
+  }, [selectedDice])
+
+  // FUNCTIONS
+  const onRollClick = () => {
+    setRollDisabled(true)
+    const dice = rollDice(8 - selectedDice.length)
+
+    dispatch(setCurrentDiceRoll(dice))
+    sendPlayerAction('rollDice', dice)
+  }
+
+  const highlightDice = (value: string) => {
+    if (!isMyTurn()) return
+    setSelectDisabled(false)
+    dispatch(
+      setCurrentDiceRoll(
+        currentDiceRoll.map((die) => {
+          if (die.face === value) {
+            return { ...die, selected: true }
+          }
+          return { ...die, selected: false }
+        })
+      )
+    )
+  }
+
+  const selectDice = ():void => {
+    if (!canSelect(selectedDice, currentDiceRoll)) {
+      if (!toast.isActive(toastId)) {
+        toast({
+          id: toastId,
+          title: "You can't select that die",
+          description: 'You already have a die with that value',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          variant: 'subtle'
+        })
+      }
+      return
+    }
+    toast.close(toastId)
+    setSelectDisabled(true)
+    const diceSelection = currentDiceRoll.reduce(
+      (acc: DieInterface[], die) => {
+        if (die.selected) {
+          acc.push({ ...die, selected: false })
         }
-    }
+        return acc
+      },
+      []
+    )
 
-    // RENDER
-    return (
+    dispatch(addSelectedDice(diceSelection))
+    dispatch(setCurrentDiceRoll([]))
+
+    sendPlayerAction('selectDice', diceSelection)
+    sendPlayerAction('rollDice', [])
+  }
+
+  // RENDER
+  return (
         <>
-            <Box borderWidth="4px" borderRadius="lg" maxW={"100%"}>
-                <Box
-                    p="6"
-                    display="flex"
-                    gap="10px"
-                    justifyContent="space-between"
+            <Box>
+                <Flex
+                    direction={{ base: 'column', md: 'row' }}
+                    justify="center"
+                    gap={4}
+                    alignItems="stretch"
                 >
-                    <Box flex={1} minWidth="175px" minHeight="250">
-                        {showDiceTotal && (
+                    <Flex justifyContent="center" flexDirection="column">
+                        <Box p={2}>
+                            <Center>
+                                {(yourInfo != null) && <PlayerCard player={yourInfo} />}
+                            </Center>
+                        </Box>
+                    </Flex>
+                    <Box
+                        p={2}
+                        border={'1px'}
+                        borderColor="black"
+                        boxShadow="3px 3px 0 black"
+                        backgroundImage={'./game_art/cloudsL.png'}
+                        backgroundRepeat={'no-repeat'}
+                        backgroundPosition={' center bottom'}
+                        // change this to 70% for mobile
+                        backgroundSize={isMobile ? '70%' : '90%'}
+                        minH={'200px'}
+                    >
+                        <Center>
+                            <Text fontWeight="bold">Selected Dice</Text>
+                        </Center>
+
+                        <Center>
+                            <Box
+                                my={2}
+                                width={diceAreaWidth}
+                                height={diceAreaHeight}
+                            >
+                                <SimpleGrid columns={4} spacing={2}>
+                                    {selectedDice.length > 0 &&
+                                        selectedDice.map(
+                                          (
+                                            die: DieInterface,
+                                            index: number
+                                          ) => (
+                                                <Die
+                                                    selected={die.selected}
+                                                    key={index}
+                                                    die={die.face}
+                                                />
+                                          )
+                                        )}
+                                </SimpleGrid>
+                            </Box>
+                        </Center>
+                        <Center>
                             <Tag
                                 size="md"
                                 variant="solid"
@@ -166,90 +225,98 @@ const RollDice = () => {
                             >
                                 Dice total: {totalDiceValue(selectedDice)}
                             </Tag>
-                        )}
-
-                        <SimpleGrid columns={2} spacing={3}>
-                            {selectedDice.length > 0 &&
-                                selectedDice.map(
-                                    (die: DieInterface, index: number) => {
-                                        return (
-                                            <Die
-                                                selected={die.selected}
-                                                key={index}
-                                                die={die.face}
-                                            ></Die>
-                                        )
-                                    }
-                                )}
-                        </SimpleGrid>
+                        </Center>
                     </Box>
 
                     <Box
                         display="flex"
                         flexDirection="column"
                         alignItems="center"
-                        minWidth="200px"
-                        minHeight="250"
+                        border={'1px'}
+                        borderColor="black"
+                        boxShadow="3px 3px 0 black"
+                        p={2}
                     >
-                        <Stack
-                            justify="center"
-                            width="100%"
-                            height="100%"
-                            direction="column"
+                        <Center>
+                            <Text fontWeight="bold">Current Roll</Text>
+                        </Center>
+
+                        <Box
+                            my={2}
+                            // border={"1px solid green"}
+                            width={diceAreaWidth}
+                            height={diceAreaHeight}
                         >
-                            <CustomButton
-                                isDisabled={rollDisabled}
-                                onClick={onRollClick}
+                            <SimpleGrid columns={4} spacing={'10px'}>
+                                {currentDiceRoll.length > 0 &&
+                                    currentDiceRoll.map(
+                                      (die: DieInterface, index: number) => (
+                                            <Die
+                                                selected={die.selected}
+                                                onClick={() => { highlightDice(die.face) }
+                                                }
+                                                key={index}
+                                                die={die.face}
+                                            />
+                                      )
+                                    )}
+                            </SimpleGrid>
+                        </Box>
+
+                        <Center>
+                            <Stack
+                                direction={'row'}
+                                spacing={4}
+                                align="center"
+                                mt={4}
                             >
-                                Roll
-                            </CustomButton>
-                            <Box flex={1}>
-                                <SimpleGrid columns={4} spacing={3}>
-                                    {currentDiceRoll.length > 0 &&
-                                        currentDiceRoll.map(
-                                            (
-                                                die: DieInterface,
-                                                index: number
-                                            ) => {
-                                                return (
-                                                    <Die
-                                                        selected={die.selected}
-                                                        onClick={() =>
-                                                            highlightDice(
-                                                                die.face
-                                                            )
-                                                        }
-                                                        key={index}
-                                                        die={die.face}
-                                                    />
-                                                )
-                                            }
-                                        )}
-                                </SimpleGrid>
-                            </Box>
-                            <CustomButton
-                                isDisabled={selectDisabled}
-                                onClick={selectDice}
-                            >
-                                Select
-                            </CustomButton>
-                        </Stack>
+                                <CustomButton
+                                    size="lg"
+                                    isDisabled={selectDisabled || !isMyTurn()}
+                                    onClick={selectDice}
+                                >
+                                    Select
+                                </CustomButton>
+                                <CustomButton
+                                    size="lg"
+                                    isDisabled={
+                                        rollDisabled ||
+                                        !isMyTurn() ||
+                                        currentDiceRoll.length > 0
+                                    }
+                                    onClick={onRollClick}
+                                >
+                                    Roll
+                                </CustomButton>
+                            </Stack>
+                        </Center>
                     </Box>
-                </Box>
+                </Flex>
             </Box>
             <EndTurnModal
                 isOpen={isOpen}
                 onClose={() => {
-                    onClose()
-                    dispatch(nextPlayerTurn())
+                  onClose()
+                  endTurn()
+                  dispatch(nextPlayerTurn())
+                  sendPlayerAction('nextPlayerTurn', null)
+                  // endTurn();
+                  // Are you the current player? Otherwise you can't end your turn
+                  // if(isCurrentUserPlaying){
+                  //     dispatch(nextPlayerTurn())
+                  //     // sendPlayerAction("nextPlayerTurn", null)
+                  // }
                 }}
-                title="Your turn is over"
+                title={
+                    isMyTurn() ? 'Your turn is over' : "Player's turn is over"
+                }
             >
-                One gamble too far. You have no selectable dice left. Your turn
-                is over.
+                {isMyTurn()
+                  ? 'One gamble too far. You have no selectable dice left. Your turn is over.'
+                  : 'The current player has no selectable dice left. Their turn is over.'}
             </EndTurnModal>
         </>
-    )
+  )
 }
 
 export default RollDice

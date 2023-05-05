@@ -2,12 +2,10 @@ import {
     Button,
     Drawer,
     DrawerBody,
-    DrawerCloseButton,
     DrawerContent,
     DrawerFooter,
     DrawerHeader,
     DrawerOverlay,
-    Input,
     Tab,
     TabIndicator,
     TabList,
@@ -15,12 +13,13 @@ import {
     TabPanels,
     Tabs,
 } from "@chakra-ui/react"
-import { GameRulesDrawerProps } from "./"
+
+import { type GameRulesDrawerProps } from "./"
 
 const GameRulesDrawer: React.FC<GameRulesDrawerProps> = ({
     isOpen,
     onClose,
-}) => {
+}): JSX.Element => {
     return (
         <Drawer
             isOpen={isOpen}
@@ -85,10 +84,10 @@ const GameRulesDrawer: React.FC<GameRulesDrawerProps> = ({
                                         set aside and the point total of the
                                         set-aside dice is either at least equal
                                         to the lowest number of the open planet
-                                        tiles on the board or exactly
-                                        equal to the number on the top tile of
-                                        another player. Remember, a space ship
-                                        counts as five points. <br />
+                                        tiles on the board or exactly equal to
+                                        the number on the top tile of another
+                                        player. Remember, a space ship counts as
+                                        five points. <br />
                                         <br />
                                         If the planet tile with the number
                                         exactly equal to the point total is open
@@ -114,29 +113,34 @@ const GameRulesDrawer: React.FC<GameRulesDrawerProps> = ({
                                         have already been set aside once), or as
                                         soon as all dice have been selected but
                                         do not meet the conditions to claim a
-                                        planet tile, a planet tile will be returned
-                                        (if they have any). This tile will
-                                        be placed in the correct position on the
-                                        board. Furthermore, the planet tile with
-                                        the highest value on the board will be
-                                        disabled. This tile will never return
-                                        to the game. However, when the planet
-                                        being returned is the one with the
-                                        highest value, it is disabled.
+                                        planet tile, a planet tile will be
+                                        returned (if they have any). This tile
+                                        will be placed in the correct position
+                                        on the board. Furthermore, the planet
+                                        tile with the highest value on the board
+                                        will be disabled. This tile will never
+                                        return to the game. However, when the
+                                        planet being returned is the one with
+                                        the highest value, it is disabled.
                                     </li>
                                 </ul>
                             </TabPanel>
                             <TabPanel>
                                 <p>
                                     The game ends when all planet tiles have
-                                    been claimed or disabled. The player
-                                    with the highest number of collected planets
-                                    wins the game. 
+                                    been claimed or disabled. The player with
+                                    the highest number of collected planets wins
+                                    the game.
                                 </p>
                             </TabPanel>
                         </TabPanels>
                     </Tabs>
                 </DrawerBody>
+                <DrawerFooter>
+                    <Button colorScheme="yellow" mr={3} onClick={onClose}>
+                        Close
+                    </Button>
+                </DrawerFooter>
             </DrawerContent>
         </Drawer>
     )

@@ -7,13 +7,22 @@ import {
     ModalHeader,
     ModalOverlay,
     Image,
+    ModalFooter,
+    Button,
+    Link,
 } from "@chakra-ui/react"
+import Cookies from "js-cookie"
 import { useSelector } from "react-redux"
-import { RootState } from "../../store"
-import { GameOverModalProps } from "./"
-import { totalPlanetsCollected } from "../../helpers"
 
-const GameOverModal = ({ isOpen, onClose }: GameOverModalProps) => {
+import { totalPlanetsCollected } from "../../helpers"
+import { type RootState } from "../../store"
+
+import { type GameOverModalProps } from "./"
+
+const GameOverModal = ({
+    isOpen,
+    onClose,
+}: GameOverModalProps): JSX.Element => {
     const playerArray = useSelector(
         (state: RootState) => state.game.playerArray
     )
@@ -47,7 +56,7 @@ const GameOverModal = ({ isOpen, onClose }: GameOverModalProps) => {
                                         {player.name}
                                     </Text>
                                     <Image
-                                        src="./game_art/planetary_pirates_art.jpg"
+                                        src={`./game_art/characters/character_${player.image}.jpg`}
                                         alt="Winner"
                                         height="100px"
                                         mx="auto"
@@ -67,6 +76,22 @@ const GameOverModal = ({ isOpen, onClose }: GameOverModalProps) => {
                         </Box>
                     ))}
                 </ModalBody>
+                <ModalFooter>
+                    <Link href="/">
+                        <Button
+                            colorScheme="yellow"
+                            mr={3}
+                            onClick={() => {
+                                Cookies.remove("PP_playerData")
+                            }}
+                            borderRadius={2}
+                            border={"1px solid black"}
+                            boxShadow="2px 2px 0 black"
+                        >
+                            Leave Game
+                        </Button>
+                    </Link>
+                </ModalFooter>
             </ModalContent>
         </Modal>
     )

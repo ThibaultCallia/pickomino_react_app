@@ -1,3 +1,6 @@
+import { type PlainPlayer } from '../../store/Players/Player.types'
+
 export interface PlayerCardProps {
-    playerName: string
+  closeDrawer?: () => void
+  player: PlainPlayer
 }
